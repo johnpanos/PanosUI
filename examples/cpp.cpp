@@ -26,7 +26,7 @@ class MyDelegate : public UI::ApplicationDelegate
     {
         std::cout << "Did finish from C++!\n";
         UI::Window *window = new UI::Window();
-        window->set_title("Example");
+        window->set_title("C++ Example");
 
         MyViewController *viewController = new MyViewController();
         window->set_view_controller(viewController);

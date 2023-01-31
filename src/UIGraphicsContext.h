@@ -11,12 +11,12 @@ void UIGraphicsContextSave(UIGraphicsContext *context);
 void UIGraphicsContextRestore(UIGraphicsContext *context);
 
 // MARK:
-void UIGraphicsContextClipToRect(UIGraphicsContext *context, const UIRect &rect);
+void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect);
 
 // MARK: Shapes
 void UIGraphicsContextAddPath(UIGraphicsContext *context);
-void UIGraphicsContextAddLine(UIGraphicsContext *context, const UIPoint &p1, const UIPoint &p2);
-void UIGraphicsContextAddRect(UIGraphicsContext *context, const UIRect &rect, double radius);
+void UIGraphicsContextAddLine(UIGraphicsContext *context, UIPoint p1, const UIPoint p2);
+void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius);
 void UIGraphicsContextAddOval(UIGraphicsContext *context);
 
 // MARK: Shadow

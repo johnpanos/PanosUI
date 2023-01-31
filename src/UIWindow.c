@@ -25,6 +25,7 @@ void UIWindowDestroy(UIWindow *window)
 void UIWindowSetTitle(UIWindow *window, const char *title)
 {
     window->title = title;
+    _UIPlatformWindowSetTitle(window, title);
 }
 
 void UIWindowSetRootViewController(UIWindow *window, UIViewController *viewController)

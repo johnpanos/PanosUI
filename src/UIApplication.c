@@ -6,6 +6,7 @@ UIApplication *sharedApplication;
 void UIApplicationMain(UIApplicationDelegate *delegate) {
     sharedApplication = malloc(sizeof(UIApplication));
     sharedApplication->running = 1;
+    sharedApplication->delegate = delegate;
 
     _UIPlatformMain(sharedApplication);
 

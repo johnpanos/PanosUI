@@ -1,4 +1,4 @@
-project('PanosUI', ['c', 'cpp'], default_options: ['cpp_std=c++17'])
+project('PanosUI', ['c', 'cpp', 'objc'], default_options: ['cpp_std=c++17'])
 
 deps = []
 
@@ -25,6 +25,14 @@ if host_machine.system() == 'linux'
     deps += wayland_egl
     deps += wayland_client
     deps += wayland_cursor
+endif
+
+if host_machine.system() == 'darwin'
+    src += 'src/macos/platform.m'
+
+    cocoa = dependency('Cocoa')
+    
+    deps += cocoa
 endif
 
 panosuilib = shared_library('panosui',

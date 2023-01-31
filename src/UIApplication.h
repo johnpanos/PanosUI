@@ -4,10 +4,12 @@
 #include "UIWindow.h"
 #include "platform.h"
 
+typedef struct _UIApplicationDelegate UIApplicationDelegate;
 typedef struct _UIApplication
 {
     int running;
     UIWindow *window;
+    UIApplicationDelegate *delegate;
 } UIApplication;
 
 typedef struct _UIApplicationDelegate

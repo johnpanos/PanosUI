@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "UIView.h"
 
 UIView *UIViewCreate(UIRect frame, UIRect bounds)

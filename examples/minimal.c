@@ -21,7 +21,7 @@ void viewDidLoad(UIViewController *this)
 void didFinishLaunching(UIApplication *application)
 {
     UIWindow *window = UIWindowCreate();
-    UIWindowSetTitle(window, "My Window");
+    UIWindowSetTitle(window, "C Example");
 
     UIViewController *rootViewController = UIViewControllerCreate();
     rootViewController->viewDidLoad = &viewDidLoad;

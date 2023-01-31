@@ -10,7 +10,7 @@ void _UIPlatformEventLoop(UIApplication *application);
 void _UIPlatformWindowCreate(UIWindow *window);
 void _UIPlatformWindowDestroy(UIWindow *window);
 
-void _UIPlatformWindowSetTitle(UIWindow *window);
+void _UIPlatformWindowSetTitle(UIWindow *window, const char *title);
 void _UIPlatformWindowRender(UIWindow *window);
 
 #endif
