@@ -266,8 +266,8 @@ void _UIPlatformWindowDestroy(UIWindow *window)
     wl_surface_destroy(platformData->surface);
 }
 
-void _UIPlatformWindowSetTitle(UIWindow *window)
+void _UIPlatformWindowSetTitle(UIWindow *window, const char *title)
 {
     struct UIWindowPlatformData *platformData = ToPlatformData(window);
-    xdg_toplevel_set_title(platformData->toplevel, window->title);
+    xdg_toplevel_set_title(platformData->toplevel, title);
 }
