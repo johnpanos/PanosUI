@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "viewcontroller.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "uiviewcontroller.h": "c",
+        "uiwindow.h": "c",
+        "uiapplication.h": "c",
+        "uievent.h": "c",
+        "iostream": "cpp"
+    },
+    "mesonbuild.configureOnOpen": true
+}
