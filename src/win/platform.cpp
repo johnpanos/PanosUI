@@ -38,6 +38,9 @@ extern "C"
         // Register the window class.
         const wchar_t CLASS_NAME[] = L"Sample Window Class";
 
+        RECT wr = {0, 0, window->frame.width, window->frame.height};
+        AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
+
         WNDCLASS wc = {};
 
         wc.lpfnWndProc = WindowProc;
@@ -55,7 +58,7 @@ extern "C"
             WS_OVERLAPPEDWINDOW,         // Window style
 
             // Size and position
-            CW_USEDEFAULT, CW_USEDEFAULT, window->frame.width, window->frame.height,
+            CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 
             NULL,       // Parent window
             NULL,       // Menu

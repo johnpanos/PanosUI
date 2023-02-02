@@ -21,10 +21,10 @@ void viewDidLoad(UIViewController *this)
 void didFinishLaunching(UIApplication *application)
 {
     UIRect window_frame = {
-            .x = 0,
-            .y = 0,
-            .width = 100,
-            .height = 100};
+        .x = 0,
+        .y = 0,
+        .width = 300,
+        .height = 300};
     UIWindow *window = UIWindowCreate(window_frame);
     UIWindowSetTitle(window, "C Example");
 
