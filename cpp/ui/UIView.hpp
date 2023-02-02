@@ -32,6 +32,16 @@ namespace UI
         {
             UIViewAddSubview(this->backing_view, view->backing_view);
         }
+
+        void set_frame(UIRect to)
+        {
+            this->backing_view->frame = to;
+        }
+
+        UIRect get_frame()
+        {
+            return this->backing_view->frame;
+        }
     };
 }
 

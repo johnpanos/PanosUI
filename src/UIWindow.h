@@ -7,12 +7,12 @@
 
 #include "platform.h"
 
-typedef struct _UIViewController UIViewController;
+struct _UIViewController;
 typedef struct _UIWindow
 {
     const char *title;
     UIRect frame;
-    UIViewController *rootViewController;
+    struct UIViewController *rootViewController;
 
     void *_platformData;
 } UIWindow;
@@ -21,7 +21,7 @@ UIWindow *UIWindowCreate();
 void UIWindowDestroy(UIWindow *window);
 
 void UIWindowSetTitle(UIWindow *window, const char *title);
-void UIWindowSetRootViewController(UIWindow *window, UIViewController *viewController);
+void UIWindowSetRootViewController(UIWindow *window, struct _UIViewController *viewController);
 void UIWindowSendEvent(UIWindow *window, UIEvent *event);
 
 #endif

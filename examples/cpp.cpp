@@ -17,6 +17,9 @@ class MyViewController : public UI::ViewController
 
         UI::View *my_view = new UI::View(rect, rect);
         this->view.add_subview(my_view);
+
+        std::cout << "Frame width: " << this->view.get_frame().width << "\n";
+        std::cout << "Frame height: " << this->view.get_frame().height << "\n";
     }
 };
 
@@ -25,11 +28,16 @@ class MyDelegate : public UI::ApplicationDelegate
     virtual void did_finish_launching()
     {
         std::cout << "Did finish from C++!\n";
-        UI::Window *window = new UI::Window();
-        window->set_title("C++ Example");
+        UIRect window_frame = {
+            .x = 0,
+            .y = 0,
+            .width = 1000,
+            .height = 300};
+        UI::Window *window = new UI::Window(window_frame);
+        window->set_title("cereal");
 
-        MyViewController *viewController = new MyViewController();
-        window->set_view_controller(viewController);
+        MyViewController *view_controller = new MyViewController();
+        window->set_view_controller(view_controller);
     }
 };
 

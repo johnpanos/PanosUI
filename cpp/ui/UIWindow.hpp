@@ -69,9 +69,9 @@ namespace UI
         UIWindow *backing_window;
 
     public:
-        Window()
+        Window(UIRect frame)
         {
-            this->backing_window = UIWindowCreate();
+            this->backing_window = UIWindowCreate(frame);
         }
 
         ~Window()

@@ -1,10 +1,10 @@
 #ifndef _UIGRAPHICSCONTEXT_H
 #define _UIGRAPHICSCONTEXT_H
 
-#include "UIView.h"
-
 typedef struct _UIGraphicsContext UIGraphicsContext;
+typedef struct _UIRect UIRect;
 typedef struct _UIPoint UIPoint;
+typedef struct _UIColor UIColor;
 
 // MARK: Context
 void UIGraphicsContextSave(UIGraphicsContext *context);
@@ -17,10 +17,10 @@ void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect);
 void UIGraphicsContextAddPath(UIGraphicsContext *context);
 void UIGraphicsContextAddLine(UIGraphicsContext *context, UIPoint p1, const UIPoint p2);
 void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius);
-void UIGraphicsContextAddOval(UIGraphicsContext *context);
+void UIGraphicsContextAddOval(UIGraphicsContext *context, UIPoint p, int width, int height);
 
 // MARK: Shadow
-void UIGraphicsContextSetShadow(UIGraphicsContext *context);
-void UIGraphicsContextSetShadowColor(UIGraphicsContext *context);
+void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIPoint offset, float blur);
+void UIGraphicsContextSetShadowColor(UIGraphicsContext *context, UIColor color);
 
 #endif

@@ -20,7 +20,12 @@ void viewDidLoad(UIViewController *this)
 
 void didFinishLaunching(UIApplication *application)
 {
-    UIWindow *window = UIWindowCreate();
+    UIRect window_frame = {
+            .x = 0,
+            .y = 0,
+            .width = 100,
+            .height = 100};
+    UIWindow *window = UIWindowCreate(window_frame);
     UIWindowSetTitle(window, "C Example");
 
     UIViewController *rootViewController = UIViewControllerCreate();

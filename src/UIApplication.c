@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include "UIApplication.h"
 
-UIApplication *sharedApplication;
+UIApplication_t sharedApplication;
 
-void UIApplicationMain(UIApplicationDelegate *delegate) {
+void UIApplicationMain(UIApplicationDelegate_t delegate) {
     sharedApplication = malloc(sizeof(UIApplication));
     sharedApplication->running = 1;
     sharedApplication->delegate = delegate;
@@ -21,6 +21,6 @@ void UIApplicationRun() {
     }
 }
 
-UIApplication *UIApplicationShared() {
+UIApplication UIApplicationShared() {
     return sharedApplication;
 }

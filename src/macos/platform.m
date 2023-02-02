@@ -30,7 +30,8 @@ void _UIPlatformEventLoop(UIApplication *application) {
                                 dequeue:YES];
       if (ev) {
         // handle events here
-        [NSApp sendEvent:ev];
+        // NSLog(@"%@", ev);
+        // [NSApp sendEvent:ev];
       }
     } while (ev);
   }
@@ -42,7 +43,8 @@ void _UIPlatformWindowCreate(UIWindow *window) {
   NSRect graphicsRect; // contains an origin, width, height
 
   // initialize the rectangle variable
-  graphicsRect = NSMakeRect(100.0, 350.0, 400.0, 400.0);
+  graphicsRect = NSMakeRect(0.0, window->frame.height, window->frame.width,
+                            window->frame.height);
 
   myWindow = [[NSWindow alloc] // create the window
       initWithContentRect:graphicsRect

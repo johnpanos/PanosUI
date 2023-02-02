@@ -2,10 +2,11 @@
 #include "UIWindow.h"
 #include "UIViewController.h"
 
-UIWindow *UIWindowCreate()
+UIWindow *UIWindowCreate(UIRect frame)
 {
     UIWindow *window = malloc(sizeof(UIWindow));
     UIApplicationShared()->window = window;
+    window->frame = frame;
 
     _UIPlatformWindowCreate(window);
 

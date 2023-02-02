@@ -1,4 +1,4 @@
-project('PanosUI', ['c', 'cpp'], default_options: ['cpp_std=c++17'])
+project('PanosUI', ['c', 'cpp', 'objc'], default_options: ['cpp_std=c++17'])
 
 deps = []
 
