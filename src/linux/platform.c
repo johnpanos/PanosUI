@@ -164,7 +164,7 @@ xdg_toplevel_configure_handler(void *data,
         exit(1);
     }
 
-    platformData->egl_window = wl_egl_window_create(platformData->surface, 100, 100);
+    platformData->egl_window = wl_egl_window_create(platformData->surface, platformData->window->frame.width, platformData->window->frame.height);
 
     platformData->egl_surface = eglCreateWindowSurface(platformData->egl_display, config, platformData->egl_window, NULL);
 
