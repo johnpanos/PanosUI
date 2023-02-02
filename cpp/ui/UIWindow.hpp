@@ -3,9 +3,12 @@
 
 #include <stdio.h>
 #include <functional>
+extern "C"
+{
 #include "UIWindow.h"
 #include "UIViewController.h"
 #include "UIView.hpp"
+}
 
 template <typename T>
 struct Callback;
@@ -32,7 +35,7 @@ namespace UI
     {
     public:
         UIViewController *backing_view_controller;
-        UI::View view;
+        UI::View *view;
 
         ViewController()
         {
@@ -49,7 +52,7 @@ namespace UI
 
         void _view_did_load(UIViewController *viewController)
         {
-            this->view = View(viewController->view);
+            this->view = new View(viewController->view);
             this->view_did_load();
         }
 

@@ -4,17 +4,17 @@
 #include "UIView.h"
 #include "UIWindow.h"
 
-struct _UIViewController
+typedef struct _UIViewController
 {
     UIView *view;
 
-    void (*loadView)(struct _UIViewController *this);
-    void (*viewDidLoad)(struct _UIViewController *this);
+    void (*loadView)(UIViewController *this);
+    void (*viewDidLoad)(UIViewController *this);
 
     UIWindow *_window;
-};
+} UIViewController;
 
-struct _UIViewController *UIViewControllerCreate();
-void UIViewControllerDestroy(struct _UIViewController *viewController);
+UIViewController *UIViewControllerCreate();
+void UIViewControllerDestroy(UIViewController *viewController);
 
 #endif

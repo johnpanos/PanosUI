@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include "UIApplication.h"
 
-UIApplication_t sharedApplication;
+UIApplication *sharedApplication;
 
-void UIApplicationMain(UIApplicationDelegate_t delegate) {
+void UIApplicationMain(UIApplicationDelegate *delegate)
+{
     sharedApplication = malloc(sizeof(UIApplication));
     sharedApplication->running = 1;
     sharedApplication->delegate = delegate;
@@ -15,12 +16,15 @@ void UIApplicationMain(UIApplicationDelegate_t delegate) {
     UIApplicationRun();
 }
 
-void UIApplicationRun() {
-    while (sharedApplication->running) {
+void UIApplicationRun()
+{
+    while (sharedApplication->running)
+    {
         _UIPlatformEventLoop(sharedApplication);
     }
 }
 
-UIApplication UIApplicationShared() {
+UIApplication *UIApplicationShared()
+{
     return sharedApplication;
 }

@@ -1,7 +1,9 @@
 #ifndef _UIVIEW_HPP
 #define _UIVIEW_HPP
-
+extern "C"
+{
 #include "UIView.h"
+}
 
 namespace UI
 {

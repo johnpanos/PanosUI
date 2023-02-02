@@ -1,23 +1,24 @@
-#pragma once
+#ifndef _UIAPPLICATION_H
+#define _UIAPPLICATION_H
 
 #include "UIWindow.h"
 #include "platform.h"
 
-typedef struct _UIApplicationDelegate* UIApplicationDelegate_t;
-typedef struct _UIApplication* UIApplication_t;
-
-struct _UIApplication
+typedef struct _UIApplicationDelegate UIApplicationDelegate;
+typedef struct _UIApplication
 {
     int running;
     UIWindow *window;
-    UIApplication_t delegate;
-};
+    UIApplicationDelegate *delegate;
+} UIApplication;
 
-struct _UIApplicationDelegate
+typedef struct _UIApplicationDelegate
 {
-    void (*didFinishLaunching)(UIApplication_t application);
-};
+    void (*didFinishLaunching)(UIApplication *application);
+} UIApplicationDelegate;
 
-void UIApplicationMain(UIApplicationDelegate_t delegate);
+void UIApplicationMain(UIApplicationDelegate *delegate);
 void UIApplicationRun();
-UIApplication_t UIApplicationShared();
+UIApplication *UIApplicationShared();
+
+#endif

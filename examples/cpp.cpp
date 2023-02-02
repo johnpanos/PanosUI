@@ -16,10 +16,12 @@ class MyViewController : public UI::ViewController
         rect.height = 100;
 
         UI::View *my_view = new UI::View(rect, rect);
-        this->view.add_subview(my_view);
+        std::cout << "Created view\n";
+        this->view->add_subview(my_view);
+        std::cout << "Add view\n";
 
-        std::cout << "Frame width: " << this->view.get_frame().width << "\n";
-        std::cout << "Frame height: " << this->view.get_frame().height << "\n";
+        std::cout << "Frame width: " << this->view->get_frame().width << "\n";
+        std::cout << "Frame height: " << this->view->get_frame().height << "\n";
     }
 };
 
@@ -28,11 +30,11 @@ class MyDelegate : public UI::ApplicationDelegate
     virtual void did_finish_launching()
     {
         std::cout << "Did finish from C++!\n";
-        UIRect window_frame = {
-            .x = 0,
-            .y = 0,
-            .width = 1000,
-            .height = 300};
+        UIRect window_frame;
+        window_frame.x = 0;
+        window_frame.y = 0;
+        window_frame.width = 1000;
+        window_frame.height = 300;
         UI::Window *window = new UI::Window(window_frame);
         window->set_title("cereal");
 
