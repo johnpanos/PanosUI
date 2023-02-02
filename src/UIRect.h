@@ -4,8 +4,8 @@
 
 typedef struct _UIRect
 {
-    int32_t x, y;
-    int32_t width, height;
+    int x, y;
+    int width, height;
 } UIRect;
 
 #endif

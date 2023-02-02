@@ -2,7 +2,6 @@
 #define _UIVIEW_HPP
 
 #include "UIView.h"
-#include <csignal>
 
 namespace UI
 {
