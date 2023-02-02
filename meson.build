@@ -35,13 +35,15 @@ if host_machine.system() == 'darwin'
     deps += cocoa
 endif
 
-panosuilib = shared_library('panosui',
+if host_machine.system() == 'windows'
+    src += 'src/win/platform.cpp'
+endif
+
+panosuilib = static_library('panosui',
                         src,
                         include_directories : ['src'],
                         dependencies : deps,
                         install : true)
-
-# panosuilib_cpp = shared_library('panosui-cpp', [], include_directories : ['include', 'include/cpp'], link_with : panosuilib)
 
 executable('panos-client', 'examples/minimal.c', include_directories : ['include'], link_with : panosuilib)
 executable('cpp-example', 'examples/cpp.cpp', include_directories : ['include', 'cpp'], link_with : panosuilib)

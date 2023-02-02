@@ -9,5 +9,6 @@
         "uievent.h": "c",
         "iostream": "cpp"
     },
-    "mesonbuild.configureOnOpen": true
+    "mesonbuild.configureOnOpen": true,
+    "print.colourScheme": "Atom One"
 }

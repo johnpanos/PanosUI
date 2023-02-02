@@ -34,8 +34,8 @@ namespace UI
         inline static ApplicationDelegate *applicationDelegate;
         static void main(ApplicationDelegate *applicationDelegate)
         {
-            UIApplicationDelegate delegate = {
-                .didFinishLaunching = &Application::did_finish_launching_wrapper};
+            UIApplicationDelegate delegate;
+            delegate.didFinishLaunching = &Application::did_finish_launching_wrapper;
 
             Application::applicationDelegate = applicationDelegate;
 
