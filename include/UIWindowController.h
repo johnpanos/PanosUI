@@ -5,7 +5,7 @@
 
 typedef struct _UIWindowController *UIWindowController;
 typedef void (*onWindowLoad)(UIWindowController self);
-typedef void (*)
+// typedef void (*)
 
 typedef struct _UIWindowController *UIWindowController;
 

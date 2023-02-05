@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIEvent.h"
+#include "UIRect.h"
 
 typedef struct _UIWindow
 {

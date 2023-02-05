@@ -6,7 +6,6 @@ extern "C"
 {
 #include "UIApplication.h"
 #include "UIWindow.h"
-#include "UIViewController.h"
 #include "UIView.h"
 }
 

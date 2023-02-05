@@ -27,42 +27,42 @@ struct Callback<Ret(Params...)>
 template <typename Ret, typename... Params>
 std::function<Ret(Params...)> Callback<Ret(Params...)>::func;
 
-typedef void (*callback_t)(UIViewController *self);
+// typedef void (*callback_t)(UIViewController *self);
 
 namespace UI
 {
-    class WindowController
-    {
-    public:
-        UIWindowController backing_window_controller;
+    // class WindowController
+    // {
+    // public:
+    //     UIWindowController backing_window_controller;
 
-        WindowController()
-        {
-            this->backing_window_controller = UIWindowControllerCreate();
-            Callback<void(UIWindowController self)>::func = std::bind(&WindowController::_on_window_load, this, std::placeholders::_1);
-            callback_t func = static_cast<callback_t>(Callback<void(UIWindowController * self)>::callback);
-            UIWindowControllerSetOnWindowLoad(this->backing_window_controller, (onWindowLoad)func);
-        }
+    //     WindowController()
+    //     {
+    //         this->backing_window_controller = UIWindowControllerCreate();
+    //         Callback<void(UIWindowController self)>::func = std::bind(&WindowController::_on_window_load, this, std::placeholders::_1);
+    //         callback_t func = static_cast<callback_t>(Callback<void(UIWindowController * self)>::callback);
+    //         UIWindowControllerSetOnWindowLoad(this->backing_window_controller, (onWindowLoad)func);
+    //     }
 
-        void _on_window_load(UIWindowController self)
-        {
-            this->on_window_load();
-        }
+    //     void _on_window_load(UIWindowController self)
+    //     {
+    //         this->on_window_load();
+    //     }
 
-        virtual void on_window_load()
-        {
-        }
+    //     virtual void on_window_load()
+    //     {
+    //     }
 
-        virtual ~WindowController()
-        {
-            UIWindowControllerDestroy(this->backing_window_controller);
-        }
-    };
+    //     virtual ~WindowController()
+    //     {
+    //         UIWindowControllerDestroy(this->backing_window_controller);
+    //     }
+    // };
 
     class Window
     {
     private:
-        UIWindow *backing_window;
+        UIWindow backing_window;
 
     public:
         Window(UIRect frame)
@@ -78,11 +78,6 @@ namespace UI
         void set_title(std::string title)
         {
             UIWindowSetTitle(this->backing_window, title.c_str());
-        }
-
-        void set_window_controller(UI::WindowController *window_controller)
-        {
-            UIWindowSetWindowController(this->backing_window, window_controller->backing_window_controller);
         }
     };
 };

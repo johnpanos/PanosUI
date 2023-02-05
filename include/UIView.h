@@ -5,23 +5,23 @@
 #include "UILayer.h"
 #include "Array.h"
 
-typedef struct _UIView UIView;
+typedef struct _UIView *UIView;
 typedef struct _UIView
 {
     UILayer *layer;
     UIRect frame;
     UIRect bounds;
 
-    UIView *parentView;
+    UIView parentView;
     Array subviews;
 
     int needsDisplay;
-} UIView;
+} *UIView;
 
-UIView *UIViewCreate(UIRect frame, UIRect bounds);
-void UIViewDestroy(UIView *view);
+UIView UIViewCreate(UIRect frame, UIRect bounds);
+void UIViewDestroy(UIView view);
 
-void UIViewAddSubview(UIView *superview, UIView *subview);
-void UIViewRemoveSubview(UIView *superview, UIView *subview);
+void UIViewAddSubview(UIView superview, UIView subview);
+void UIViewRemoveSubview(UIView superview, UIView subview);
 
 #endif

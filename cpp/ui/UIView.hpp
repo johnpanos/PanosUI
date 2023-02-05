@@ -10,7 +10,7 @@ namespace UI
     class View
     {
     public:
-        UIView *backing_view;
+        UIView backing_view;
 
         View(){};
 
@@ -19,7 +19,7 @@ namespace UI
             this->backing_view = UIViewCreate(frame, bounds);
         }
 
-        View(UIView *backing_view)
+        View(UIView backing_view)
         {
             this->backing_view = backing_view;
         }
