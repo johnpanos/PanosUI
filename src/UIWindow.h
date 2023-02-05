@@ -2,26 +2,24 @@
 #define _UIWINDOW_H
 
 #include "UIApplication.h"
+#include "UIView.h"
 #include "UIRect.h"
 #include "UIEvent.h"
 
-#include "platform.h"
-
-typedef struct _UIViewController UIViewController;
 typedef struct _UIWindow
 {
     const char *title;
     UIRect frame;
-    struct UIViewController *rootViewController;
+    UIView mainView;
 
     void *_platformData;
-} UIWindow;
+} *UIWindow;
 
-UIWindow *UIWindowCreate();
-void UIWindowDestroy(UIWindow *window);
+UIWindow UIWindowCreate(UIRect frame);
+void UIWindowDestroy(UIWindow window);
 
-void UIWindowSetTitle(UIWindow *window, const char *title);
-void UIWindowSetRootViewController(UIWindow *window, UIViewController *viewController);
-void UIWindowSendEvent(UIWindow *window, UIEvent *event);
+void UIWindowSetTitle(UIWindow window, const char *title);
+// void UIWindowSetWindowController(UIWindow window, UIWindowController windowController);
+void UIWindowSendEvent(UIWindow window, UIEvent event);
 
 #endif

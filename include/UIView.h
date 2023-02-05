@@ -3,6 +3,7 @@
 
 #include "UIRect.h"
 #include "UILayer.h"
+#include "Array.h"
 
 typedef struct _UIView UIView;
 typedef struct _UIView
@@ -12,9 +13,9 @@ typedef struct _UIView
     UIRect bounds;
 
     UIView *parentView;
-    UIView **subviews;
+    Array subviews;
 
-    int _subviewCount;
+    int needsDisplay;
 } UIView;
 
 UIView *UIViewCreate(UIRect frame, UIRect bounds);

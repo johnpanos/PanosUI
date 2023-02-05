@@ -1,76 +1,49 @@
 #include <stdlib.h>
 #include <string.h>
 #include "UIView.h"
+#include "shared/Array.h"
 
-UIView *UIViewCreate(UIRect frame, UIRect bounds)
+UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
-    UIView *view = malloc(sizeof(UIView));
+    UIView view = malloc(sizeof(struct _UIView));
     view->frame = frame;
     view->bounds = bounds;
-    view->subviews = NULL;
-    view->_subviewCount = 0;
+    view->parentView = NULL;
+    view->subviews = ArrayCreate(sizeof(struct _UIView));
     return view;
 }
 
-void UIViewDestroy(UIView *view)
+void UIViewDestroy(UIView view)
 {
-
-    for (int i = 0; i < view->_subviewCount; i++)
+    for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
     {
-        UIView *child = view->subviews[i];
+        UIView child = ArrayGetValueAtIndex(view->subviews, i);
         child->parentView = NULL;
     }
     if (view->subviews != NULL)
     {
-        free(view->subviews);
+        ArrayDestroy(view->subviews);
     }
 
     free(view);
 }
 
-void UIViewAddSubview(UIView *superview, UIView *subview)
+void UIViewAddSubview(UIView superview, UIView subview)
 {
-    if (superview->_subviewCount == 0)
-    {
-        superview->_subviewCount = 1;
-        superview->subviews = calloc(superview->_subviewCount, sizeof(UIView *));
-        superview->subviews[0] = subview;
-    }
-    else
-    {
-        superview->_subviewCount += 1;
-        superview->subviews = realloc(superview->subviews, superview->_subviewCount * sizeof(UIView *));
-        superview->subviews[superview->_subviewCount - 1] = subview;
-    }
-
+    ArrayAddValue(superview->subviews, subview);
     subview->parentView = superview;
 }
 
-void UIViewRemoveSubview(UIView *superview, UIView *subview)
+void UIViewRemoveSubview(UIView superview, UIView subview)
 {
-    UIView ***array = &superview->subviews;
-    int *n = &superview->_subviewCount;
+    ArrayRemoveValueByRef(superview->subviews, subview);
+    subview->parentView = NULL;
+}
 
-    int i = -1;
-    for (int j = 0; j < *n; j++)
-    {
-        if ((*array)[j] == subview)
-        {
-            i = j;
-            break;
-        }
-    }
-
-    if (i == -1)
-    {
-        return;
-    }
-
-    UIView *removedView = (*array)[i];
-    removedView->parentView = NULL;
-
-    memcpy(&(*array)[i], &(*array)[i + 1], (*n - i - 1) * sizeof(UIView *));
-
-    (*array) = realloc(*array, (*n - 1) * sizeof(UIView *));
-    (*n)--;
+void UIViewSetNeedsDisplay(UIView view) {
+    UIView current = view;
+    do {
+        current->needsDisplay = 1;
+        current = current->parentView;
+    } while (current != NULL);
 }

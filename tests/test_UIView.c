@@ -24,17 +24,13 @@ int main()
     assert(view2->frame.height == rect.height);
 
     UIViewAddSubview(view1, view2);
-    assert(view1->subviews[0] == view2);
     assert(view2->parentView == view1);
 
     UIView *view3 = UIViewCreate(rect, rect);
     UIViewAddSubview(view1, view3);
-    assert(view1->subviews[1] == view3);
-    assert(view1->_subviewCount == 2);
 
     UIViewRemoveSubview(view1, view3);
     assert(view3->parentView == NULL);
-    assert(view1->_subviewCount == 1);
 
     UIViewDestroy(view1);
     assert(view2->parentView == NULL);

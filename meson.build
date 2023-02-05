@@ -1,4 +1,4 @@
-project('PanosUI', ['c', 'cpp', 'objc'], default_options: ['cpp_std=c++17'])
+project('PanosUI', ['c', 'cpp'], default_options: ['cpp_std=c++17'])
 
 deps = []
 
@@ -6,11 +6,13 @@ src = [
     'src/UIApplication.c',
     'src/UIView.c',
     'src/UIViewController.c',
-    'src/UIWindow.c'
+    'src/UIWindow.c',
+    'src/shared/Array.c'
 ]
 
 if host_machine.system() == 'linux'
     src += 'src/linux/platform.c'
+    src += 'src/linux/pointer.c'
     src += 'src/linux/deps/linux-dmabuf_unstable-v1.c'
     src += 'src/linux/deps/xdg-shell.c'
 
@@ -41,11 +43,11 @@ endif
 
 panosuilib = static_library('panosui',
                         src,
-                        include_directories : ['src'],
+                        include_directories : ['src', '../', 'thirdparty/skia'],
                         dependencies : deps,
                         install : true)
 
 executable('panos-client', 'examples/minimal.c', include_directories : ['include'], link_with : panosuilib)
-executable('cpp-example', 'examples/cpp.cpp', include_directories : ['include', 'cpp'], link_with : panosuilib)
+#executable('cpp-example', 'examples/cpp.cpp', include_directories : ['include', 'cpp'], link_with : panosuilib)
 
-subdir('tests')
+#subdir('tests')

@@ -1,10 +1,13 @@
 #ifndef _UIGRAPHICSCONTEXT_H
 #define _UIGRAPHICSCONTEXT_H
 
+#include "UIRect.h"
+
 typedef struct _UIGraphicsContext UIGraphicsContext;
-typedef struct _UIRect UIRect;
 typedef struct _UIPoint UIPoint;
 typedef struct _UIColor UIColor;
+
+void UIGraphicsContextMakeCurrent(UIGraphicsContext *context);
 
 // MARK: Context
 void UIGraphicsContextSave(UIGraphicsContext *context);

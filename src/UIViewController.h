@@ -1,20 +1,20 @@
-#ifndef _UIVIEWCONTROLLER_H
-#define _UIVIEWCONTROLLER_H
+// #ifndef _UIVIEWCONTROLLER_H
+// #define _UIVIEWCONTROLLER_H
 
-#include "UIView.h"
-#include "UIWindow.h"
+// #include "UIView.h"
+// #include "UIWindow.h"
 
-typedef struct _UIViewController
-{
-    UIView *view;
+// typedef struct _UIViewController
+// {
+//     UIView *view;
 
-    void (*loadView)(UIViewController *this);
-    void (*viewDidLoad)(UIViewController *this);
+//     void (*loadView)(UIViewController *this);
+//     void (*viewDidLoad)(UIViewController *this);
 
-    UIWindow *_window;
-} UIViewController;
+//     UIWindow *_window;
+// } UIViewController;
 
-UIViewController *UIViewControllerCreate();
-void UIViewControllerDestroy(UIViewController *viewController);
+// UIViewController *UIViewControllerCreate();
+// void UIViewControllerDestroy(UIViewController *viewController);
 
-#endif
+// #endif

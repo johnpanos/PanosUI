@@ -10,32 +10,16 @@
 #include <string.h>
 
 #include "../platform.h"
+#include "platformData.h"
 #include "../UIWindow.h"
 #include "../UIApplication.h"
+#include "../UIViewController.h"
+#include "../UIView.h"
 
 #include "deps/linux-dmabuf_unstable-v1.h"
 #include "deps/xdg-shell.h"
 
-struct UIWindowPlatformData
-{
-    UIWindow *window;
-
-    struct wl_surface *surface;
-    struct xdg_surface *xdg_surface;
-    struct xdg_toplevel *toplevel;
-
-    struct wl_egl_window *egl_window;
-
-    EGLDisplay egl_display;
-    EGLSurface egl_surface;
-    EGLContext egl_context;
-};
-
-struct UIWindowPlatformData *ToPlatformData(UIWindow *window)
-{
-    struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)window->_platformData;
-    return platformData;
-}
+struct UIPlatformGlobals UIPlatformGlobalsShared = {.compositor = NULL, .display = NULL, .wl_registry = NULL, .wl_seat = NULL, .wl_shm = NULL};
 
 const EGLint config_attributes[] = {
     EGL_SURFACE_TYPE,
@@ -63,22 +47,30 @@ const EGLint context_attributes[] = {
 
 EGLConfig config;
 
-struct wl_display *display = NULL;
-struct wl_compositor *compositor = NULL;
-struct xdg_wm_base *wm_base = NULL;
-
 static void global_registry_handler(void *data, struct wl_registry *registry, uint32_t id,
                                     const char *interface, uint32_t version)
 {
     printf("Got a registry event for %s id %d\n", interface, id);
+
     if (strcmp(interface, "wl_compositor") == 0)
-        compositor = wl_registry_bind(registry,
-                                      id,
-                                      &wl_compositor_interface,
-                                      1);
+        UIPlatformGlobalsShared.compositor = wl_registry_bind(registry,
+                                                              id,
+                                                              &wl_compositor_interface,
+                                                              1);
+
     if (strcmp(interface, "xdg_wm_base") == 0)
     {
-        wm_base = wl_registry_bind(registry, id, &xdg_wm_base_interface, 1);
+        UIPlatformGlobalsShared.wm_base = wl_registry_bind(registry, id, &xdg_wm_base_interface, 1);
+    }
+
+    if (strcmp(interface, "wl_seat") == 0)
+    {
+        UIPlatformGlobalsShared.wl_seat = wl_registry_bind(registry, id, &wl_seat_interface, 7);
+    }
+
+    if (strcmp(interface, "wl_shm") == 0)
+    {
+        UIPlatformGlobalsShared.wl_shm = wl_registry_bind(registry, id, &wl_shm_interface, version);
     }
 }
 
@@ -96,7 +88,7 @@ static const struct wl_registry_listener registry_listener = {
 static void xdg_wm_base_ping(void *data, struct xdg_wm_base *xdg_wm_base, uint32_t serial)
 {
     printf("pong\n");
-    xdg_wm_base_pong(wm_base, serial);
+    xdg_wm_base_pong(UIPlatformGlobalsShared.wm_base, serial);
 }
 
 static const struct xdg_wm_base_listener wm_base_listener = {
@@ -127,7 +119,8 @@ xdg_toplevel_configure_handler(void *data,
 
     printf("xdg toplevel configure\n");
 
-    platformData->egl_display = eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_EXT, display, NULL);
+    printf("%p\n", platformData);
+    platformData->egl_display = eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_EXT, UIPlatformGlobalsShared.display, NULL);
     if (eglInitialize(platformData->egl_display, NULL, NULL) == EGL_FALSE)
     {
         fprintf(stderr, "eglInitialize failed");
@@ -188,64 +181,69 @@ static const struct xdg_toplevel_listener xdg_top_level_listener = {
 
 void _UIPlatformMain(UIApplication *application)
 {
-    display = wl_display_connect(NULL);
+    UIPlatformGlobalsShared.display = wl_display_connect(NULL);
 
-    if (display == NULL)
+    if (UIPlatformGlobalsShared.display == NULL)
     {
         fprintf(stderr, "Can't connect to display\n");
         exit(1);
     }
     printf("Connected to display\n");
 
-    struct wl_registry *registry = wl_display_get_registry(display);
+    struct wl_registry *registry = wl_display_get_registry(UIPlatformGlobalsShared.display);
     wl_registry_add_listener(registry, &registry_listener, NULL);
-    wl_display_roundtrip(display);
+    wl_display_roundtrip(UIPlatformGlobalsShared.display);
 
-    if (compositor == NULL)
+    if (UIPlatformGlobalsShared.compositor == NULL)
     {
         fprintf(stderr, "Can't find compositor\n");
         exit(1);
     }
     printf("Found compositor\n");
 
-    if (wm_base == NULL)
+    if (UIPlatformGlobalsShared.wm_base == NULL)
     {
         fprintf(stderr, "Can't find wm_base\n");
         exit(1);
     }
     printf("Found wm_base\n");
-    xdg_wm_base_add_listener(wm_base, &wm_base_listener, NULL);
+    xdg_wm_base_add_listener(UIPlatformGlobalsShared.wm_base, &wm_base_listener, NULL);
+
+    setupSeat();
 }
 
 void _UIPlatformEventLoop(UIApplication *application)
 {
-    wl_display_dispatch(display);
+    wl_display_dispatch(UIPlatformGlobalsShared.display);
 
-    if (application->window == NULL)
+    for (int i = 0; i < ArrayGetCapacity(application->windows); i++)
     {
-        printf("no window or platformdata\n");
-        return;
-    }
+        struct UIWindowPlatformData *platformData = ToPlatformData(ArrayGetValueAtIndex(application->windows, i));
+        UIView rootView = platformData->window->mainView;
 
-    struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)application->window->_platformData;
-    eglMakeCurrent(platformData->egl_display, platformData->egl_surface, platformData->egl_surface, platformData->egl_context);
-    glClearColor(0, 0, 0, 0.5);
-    glClear(GL_COLOR_BUFFER_BIT);
+        if (rootView != NULL && rootView->needsDisplay)
+        {
+            eglMakeCurrent(platformData->egl_display, platformData->egl_surface, platformData->egl_surface, platformData->egl_context);
+            glClearColor(255, 0, 0, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
 
-    if (eglSwapBuffers(platformData->egl_display, platformData->egl_surface) == EGL_FALSE)
-    {
-        fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
+            if (eglSwapBuffers(platformData->egl_display, platformData->egl_surface) == EGL_FALSE)
+            {
+                fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
+            }
+            rootView->needsDisplay = 0;
+        }
     }
 }
 
-void _UIPlatformWindowCreate(UIWindow *window)
+void _UIPlatformWindowCreate(UIWindow window)
 {
     struct UIWindowPlatformData *platformData = malloc(sizeof(struct UIWindowPlatformData));
 
     platformData->window = window;
 
-    platformData->surface = wl_compositor_create_surface(compositor);
-    platformData->xdg_surface = xdg_wm_base_get_xdg_surface(wm_base, platformData->surface);
+    platformData->surface = wl_compositor_create_surface(UIPlatformGlobalsShared.compositor);
+    platformData->xdg_surface = xdg_wm_base_get_xdg_surface(UIPlatformGlobalsShared.wm_base, platformData->surface);
     xdg_surface_add_listener(platformData->xdg_surface, &xdg_surface_listener, platformData);
 
     platformData->toplevel = xdg_surface_get_toplevel(platformData->xdg_surface);
@@ -256,7 +254,7 @@ void _UIPlatformWindowCreate(UIWindow *window)
     wl_surface_commit(platformData->surface);
 }
 
-void _UIPlatformWindowDestroy(UIWindow *window)
+void _UIPlatformWindowDestroy(UIWindow window)
 {
     struct UIWindowPlatformData *platformData = ToPlatformData(window);
 
@@ -266,8 +264,14 @@ void _UIPlatformWindowDestroy(UIWindow *window)
     wl_surface_destroy(platformData->surface);
 }
 
-void _UIPlatformWindowSetTitle(UIWindow *window, const char *title)
+void _UIPlatformWindowSetTitle(UIWindow window, const char *title)
 {
     struct UIWindowPlatformData *platformData = ToPlatformData(window);
     xdg_toplevel_set_title(platformData->toplevel, title);
+}
+
+struct UIWindowPlatformData *ToPlatformData(UIWindow window)
+{
+    struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)window->_platformData;
+    return platformData;
 }

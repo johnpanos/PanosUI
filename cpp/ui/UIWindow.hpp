@@ -6,7 +6,7 @@
 extern "C"
 {
 #include "UIWindow.h"
-#include "UIViewController.h"
+#include "UIWindowController.h"
 #include "UIView.hpp"
 }
 
@@ -31,38 +31,31 @@ typedef void (*callback_t)(UIViewController *self);
 
 namespace UI
 {
-    class ViewController
+    class WindowController
     {
     public:
-        UIViewController *backing_view_controller;
-        UI::View *view;
+        UIWindowController backing_window_controller;
 
-        ViewController()
+        WindowController()
         {
-            this->backing_view_controller = UIViewControllerCreate();
-            Callback<void(UIViewController * self)>::func = std::bind(&ViewController::_view_did_load, this, std::placeholders::_1);
-            callback_t func = static_cast<callback_t>(Callback<void(UIViewController * self)>::callback);
-            this->backing_view_controller->viewDidLoad = func;
+            this->backing_window_controller = UIWindowControllerCreate();
+            Callback<void(UIWindowController self)>::func = std::bind(&WindowController::_on_window_load, this, std::placeholders::_1);
+            callback_t func = static_cast<callback_t>(Callback<void(UIWindowController * self)>::callback);
+            UIWindowControllerSetOnWindowLoad(this->backing_window_controller, (onWindowLoad)func);
         }
 
-        virtual void load_view()
+        void _on_window_load(UIWindowController self)
         {
-            this->backing_view_controller->loadView(this->backing_view_controller);
+            this->on_window_load();
         }
 
-        void _view_did_load(UIViewController *viewController)
-        {
-            this->view = new View(viewController->view);
-            this->view_did_load();
-        }
-
-        virtual void view_did_load()
+        virtual void on_window_load()
         {
         }
 
-        virtual ~ViewController()
+        virtual ~WindowController()
         {
-            UIViewControllerDestroy(this->backing_view_controller);
+            UIWindowControllerDestroy(this->backing_window_controller);
         }
     };
 
@@ -87,9 +80,9 @@ namespace UI
             UIWindowSetTitle(this->backing_window, title.c_str());
         }
 
-        void set_view_controller(UI::ViewController *view_controller)
+        void set_window_controller(UI::WindowController *window_controller)
         {
-            UIWindowSetRootViewController(this->backing_window, view_controller->backing_view_controller);
+            UIWindowSetWindowController(this->backing_window, window_controller->backing_window_controller);
         }
     };
 };
