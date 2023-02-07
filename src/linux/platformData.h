@@ -26,7 +26,7 @@ struct UIWindowPlatformData
     EGLSurface egl_surface;
 };
 
-UIGraphicsContext *UIGraphicsContextCreate(int width, int height);
+UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height);
 void UIGraphicsContextDestroy(UIGraphicsContext *context);
 
 struct UIWindowPlatformData *ToPlatformData(UIWindow window);

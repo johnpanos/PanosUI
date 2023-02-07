@@ -5,6 +5,7 @@
 #include "UIView.h"
 #include "UIRect.h"
 #include "UIEvent.h"
+#include "UIWindowController.h"
 #include "UIGraphicsContext.h"
 
 typedef struct _UIWindow
@@ -12,6 +13,8 @@ typedef struct _UIWindow
     const char *title;
     UIRect frame;
     UIView mainView;
+
+    UIWindowController controller;
 
     UIGraphicsContext *graphicsContext;
 
@@ -21,6 +24,8 @@ typedef struct _UIWindow
 UIWindow UIWindowCreate(UIRect frame);
 void UIWindowDestroy(UIWindow window);
 
+void UIWindowShow(UIWindow window);
+void UIWindowUpdate(UIWindow window);
 void UIWindowSetTitle(UIWindow window, const char *title);
 // void UIWindowSetWindowController(UIWindow window, UIWindowController windowController);
 void UIWindowSendEvent(UIWindow window, UIEvent event);

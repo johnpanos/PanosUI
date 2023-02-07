@@ -1,19 +1,18 @@
 #pragma once
 
-#include <stdlib.h>
-#include "UIWindow.h"
+#include "UIRect.h"
 
-typedef struct _UIWindowController *UIWindowController;
-typedef void (*onWindowLoad)(UIWindowController self);
-// typedef void (*)
+typedef struct _UIWindow *UIWindow;
+typedef struct _UIWindowController
+{
+    UIRect (*windowWillResize)(UIWindow window, UIRect size);
+    void (*windowDidResize)();
 
-typedef struct _UIWindowController *UIWindowController;
+    void (*windowWillLoad)();
+    void (*windowDidLoad)();
+
+    UIWindow *_window;
+} *UIWindowController;
 
 UIWindowController UIWindowControllerCreate();
 void UIWindowControllerDestroy(UIWindowController windowController);
-
-// MARK: Lifecycle
-void UIWindowControllerSetOnWindowLoad(UIWindowController windowController, onWindowLoad onLoad);
-onWindowLoad UIWindowControllerGetOnWindowLoad(UIWindowController windowController);
-
-UIWindow *UIWindowControllerGetWindow(UIWindowController windowController);

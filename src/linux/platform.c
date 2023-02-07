@@ -13,7 +13,6 @@
 #include "platformData.h"
 #include "../UIWindow.h"
 #include "../UIApplication.h"
-#include "../UIViewController.h"
 #include "../UIView.h"
 
 #include "deps/linux-dmabuf_unstable-v1.h"
@@ -21,7 +20,6 @@
 #include "egl.h"
 
 struct UIPlatformGlobals UIPlatformGlobalsShared = {.compositor = NULL, .display = NULL, .wl_registry = NULL, .wl_seat = NULL, .wl_shm = NULL};
-EGLData globalEglData;
 
 static void global_registry_handler(void *data, struct wl_registry *registry, uint32_t id,
                                     const char *interface, uint32_t version)
@@ -92,20 +90,24 @@ xdg_toplevel_configure_handler(void *data,
                                struct wl_array *states)
 {
     struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)data;
+    UIRect configuredSize = {
+        .x = 0, .y = 0, .width = width, .height = height};
+    UIRect requestedSize = platformData->window->controller->windowWillResize(platformData->window, configuredSize);
 
     printf("\nxdg toplevel configure\n");
 
     if (platformData->egl_window != NULL)
     {
-        wl_egl_window_resize(platformData->egl_window, width, height, 0, 0);
-        platformData->window->frame.width = width;
-        platformData->window->frame.height = height;
+        wl_egl_window_resize(platformData->egl_window, requestedSize.width, requestedSize.height, 0, 0);
     }
     else
     {
-        platformData->egl_window = wl_egl_window_create(platformData->surface, platformData->window->frame.width, platformData->window->frame.height);
+        platformData->egl_window = wl_egl_window_create(platformData->surface, requestedSize.width, requestedSize.height);
         platformData->egl_surface = eglCreateWindowSurface(globalEglData.eglDisplay, globalEglData.eglConfig, platformData->egl_window, NULL);
     }
+
+    platformData->window->frame.width = requestedSize.width;
+    platformData->window->frame.height = requestedSize.height;
 
     if (platformData->egl_surface == EGL_NO_SURFACE)
     {
@@ -120,12 +122,13 @@ xdg_toplevel_configure_handler(void *data,
     }
     else
     {
-        if (platformData->window->graphicsContext != NULL) {
+        if (platformData->window->graphicsContext != NULL)
+        {
             printf("Destroying context\n");
             UIGraphicsContextDestroy(platformData->window->graphicsContext);
         }
         printf("Making context\n");
-        platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->window->frame.width, platformData->window->frame.height);
+        platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->egl_surface, platformData->window->frame.width, platformData->window->frame.height);
         platformData->window->mainView->needsDisplay = 1;
     }
 }
@@ -179,16 +182,6 @@ void _UIPlatformMain(UIApplication *application)
     wl_display_roundtrip(UIPlatformGlobalsShared.display);
 }
 
-void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
-{
-    UIViewDrawInContext(view, context);
-    for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
-    {
-        UIView viewToRender = ArrayGetValueAtIndex(view->subviews, i);
-        RENDER_SUBVIEWS(viewToRender, context);
-    }
-}
-
 void _UIPlatformEventLoop(UIApplication *application)
 {
     wl_display_dispatch(UIPlatformGlobalsShared.display);
@@ -196,27 +189,7 @@ void _UIPlatformEventLoop(UIApplication *application)
     for (int i = 0; i < ArrayGetCapacity(application->windows); i++)
     {
         struct UIWindowPlatformData *platformData = ToPlatformData(ArrayGetValueAtIndex(application->windows, i));
-        UIView rootView = platformData->window->mainView;
-
-        if (rootView != NULL && rootView->needsDisplay)
-        {
-            if (eglMakeCurrent(globalEglData.eglDisplay, platformData->egl_surface, platformData->egl_surface, globalEglData.eglContext) == EGL_FALSE)
-            {
-                printf("Could not make egl context current: %d\n", eglGetError());
-            }
-
-            glClearColor(255, 0, 0, 1);
-
-            RENDER_SUBVIEWS(rootView, platformData->window->graphicsContext);
-            UIGraphicsContextFlush(platformData->window->graphicsContext);
-
-            if (eglSwapBuffers(globalEglData.eglDisplay, platformData->egl_surface) == EGL_FALSE)
-            {
-                fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
-            }
-
-            rootView->needsDisplay = 0;
-        }
+        UIWindowUpdate(platformData->window);
     }
 }
 

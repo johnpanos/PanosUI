@@ -10,3 +10,4 @@ typedef struct _EGLData {
 } EGLData;
 
 EGLData init_egl(struct wl_display *wl_display);
+extern EGLData globalEglData;

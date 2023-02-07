@@ -26,6 +26,8 @@ const EGLint context_attributes[] = {
     EGL_NONE,
 };
 
+EGLData globalEglData;
+
 EGLData init_egl(struct wl_display *wl_display)
 {
     EGLData eglData;

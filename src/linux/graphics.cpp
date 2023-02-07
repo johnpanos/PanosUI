@@ -18,9 +18,11 @@
 
 #include "../UIRect.h"
 #include "../UIColor.h"
+#include "egl.h"
 
 typedef struct _UIGraphicsContext
 {
+    EGLSurface eglSurface;
     SkSurface *surface;
     SkCanvas *canvas;
     SkPaint paint;
@@ -47,9 +49,20 @@ extern "C"
         return grDirectContext;
     }
 
+    void UIGraphicsContextMakeCurrent(UIGraphicsContext *context) {
+        if (eglMakeCurrent(globalEglData.eglDisplay, context->eglSurface, context->eglSurface, globalEglData.eglContext) == EGL_FALSE)
+        {
+            printf("Could not make egl context current: %d\n", eglGetError());
+        }
+    }
+
     void UIGraphicsContextFlush(UIGraphicsContext *context)
     {
         context->surface->flushAndSubmit();
+        if (eglSwapBuffers(globalEglData.eglDisplay, context->eglSurface) == EGL_FALSE)
+        {
+            fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
+        }
     }
 
     void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color)
@@ -65,13 +78,14 @@ extern "C"
         context->paint.setARGB(color.a, color.r, color.g, color.b);
     }
 
-    UIGraphicsContext *UIGraphicsContextCreate(int width, int height)
+    UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height)
     {
         const char *version = (const char *)glGetString(GL_VERSION);
         printf("opengl version: %s\n", version);
         printf("creating context w(%d) h(%d)\n", width, height);
 
         UIGraphicsContext *graphicsContext = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
+        graphicsContext->eglSurface = eglSurface;
         graphicsContext->paint = SkPaint();
         graphicsContext->paint.setAntiAlias(true);
 
