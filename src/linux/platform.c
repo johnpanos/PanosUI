@@ -18,39 +18,15 @@
 
 #include "deps/linux-dmabuf_unstable-v1.h"
 #include "deps/xdg-shell.h"
+#include "egl.h"
 
 struct UIPlatformGlobals UIPlatformGlobalsShared = {.compositor = NULL, .display = NULL, .wl_registry = NULL, .wl_seat = NULL, .wl_shm = NULL};
-
-const EGLint config_attributes[] = {
-    EGL_SURFACE_TYPE,
-    EGL_WINDOW_BIT,
-    EGL_RED_SIZE,
-    8,
-    EGL_GREEN_SIZE,
-    8,
-    EGL_BLUE_SIZE,
-    8,
-    EGL_ALPHA_SIZE,
-    8,
-    EGL_STENCIL_SIZE,
-    8,
-    EGL_RENDERABLE_TYPE,
-    EGL_OPENGL_ES2_BIT,
-    EGL_NONE,
-};
-
-const EGLint context_attributes[] = {
-    EGL_CONTEXT_CLIENT_VERSION,
-    2,
-    EGL_NONE,
-};
-
-EGLConfig config;
+EGLData globalEglData;
 
 static void global_registry_handler(void *data, struct wl_registry *registry, uint32_t id,
                                     const char *interface, uint32_t version)
 {
-    printf("Got a registry event for %s id %d\n", interface, id);
+    // printf("Got a registry event for %s id %d\n", interface, id);
 
     if (strcmp(interface, "wl_compositor") == 0)
         UIPlatformGlobalsShared.compositor = wl_registry_bind(registry,
@@ -119,66 +95,24 @@ xdg_toplevel_configure_handler(void *data,
 
     printf("xdg toplevel configure\n");
 
-    const char *client_extensions = eglQueryString(EGL_NO_DISPLAY, EGL_EXTENSIONS);
-
-    if (client_extensions == NULL)
-    {
-        if (eglGetError() == EGL_BAD_DISPLAY)
-        {
-            fprintf(stderr, "EGL_EXT_client_extensions not supported\n");
-        }
-        else
-        {
-            fprintf(stderr, "Failed to query EGL client extensions\n");
-        }
-    }
-
-    printf("%p\n", platformData);
-    platformData->egl_display = eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_EXT, UIPlatformGlobalsShared.display, NULL);
-    if (eglInitialize(platformData->egl_display, NULL, NULL) == EGL_FALSE)
-    {
-        fprintf(stderr, "eglInitialize failed");
-        exit(1);
-    }
-
-    EGLint major = 0;
-    EGLint minor = 0;
-    if (eglInitialize(platformData->egl_display, &major, &minor) == EGL_FALSE)
-    {
-        fprintf(stderr, "Failed to initialize EGL\n");
-    }
-    else
-    {
-        printf("major: %d | minor: %d\n", major, minor);
-        if (!((major == 1 && minor >= 4) || major >= 2))
-        {
-            fprintf(stderr, "Too old\n");
-            return;
-        }
-    }
-
-    EGLint matched = 0;
-    if (!eglChooseConfig(platformData->egl_display, config_attributes, &config, 1, &matched))
-    {
-        fprintf(stderr, "egl choose config failed");
-        exit(1);
-    }
-
-    platformData->egl_context = eglCreateContext(platformData->egl_display, config, EGL_NO_CONTEXT, context_attributes);
-    if (platformData->egl_context == EGL_NO_CONTEXT)
-    {
-        fprintf(stderr, "egl context failed");
-        exit(1);
-    }
-
     platformData->egl_window = wl_egl_window_create(platformData->surface, platformData->window->frame.width, platformData->window->frame.height);
-
-    platformData->egl_surface = eglCreateWindowSurface(platformData->egl_display, config, platformData->egl_window, NULL);
+    platformData->egl_surface = eglCreateWindowSurface(globalEglData.eglDisplay, globalEglData.eglConfig, platformData->egl_window, NULL);
 
     if (platformData->egl_surface == EGL_NO_SURFACE)
     {
-        fprintf(stderr, "egl surface failed");
+        fprintf(stderr, "egl surface failed\n");
         exit(1);
+    }
+
+    if (eglMakeCurrent(globalEglData.eglDisplay, platformData->egl_surface, platformData->egl_surface, globalEglData.eglContext) == EGL_FALSE)
+    {
+
+        printf("Could not make egl context current: %d\n", eglGetError());
+    }
+    else
+    {
+        printf("Making context\n");
+        platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->window->frame.width, platformData->window->frame.height);
     }
 }
 
@@ -221,9 +155,14 @@ void _UIPlatformMain(UIApplication *application)
         exit(1);
     }
     printf("Found wm_base\n");
+
+    globalEglData = init_egl(UIPlatformGlobalsShared.display);
+
     xdg_wm_base_add_listener(UIPlatformGlobalsShared.wm_base, &wm_base_listener, NULL);
 
     setupSeat();
+
+    wl_display_roundtrip(UIPlatformGlobalsShared.display);
 }
 
 void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
@@ -238,6 +177,7 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 
 void _UIPlatformEventLoop(UIApplication *application)
 {
+    printf("platform event loop\n");
     wl_display_dispatch(UIPlatformGlobalsShared.display);
 
     for (int i = 0; i < ArrayGetCapacity(application->windows); i++)
@@ -247,18 +187,15 @@ void _UIPlatformEventLoop(UIApplication *application)
 
         if (rootView != NULL && rootView->needsDisplay)
         {
-            eglMakeCurrent(platformData->egl_display, platformData->egl_surface, platformData->egl_surface, platformData->egl_context);
-
-            if (platformData->window->graphicsContext == NULL)
+            if (eglMakeCurrent(globalEglData.eglDisplay, platformData->egl_surface, platformData->egl_surface, globalEglData.eglContext) == EGL_FALSE)
             {
-                printf("Creating context\n");
-                platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->window->frame.width, platformData->window->frame.height, platformData->egl_display, platformData->egl_surface, platformData->egl_context);
+                printf("Could not make egl context current: %d\n", eglGetError());
             }
 
             RENDER_SUBVIEWS(rootView, platformData->window->graphicsContext);
             UIGraphicsContextFlush(platformData->window->graphicsContext);
 
-            if (eglSwapBuffers(platformData->egl_display, platformData->egl_surface) == EGL_FALSE)
+            if (eglSwapBuffers(globalEglData.eglDisplay, platformData->egl_surface) == EGL_FALSE)
             {
                 fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
             }
@@ -270,7 +207,8 @@ void _UIPlatformEventLoop(UIApplication *application)
 
 void _UIPlatformWindowCreate(UIWindow window)
 {
-    struct UIWindowPlatformData *platformData = malloc(sizeof(struct UIWindowPlatformData));
+    printf("creating window!\n");
+    struct UIWindowPlatformData *platformData = calloc(1, sizeof(struct UIWindowPlatformData));
 
     platformData->window = window;
 

@@ -21,71 +21,72 @@
 
 typedef struct _UIGraphicsContext
 {
-    GrDirectContext *context;
     SkSurface *surface;
     SkCanvas *canvas;
-    SkPaint *paint;
+    SkPaint paint;
 } UIGraphicsContext;
 
 extern "C"
 {
-    static GrGLFuncPtr get_proc_address(void *context, const char name[])
-    {
-        GrGLFuncPtr func = eglGetProcAddress(name);
-        return func;
-    };
+    sk_sp<const GrGLInterface> interface = nullptr;
+    GrDirectContext *context = nullptr;
 
-    void UIGraphicsContextFlush(UIGraphicsContext *context) {
+    GrDirectContext *getContext()
+    {
+        GrGLGetProc get_proc = [](void *context, const char name[]) -> GrGLFuncPtr
+        {
+            return eglGetProcAddress(name);
+        };
+        if (interface == nullptr && context == nullptr)
+        {
+            std::cout << "Making GrDirectContext\n";
+            interface = GrGLMakeAssembledGLESInterface(nullptr, get_proc);
+            context = GrDirectContext::MakeGL(interface).release();
+        }
+
+        return context;
+    }
+
+    void UIGraphicsContextFlush(UIGraphicsContext *context)
+    {
         context->surface->flushAndSubmit();
     }
 
-    void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color) {
-        context->paint->setStroke(false);
-        context->paint->setARGB(color.a, color.r, color.g, color.b);
-    }
-
-    void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color) {
-        context->paint->setStroke(true);
-        context->paint->setStrokeWidth(0.5f);
-        context->paint->setARGB(color.a, color.r, color.g, color.b);
-    }
-
-    UIGraphicsContext *UIGraphicsContextCreate(int width, int height, EGLDisplay eglDisplay, EGLSurface eglSurface, EGLContext eglContext)
+    void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color)
     {
-        const char *version = (const char*)glGetString(GL_VERSION);
+        context->paint.setStroke(false);
+        context->paint.setARGB(color.a, color.r, color.g, color.b);
+    }
+
+    void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color)
+    {
+        context->paint.setStroke(true);
+        context->paint.setStrokeWidth(0.5f);
+        context->paint.setARGB(color.a, color.r, color.g, color.b);
+    }
+
+    UIGraphicsContext *UIGraphicsContextCreate(int width, int height)
+    {
+        const char *version = (const char *)glGetString(GL_VERSION);
         printf("opengl version: %s\n", version);
+        printf("creating context w(%d) h(%d)\n", width, height);
 
-        auto interface = GrGLMakeAssembledGLESInterface(nullptr, &get_proc_address);
-        if (!interface)
-        {
-            printf("Error: GrGLMakeEGLInterface returned null\n");
-            return nullptr;
-        }
-        SkASSERT(interface != nullptr);
-
-        UIGraphicsContext *graphicsContext = (UIGraphicsContext *)malloc(sizeof(UIGraphicsContext));
-        graphicsContext->paint = (SkPaint*)malloc(sizeof(SkPaint));
-
-        graphicsContext->paint->setAntiAlias(true);
-
-        graphicsContext->context = GrDirectContext::MakeGL(interface).release();
-        SkASSERT(graphicsContext->context != nullptr);
+        UIGraphicsContext *graphicsContext = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
+        graphicsContext->paint = SkPaint();
+        graphicsContext->paint.setAntiAlias(true);
 
         GrGLFramebufferInfo framebufferInfo;
-        framebufferInfo.fFBOID = 0; // assume default framebuffer
-        // We are always using OpenGL and we use RGBA8 internal format for both RGBA and BGRA configs in OpenGL.
-        // framebufferInfo.fFormat = GL_SRGB8_ALPHA8;
+        framebufferInfo.fFBOID = 0; // Assume default FBO (framebuffer object)
         framebufferInfo.fFormat = GL_RGBA8;
 
         GrBackendRenderTarget backendRenderTarget(width, height,
                                                   0, // sample count
                                                   0, // stencil bits
                                                   framebufferInfo);
-
         SkSurfaceProps surface_properties(0, kUnknown_SkPixelGeometry);
 
         SkSurface *surface = SkSurface::MakeFromBackendRenderTarget(
-                                 graphicsContext->context,    // context
+                                 getContext(),                // context
                                  backendRenderTarget,         // backend render target
                                  kBottomLeft_GrSurfaceOrigin, // surface origin
                                  kN32_SkColorType,            // color type
@@ -95,8 +96,11 @@ extern "C"
                                  nullptr                      // release context
                                  )
                                  .release();
-
         graphicsContext->surface = surface;
+        graphicsContext->canvas = surface->getCanvas();
+
+        SkASSERT(graphicsContext->surface != nullptr);
+        SkASSERT(graphicsContext->canvas != nullptr);
 
         return graphicsContext;
     }
@@ -105,6 +109,7 @@ extern "C"
     {
         context->canvas->save();
     }
+
     void UIGraphicsContextRestore(UIGraphicsContext *context)
     {
         context->canvas->restore();
@@ -115,12 +120,13 @@ extern "C"
     {
         SkRect skrect = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
         SkRRect skrrect = SkRRect::MakeRectXY(skrect, radius, radius);
-        context->surface->getCanvas()->clipRRect(skrrect, true);
+        context->canvas->clipRRect(skrrect, true);
     }
 
     void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius)
     {
+        printf("Adding rect x(%d) y(%d) w(%d) h(%d)\n", rect.x, rect.y, rect.width, rect.height);
         SkRect skrect = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
-        context->surface->getCanvas()->drawRoundRect(skrect, radius, radius, *context->paint);
+        context->canvas->drawRoundRect(skrect, radius, radius, context->paint);
     }
 }

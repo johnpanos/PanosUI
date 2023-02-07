@@ -23,13 +23,10 @@ struct UIWindowPlatformData
     struct xdg_toplevel *toplevel;
 
     struct wl_egl_window *egl_window;
-
-    EGLDisplay egl_display;
     EGLSurface egl_surface;
-    EGLContext egl_context;
 };
 
-UIGraphicsContext *UIGraphicsContextCreate(int width, int height, EGLDisplay eglDisplay, EGLSurface eglSurface, EGLContext eglContext);
+UIGraphicsContext *UIGraphicsContextCreate(int width, int height);
 
 struct UIWindowPlatformData *ToPlatformData(UIWindow window);
 

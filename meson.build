@@ -14,6 +14,7 @@ src = [
 if host_machine.system() == 'linux'
     src += 'src/linux/platform.c'
     src += 'src/linux/pointer.c'
+    src += 'src/linux/egl.c'
     src += 'src/linux/graphics.cpp'
     src += 'src/linux/deps/linux-dmabuf_unstable-v1.c'
     src += 'src/linux/deps/xdg-shell.c'
@@ -49,13 +50,13 @@ endif
 
 
 skia = declare_dependency(link_args : ['-L/home/john/Developer/skia/out/Debug', '-lskia'],
-                               include_directories : ['./thirdparty/skia'])
+                               include_directories : ['/home/john/Developer/skia'])
 
 deps += skia
 
 panosuilib = shared_library('panosui',
                         src,
-                        include_directories : ['src', '../', 'thirdparty/skia'],
+                        include_directories : ['src', '../', '/home/john/Developer/skia/'],
                         c_args: ['-ggdb3', '-O0', '-fno-omit-frame-pointer', '-fstack-protector'],
                         cpp_args: ['-ggdb3', '-O0', '-fno-omit-frame-pointer', '-fstack-protector'],
                         dependencies : deps,

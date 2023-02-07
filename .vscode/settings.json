@@ -59,7 +59,8 @@
         "xutility": "cpp",
         "uiview.h": "c",
         "platform.h": "c",
-        "uiwindowcontroller.h": "c"
+        "uiwindowcontroller.h": "c",
+        "egl.h": "c"
     },
     "mesonbuild.configureOnOpen": true,
     "print.colourScheme": "Atom One"

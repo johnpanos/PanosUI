@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include "PanosUI.h"
 
-void didFinishLaunching(UIApplication *application)
-{
-    UIRect window_frame = {
+void CreateMacOSWindow() {
+UIRect window_frame = {
         .x = 0,
         .y = 0,
         .width = 556,
@@ -45,6 +44,12 @@ void didFinishLaunching(UIApplication *application)
     UIViewAddSubview(sidebar, myView);
     UIViewAddSubview(sidebar, yellowLight);
     UIViewAddSubview(sidebar, greenLight);
+}
+
+void didFinishLaunching(UIApplication *application)
+{
+    CreateMacOSWindow();
+    CreateMacOSWindow();
 }
 
 static UIApplicationDelegate my_delegate = {
