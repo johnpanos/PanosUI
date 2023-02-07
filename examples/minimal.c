@@ -1,18 +1,6 @@
 #include <stdio.h>
 #include "PanosUI.h"
 
-UIRect windowWillResize(UIWindow window, UIRect to)
-{
-    printf("Resizing to: w(%d) h(%d)\n", to.width, to.height);
-
-    if (to.width == 0 && to.height == 0)
-    {
-        return window->frame;
-    }
-
-    return to;
-}
-
 void windowDidLoad(UIWindow window)
 {
     printf("THE WINDOW LOADED!\n");
@@ -23,12 +11,11 @@ void CreateMacOSWindow()
     UIRect window_frame = {
         .x = 0,
         .y = 0,
-        .width = 400,
+        .width = 100,
         .height = 100};
     UIWindow window = UIWindowCreate(window_frame);
 
     UIWindowController myWindowController = UIWindowControllerCreate();
-    myWindowController->windowWillResize = &windowWillResize;
     myWindowController->windowDidLoad = &windowDidLoad;
 
     window->controller = myWindowController;

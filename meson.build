@@ -8,6 +8,7 @@ src = [
     'src/UIWindowController.c',
     'src/UIWindow.c',
     'src/UIColor.c',
+    'src/UIRect.c',
     'src/shared/Array.c'
 ]
 

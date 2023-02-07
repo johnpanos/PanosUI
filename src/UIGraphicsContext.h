@@ -31,4 +31,6 @@ void UIGraphicsContextAddOval(UIGraphicsContext *context, UIPoint p, int width, 
 void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIRect offset, float blur);
 void UIGraphicsContextSetShadowColor(UIGraphicsContext *context, UIColor color);
 
+void UIGraphicsContextSetTransform(UIGraphicsContext *context, int x, int y);
+
 #endif

@@ -163,4 +163,8 @@ extern "C"
     {
         context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, blur, false));
     }
+
+    void UIGraphicsContextSetTransform(UIGraphicsContext *context, int x, int y) {
+        context->canvas->translate(x, y);
+    }
 }
