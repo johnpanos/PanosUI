@@ -7,6 +7,8 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkRRect.h"
+#include "include/core/SkMaskFilter.h"
+#include "include/core/SkBlurTypes.h"
 #include <iostream>
 
 #include <assert.h>
@@ -49,7 +51,8 @@ extern "C"
         return grDirectContext;
     }
 
-    void UIGraphicsContextMakeCurrent(UIGraphicsContext *context) {
+    void UIGraphicsContextMakeCurrent(UIGraphicsContext *context)
+    {
         if (eglMakeCurrent(globalEglData.eglDisplay, context->eglSurface, context->eglSurface, globalEglData.eglContext) == EGL_FALSE)
         {
             printf("Could not make egl context current: %d\n", eglGetError());
@@ -77,7 +80,8 @@ extern "C"
         context->paint.setARGB(color.a, color.r, color.g, color.b);
     }
 
-    void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, float width) {
+    void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, float width)
+    {
         context->paint.setStrokeWidth(width);
     }
 
@@ -122,7 +126,8 @@ extern "C"
         return graphicsContext;
     }
 
-    void UIGraphicsContextDestroy(UIGraphicsContext *context) {
+    void UIGraphicsContextDestroy(UIGraphicsContext *context)
+    {
         context->canvas = nullptr;
         delete context->surface;
         free(context);
@@ -136,6 +141,7 @@ extern "C"
     void UIGraphicsContextRestore(UIGraphicsContext *context)
     {
         context->canvas->restore();
+        context->paint.setMaskFilter(nullptr);
     }
 
     // MARK:
@@ -151,5 +157,10 @@ extern "C"
         printf("Adding rect x(%d) y(%d) w(%d) h(%d)\n", rect.x, rect.y, rect.width, rect.height);
         SkRect skrect = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
         context->canvas->drawRoundRect(skrect, radius, radius, context->paint);
+    }
+
+    void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIRect offset, float blur)
+    {
+        context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, blur, false));
     }
 }

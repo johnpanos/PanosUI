@@ -99,7 +99,19 @@ void UIWindowUpdate(UIWindow window)
     if (rootView != NULL && rootView->needsDisplay)
     {
         UIGraphicsContextMakeCurrent(window->graphicsContext);
+
+        // Draw dropshadow
+        UIGraphicsContextSave(window->graphicsContext);
+        UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 31));
+        UIRect shadowOffset = {.x = 0, .y = 25, .width = 0, .height = 0};
+        UIGraphicsContextSetShadow(window->graphicsContext, shadowOffset, 30.0f);
+        UIGraphicsContextAddRect(window->graphicsContext, window->frame, 10.0f);
+        UIGraphicsContextRestore(window->graphicsContext);
+
+        // Clip all children to inside
         UIGraphicsContextClipToRect(window->graphicsContext, window->frame, 10.0f);
+        
+        // Draw background
         UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
         UIGraphicsContextAddRect(window->graphicsContext, window->frame, 0.0f);
 
@@ -117,5 +129,6 @@ void UIWindowUpdate(UIWindow window)
         rootView->needsDisplay = 0;
 
         UIGraphicsContextFlush(window->graphicsContext);
+        UIGraphicsContextRestore(window->graphicsContext);
     }
 }
