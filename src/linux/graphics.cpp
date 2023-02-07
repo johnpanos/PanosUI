@@ -6,6 +6,7 @@
 #include "include/gpu/gl/egl/GrGLMakeEGLInterface.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkRRect.h"
 #include <iostream>
 
 #include <assert.h>
@@ -30,7 +31,6 @@ extern "C"
 {
     static GrGLFuncPtr get_proc_address(void *context, const char name[])
     {
-        printf("Being called!!! %s\n", name);
         GrGLFuncPtr func = eglGetProcAddress(name);
         return func;
     };
@@ -40,17 +40,21 @@ extern "C"
     }
 
     void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color) {
+        context->paint->setStroke(false);
+        context->paint->setARGB(color.a, color.r, color.g, color.b);
+    }
+
+    void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color) {
+        context->paint->setStroke(true);
+        context->paint->setStrokeWidth(1);
         context->paint->setARGB(color.a, color.r, color.g, color.b);
     }
 
     UIGraphicsContext *UIGraphicsContextCreate(int width, int height, EGLDisplay eglDisplay, EGLSurface eglSurface, EGLContext eglContext)
     {
-        printf("get_proc_address: %p\n", &get_proc_address);
-
         const char *version = (const char*)glGetString(GL_VERSION);
         printf("opengl version: %s\n", version);
 
-        printf("before\n");
         auto interface = GrGLMakeAssembledGLESInterface(nullptr, &get_proc_address);
         if (!interface)
         {
@@ -61,6 +65,8 @@ extern "C"
 
         UIGraphicsContext *graphicsContext = (UIGraphicsContext *)malloc(sizeof(UIGraphicsContext));
         graphicsContext->paint = (SkPaint*)malloc(sizeof(SkPaint));
+
+        graphicsContext->paint->setAntiAlias(true);
 
         graphicsContext->context = GrDirectContext::MakeGL(interface).release();
         SkASSERT(graphicsContext->context != nullptr);
@@ -105,10 +111,11 @@ extern "C"
     }
 
     // MARK:
-    void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect)
+    void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect, double radius)
     {
         SkRect skrect = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
-        context->surface->getCanvas()->clipRect(skrect, true);
+        SkRRect skrrect = SkRRect::MakeRectXY(skrect, radius, radius);
+        context->surface->getCanvas()->clipRRect(skrrect, true);
     }
 
     void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius)

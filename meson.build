@@ -7,6 +7,7 @@ src = [
     'src/UIView.c',
     'src/UIViewController.c',
     'src/UIWindow.c',
+    'src/UIColor.c',
     'src/shared/Array.c'
 ]
 

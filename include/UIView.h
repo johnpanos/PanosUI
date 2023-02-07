@@ -19,6 +19,10 @@ typedef struct _UIView
     int needsDisplay;
 
     UIColor backgroundColor;
+    UIColor borderColor;
+    float cornerRadius;
+
+    int clipToBounds;
 } *UIView;
 
 UIView UIViewCreate(UIRect frame, UIRect bounds);

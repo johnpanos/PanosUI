@@ -249,18 +249,12 @@ void _UIPlatformEventLoop(UIApplication *application)
         {
             eglMakeCurrent(platformData->egl_display, platformData->egl_surface, platformData->egl_surface, platformData->egl_context);
 
-            glClearColor(255, 0, 0, 1);
-            glClear(GL_COLOR_BUFFER_BIT);
-
             if (platformData->window->graphicsContext == NULL)
             {
                 printf("Creating context\n");
                 platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->window->frame.width, platformData->window->frame.height, platformData->egl_display, platformData->egl_surface, platformData->egl_context);
             }
 
-            UIColor black = {.r = 0, .g = 0, .b = 0, .a = 255};
-            UIGraphicsSetFillColor(platformData->window->graphicsContext, black);
-            UIGraphicsContextAddRect(platformData->window->graphicsContext, platformData->window->frame, 0);
             RENDER_SUBVIEWS(rootView, platformData->window->graphicsContext);
             UIGraphicsContextFlush(platformData->window->graphicsContext);
 

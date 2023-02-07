@@ -16,9 +16,6 @@ class MyDelegate : public UI::ApplicationDelegate
 
         UI::Window *window = new UI::Window(window_frame);
         window->set_title("cereal");
-
-        UI::Window *window2 = new UI::Window(window_frame);
-        window2->set_title("cereal2");
     }
 };
 

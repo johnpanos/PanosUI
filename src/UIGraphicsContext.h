@@ -11,13 +11,14 @@ void UIGraphicsContextMakeCurrent(UIGraphicsContext *context);
 void UIGraphicsContextFlush(UIGraphicsContext *context);
 
 void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color);
+void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color);
 
 // MARK: Context
 void UIGraphicsContextSave(UIGraphicsContext *context);
 void UIGraphicsContextRestore(UIGraphicsContext *context);
 
 // MARK:
-void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect);
+void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect, double radius);
 
 // MARK: Shapes
 void UIGraphicsContextAddPath(UIGraphicsContext *context);
