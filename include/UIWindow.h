@@ -2,10 +2,13 @@
 
 #include "UIEvent.h"
 #include "UIRect.h"
+#include "UIView.h"
 
 typedef struct _UIWindow
 {
     const char *title;
+    UIRect frame;
+    UIView mainView;
 } *UIWindow;
 
 UIWindow UIWindowCreate(UIRect rect);

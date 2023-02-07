@@ -9,7 +9,8 @@ UIView UIViewCreate(UIRect frame, UIRect bounds)
     view->frame = frame;
     view->bounds = bounds;
     view->parentView = NULL;
-    view->subviews = ArrayCreate(sizeof(struct _UIView));
+    view->subviews = ArrayCreate(sizeof(UIView));
+    view->needsDisplay = 1;
     return view;
 }
 
@@ -38,6 +39,11 @@ void UIViewRemoveSubview(UIView superview, UIView subview)
 {
     ArrayRemoveValueByRef(superview->subviews, subview);
     subview->parentView = NULL;
+}
+
+void UIViewDrawInContext(UIView view, UIGraphicsContext *context) {
+    UIGraphicsSetFillColor(context, view->backgroundColor);
+    UIGraphicsContextAddRect(context, view->frame, 0);
 }
 
 void UIViewSetNeedsDisplay(UIView view) {

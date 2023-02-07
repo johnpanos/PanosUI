@@ -3,6 +3,7 @@
 
 #include "UIRect.h"
 #include "UILayer.h"
+#include "UIColor.h"
 #include "Array.h"
 
 typedef struct _UIView *UIView;
@@ -16,6 +17,8 @@ typedef struct _UIView
     Array subviews;
 
     int needsDisplay;
+
+    UIColor backgroundColor;
 } *UIView;
 
 UIView UIViewCreate(UIRect frame, UIRect bounds);

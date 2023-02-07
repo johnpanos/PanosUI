@@ -5,12 +5,15 @@
 #include "UIView.h"
 #include "UIRect.h"
 #include "UIEvent.h"
+#include "UIGraphicsContext.h"
 
 typedef struct _UIWindow
 {
     const char *title;
     UIRect frame;
     UIView mainView;
+
+    UIGraphicsContext *graphicsContext;
 
     void *_platformData;
 } *UIWindow;

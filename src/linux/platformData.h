@@ -3,7 +3,6 @@
 #include "../UIWindow.h"
 #include <wayland-egl.h>
 #include <EGL/egl.h>
-#include <EGL/eglext.h>
 
 struct UIPlatformGlobals
 {
@@ -29,6 +28,8 @@ struct UIWindowPlatformData
     EGLSurface egl_surface;
     EGLContext egl_context;
 };
+
+UIGraphicsContext *UIGraphicsContextCreate(int width, int height, EGLDisplay eglDisplay, EGLSurface eglSurface, EGLContext eglContext);
 
 struct UIWindowPlatformData *ToPlatformData(UIWindow window);
 

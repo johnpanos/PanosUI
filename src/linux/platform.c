@@ -119,6 +119,20 @@ xdg_toplevel_configure_handler(void *data,
 
     printf("xdg toplevel configure\n");
 
+    const char *client_extensions = eglQueryString(EGL_NO_DISPLAY, EGL_EXTENSIONS);
+
+    if (client_extensions == NULL)
+    {
+        if (eglGetError() == EGL_BAD_DISPLAY)
+        {
+            fprintf(stderr, "EGL_EXT_client_extensions not supported\n");
+        }
+        else
+        {
+            fprintf(stderr, "Failed to query EGL client extensions\n");
+        }
+    }
+
     printf("%p\n", platformData);
     platformData->egl_display = eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_EXT, UIPlatformGlobalsShared.display, NULL);
     if (eglInitialize(platformData->egl_display, NULL, NULL) == EGL_FALSE)
@@ -212,6 +226,16 @@ void _UIPlatformMain(UIApplication *application)
     setupSeat();
 }
 
+void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
+{
+    UIViewDrawInContext(view, context);
+    for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
+    {
+        UIView viewToRender = ArrayGetValueAtIndex(view->subviews, i);
+        RENDER_SUBVIEWS(viewToRender, context);
+    }
+}
+
 void _UIPlatformEventLoop(UIApplication *application)
 {
     wl_display_dispatch(UIPlatformGlobalsShared.display);
@@ -224,13 +248,27 @@ void _UIPlatformEventLoop(UIApplication *application)
         if (rootView != NULL && rootView->needsDisplay)
         {
             eglMakeCurrent(platformData->egl_display, platformData->egl_surface, platformData->egl_surface, platformData->egl_context);
+
             glClearColor(255, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            if (platformData->window->graphicsContext == NULL)
+            {
+                printf("Creating context\n");
+                platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->window->frame.width, platformData->window->frame.height, platformData->egl_display, platformData->egl_surface, platformData->egl_context);
+            }
+
+            UIColor black = {.r = 0, .g = 0, .b = 0, .a = 255};
+            UIGraphicsSetFillColor(platformData->window->graphicsContext, black);
+            UIGraphicsContextAddRect(platformData->window->graphicsContext, platformData->window->frame, 0);
+            RENDER_SUBVIEWS(rootView, platformData->window->graphicsContext);
+            UIGraphicsContextFlush(platformData->window->graphicsContext);
 
             if (eglSwapBuffers(platformData->egl_display, platformData->egl_surface) == EGL_FALSE)
             {
                 fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
             }
+
             rootView->needsDisplay = 0;
         }
     }

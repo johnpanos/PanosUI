@@ -6,10 +6,10 @@ UIApplication *sharedApplication;
 
 void UIApplicationMain(UIApplicationDelegate *delegate)
 {
-    sharedApplication = malloc(sizeof(UIApplication));
+    sharedApplication = malloc(sizeof(struct _UIApplication));
     sharedApplication->running = 1;
     sharedApplication->delegate = delegate;
-    sharedApplication->windows = ArrayCreate(sizeof(UIWindow *));
+    sharedApplication->windows = ArrayCreate(sizeof(UIWindow));
 
     _UIPlatformMain(sharedApplication);
 
@@ -32,7 +32,7 @@ UIApplication *UIApplicationShared()
 }
 
 void UIApplicationSendEvent(UIEvent event) {
-    printf("Event type: %d\n", event.type);
+    printf("Event type: %d (%p)\n", event.type, event.window);
 
     if (event.type == UIEventMouseMotion) {
         printf("x: %d | y: %d\n", event._eventData.mouseMotion.x, event._eventData.mouseMotion.y);

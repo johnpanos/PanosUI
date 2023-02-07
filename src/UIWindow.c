@@ -10,6 +10,7 @@ UIWindow UIWindowCreate(UIRect frame)
 
     window->frame = frame;
     window->mainView = UIViewCreate(frame, frame);
+    window->graphicsContext = NULL;
 
     _UIPlatformWindowCreate(window);
 

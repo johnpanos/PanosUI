@@ -13,6 +13,7 @@ src = [
 if host_machine.system() == 'linux'
     src += 'src/linux/platform.c'
     src += 'src/linux/pointer.c'
+    src += 'src/linux/graphics.cpp'
     src += 'src/linux/deps/linux-dmabuf_unstable-v1.c'
     src += 'src/linux/deps/xdg-shell.c'
 
@@ -27,6 +28,10 @@ if host_machine.system() == 'linux'
     deps += wayland_egl
     deps += wayland_client
     deps += wayland_cursor
+    deps += dependency('fontconfig')
+    deps += dependency('libpng')
+    deps += dependency('libjpeg')
+    deps += dependency('glx')
 endif
 
 if host_machine.system() == 'darwin'
@@ -41,9 +46,17 @@ if host_machine.system() == 'windows'
     src += 'src/win/platform.cpp'
 endif
 
-panosuilib = static_library('panosui',
+
+skia = declare_dependency(link_args : ['-L/home/john/Developer/skia/out/Debug', '-lskia'],
+                               include_directories : ['./thirdparty/skia'])
+
+deps += skia
+
+panosuilib = shared_library('panosui',
                         src,
                         include_directories : ['src', '../', 'thirdparty/skia'],
+                        c_args: ['-ggdb3', '-O0', '-fno-omit-frame-pointer', '-fstack-protector'],
+                        cpp_args: ['-ggdb3', '-O0', '-fno-omit-frame-pointer', '-fstack-protector'],
                         dependencies : deps,
                         install : true)
 

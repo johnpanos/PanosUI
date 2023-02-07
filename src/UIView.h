@@ -2,6 +2,7 @@
 #define _UIVIEW_H
 
 #include "UIRect.h"
+#include "UIColor.h"
 #include "UILayer.h"
 #include "shared/Array.h"
 
@@ -16,6 +17,8 @@ typedef struct _UIView
     Array subviews;
 
     int needsDisplay;
+
+    UIColor backgroundColor;
 } *UIView;
 
 UIView UIViewCreate(UIRect frame, UIRect bounds);
@@ -24,6 +27,7 @@ void UIViewDestroy(UIView view);
 void UIViewAddSubview(UIView superview, UIView subview);
 void UIViewRemoveSubview(UIView superview, UIView subview);
 
+void UIViewDrawInContext(UIView view, UIGraphicsContext *context);
 void UIViewSetNeedsDisplay(UIView view);
 
 #endif
