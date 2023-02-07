@@ -15,7 +15,12 @@ class MyDelegate : public UI::ApplicationDelegate
         window_frame.height = 300;
 
         UI::Window *window = new UI::Window(window_frame);
+        window->show();
         window->set_title("cereal");
+
+        UI::Window *window2 = new UI::Window(window_frame);
+        window2->show();
+        window2->set_title("cereal2");
     }
 };
 

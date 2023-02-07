@@ -18,6 +18,8 @@ typedef struct _UIWindow
 
     UIGraphicsContext *graphicsContext;
 
+    UIView frameView;
+
     void *_platformData;
 } *UIWindow;
 

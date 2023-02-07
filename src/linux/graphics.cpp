@@ -74,8 +74,11 @@ extern "C"
     void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color)
     {
         context->paint.setStroke(true);
-        context->paint.setStrokeWidth(0.5f);
         context->paint.setARGB(color.a, color.r, color.g, color.b);
+    }
+
+    void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, float width) {
+        context->paint.setStrokeWidth(width);
     }
 
     UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height)

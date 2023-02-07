@@ -75,6 +75,10 @@ namespace UI
             UIWindowDestroy(this->backing_window);
         }
 
+        void show() {
+            UIWindowShow(this->backing_window);
+        }
+
         void set_title(std::string title)
         {
             UIWindowSetTitle(this->backing_window, title.c_str());

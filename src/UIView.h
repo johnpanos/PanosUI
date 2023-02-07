@@ -20,6 +20,8 @@ typedef struct _UIView
 
     UIColor backgroundColor;
     UIColor borderColor;
+    float borderWidth;
+
     float cornerRadius;
 
     int clipToBounds;

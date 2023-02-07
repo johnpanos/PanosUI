@@ -12,6 +12,7 @@ void UIGraphicsContextFlush(UIGraphicsContext *context);
 
 void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color);
 void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color);
+void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, float width);
 
 // MARK: Context
 void UIGraphicsContextSave(UIGraphicsContext *context);

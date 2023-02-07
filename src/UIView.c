@@ -12,8 +12,9 @@ UIView UIViewCreate(UIRect frame, UIRect bounds)
     view->subviews = ArrayCreate(sizeof(UIView));
     view->needsDisplay = 1;
     view->cornerRadius = 0.0f;
-    view->backgroundColor = UIColorCreateRGBA(0, 0, 0, 255);
+    view->backgroundColor = UIColorCreateRGBA(0, 0, 0, 0);
     view->borderColor = UIColorCreateRGBA(0, 0, 0, 0);
+    view->borderWidth = 0.0f;
     return view;
 }
 
@@ -46,19 +47,12 @@ void UIViewRemoveSubview(UIView superview, UIView subview)
 
 void UIViewDrawInContext(UIView view, UIGraphicsContext *context)
 {
-    if (view->clipToBounds) {
-        if (view->borderColor.a > 0)
-        {
-            UIGraphicsSetStrokeColor(context, view->borderColor);
-            UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-        }
-        UIGraphicsContextClipToRect(context, view->frame, view->cornerRadius);
-    }
     UIGraphicsSetFillColor(context, view->backgroundColor);
     UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-    if (view->borderColor.a > 0)
+    if (view->borderWidth > 0)
     {
         UIGraphicsSetStrokeColor(context, view->borderColor);
+        UIGraphicsSetStrokeWidth(context, view->borderWidth);
         UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
     }
 }
