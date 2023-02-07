@@ -32,15 +32,15 @@ UIApplication *UIApplicationShared()
 }
 
 void UIApplicationSendEvent(UIEvent event) {
-    printf("Event type: %d (%p)\n", event.type, event.window);
+    // printf("Event type: %d (%p)\n", event.type, event.window);
 
-    if (event.type == UIEventMouseMotion) {
-        printf("x: %d | y: %d\n", event._eventData.mouseMotion.x, event._eventData.mouseMotion.y);
-    } else if (event.type == UIEventMouseScroll) {
-        if (event._eventData.mouseScroll.direction == UIEventMouseScrollDirectionVertical) {
-            printf("y: %d\n", event._eventData.mouseScroll.y);
-        } else {
-            printf("x: %d\n", event._eventData.mouseScroll.x);
-        }
-    }
+    // if (event.type == UIEventMouseMotion) {
+    //     printf("x: %d | y: %d\n", event._eventData.mouseMotion.x, event._eventData.mouseMotion.y);
+    // } else if (event.type == UIEventMouseScroll) {
+    //     if (event._eventData.mouseScroll.direction == UIEventMouseScrollDirectionVertical) {
+    //         printf("y: %d\n", event._eventData.mouseScroll.y);
+    //     } else {
+    //         printf("x: %d\n", event._eventData.mouseScroll.x);
+    //     }
+    // }
 }

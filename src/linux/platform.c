@@ -63,7 +63,7 @@ static const struct wl_registry_listener registry_listener = {
 // XDG WM BASE
 static void xdg_wm_base_ping(void *data, struct xdg_wm_base *xdg_wm_base, uint32_t serial)
 {
-    printf("pong\n");
+    // printf("pong\n");
     xdg_wm_base_pong(UIPlatformGlobalsShared.wm_base, serial);
 }
 
@@ -93,10 +93,19 @@ xdg_toplevel_configure_handler(void *data,
 {
     struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)data;
 
-    printf("xdg toplevel configure\n");
+    printf("\nxdg toplevel configure\n");
 
-    platformData->egl_window = wl_egl_window_create(platformData->surface, platformData->window->frame.width, platformData->window->frame.height);
-    platformData->egl_surface = eglCreateWindowSurface(globalEglData.eglDisplay, globalEglData.eglConfig, platformData->egl_window, NULL);
+    if (platformData->egl_window != NULL)
+    {
+        wl_egl_window_resize(platformData->egl_window, width, height, 0, 0);
+        platformData->window->frame.width = width;
+        platformData->window->frame.height = height;
+    }
+    else
+    {
+        platformData->egl_window = wl_egl_window_create(platformData->surface, platformData->window->frame.width, platformData->window->frame.height);
+        platformData->egl_surface = eglCreateWindowSurface(globalEglData.eglDisplay, globalEglData.eglConfig, platformData->egl_window, NULL);
+    }
 
     if (platformData->egl_surface == EGL_NO_SURFACE)
     {
@@ -111,8 +120,13 @@ xdg_toplevel_configure_handler(void *data,
     }
     else
     {
+        if (platformData->window->graphicsContext != NULL) {
+            printf("Destroying context\n");
+            UIGraphicsContextDestroy(platformData->window->graphicsContext);
+        }
         printf("Making context\n");
         platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->window->frame.width, platformData->window->frame.height);
+        platformData->window->mainView->needsDisplay = 1;
     }
 }
 
@@ -177,7 +191,6 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 
 void _UIPlatformEventLoop(UIApplication *application)
 {
-    printf("platform event loop\n");
     wl_display_dispatch(UIPlatformGlobalsShared.display);
 
     for (int i = 0; i < ArrayGetCapacity(application->windows); i++)
@@ -191,6 +204,8 @@ void _UIPlatformEventLoop(UIApplication *application)
             {
                 printf("Could not make egl context current: %d\n", eglGetError());
             }
+
+            glClearColor(255, 0, 0, 1);
 
             RENDER_SUBVIEWS(rootView, platformData->window->graphicsContext);
             UIGraphicsContextFlush(platformData->window->graphicsContext);

@@ -27,6 +27,7 @@ struct UIWindowPlatformData
 };
 
 UIGraphicsContext *UIGraphicsContextCreate(int width, int height);
+void UIGraphicsContextDestroy(UIGraphicsContext *context);
 
 struct UIWindowPlatformData *ToPlatformData(UIWindow window);
 

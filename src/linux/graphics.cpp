@@ -29,7 +29,7 @@ typedef struct _UIGraphicsContext
 extern "C"
 {
     sk_sp<const GrGLInterface> interface = nullptr;
-    GrDirectContext *context = nullptr;
+    GrDirectContext *grDirectContext = nullptr;
 
     GrDirectContext *getContext()
     {
@@ -37,14 +37,14 @@ extern "C"
         {
             return eglGetProcAddress(name);
         };
-        if (interface == nullptr && context == nullptr)
+        if (interface == nullptr && grDirectContext == nullptr)
         {
             std::cout << "Making GrDirectContext\n";
             interface = GrGLMakeAssembledGLESInterface(nullptr, get_proc);
-            context = GrDirectContext::MakeGL(interface).release();
+            grDirectContext = GrDirectContext::MakeGL(interface).release();
         }
 
-        return context;
+        return grDirectContext;
     }
 
     void UIGraphicsContextFlush(UIGraphicsContext *context)
@@ -103,6 +103,12 @@ extern "C"
         SkASSERT(graphicsContext->canvas != nullptr);
 
         return graphicsContext;
+    }
+
+    void UIGraphicsContextDestroy(UIGraphicsContext *context) {
+        context->canvas = nullptr;
+        delete context->surface;
+        free(context);
     }
 
     void UIGraphicsContextSave(UIGraphicsContext *context)
