@@ -46,7 +46,7 @@ extern "C"
 
     void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color) {
         context->paint->setStroke(true);
-        context->paint->setStrokeWidth(1);
+        context->paint->setStrokeWidth(0.5f);
         context->paint->setARGB(color.a, color.r, color.g, color.b);
     }
 
