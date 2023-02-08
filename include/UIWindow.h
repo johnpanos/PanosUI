@@ -12,6 +12,7 @@ typedef struct _UIWindow
     UIView mainView;
 
     UIWindowController controller;
+    UIRect mousePos;
 } *UIWindow;
 
 UIWindow UIWindowCreate(UIRect rect);

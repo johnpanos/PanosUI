@@ -112,7 +112,7 @@ void UIWindowUpdate(UIWindow window)
     {
         UIGraphicsContextMakeCurrent(window->graphicsContext);
 
-        // // Draw dropshadow
+        // Draw dropshadow
         UIGraphicsContextSave(window->graphicsContext);
         {
             // UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 31));
@@ -143,8 +143,21 @@ void UIWindowUpdate(UIWindow window)
 
         UIGraphicsContextFlush(window->graphicsContext);
     }
-}   
+}
 
-void UIWindowSendEvent(UIWindow window, UIEvent event) {
-    _UIPlatformWindowMove(window, event);
+void UIWindowSendEvent(UIWindow window, UIEvent event)
+{
+    if (event.type == UIEventTypeMouseMotion)
+    {
+        window->mousePos.x = event._eventData.mouseMotion.x;
+        window->mousePos.y = event._eventData.mouseMotion.y;
+    }
+    else if (event.type == UIEventTypeMouseDown)
+    {
+        if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.width) &&
+                                          (window->mousePos.y > 0 && window->mousePos.y < 28))
+        {
+            _UIPlatformWindowMove(window, event);
+        }
+    }
 }

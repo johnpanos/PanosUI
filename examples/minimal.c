@@ -6,13 +6,13 @@ void windowDidLoad(UIWindow window)
     printf("THE WINDOW LOADED!\n");
 }
 
-void CreateMacOSWindow()
+void didFinishLaunching(UIApplication *application)
 {
     UIRect window_frame = {
         .x = 0,
         .y = 0,
         .width = 500,
-        .height = 500};
+        .height = 200};
     UIWindow window = UIWindowCreate(window_frame);
 
     UIWindowController myWindowController = UIWindowControllerCreate();
@@ -29,6 +29,7 @@ void CreateMacOSWindow()
     UIRect myRect = UIRectInset(window->mainView->frame, 75, 75, 75, 75);
 
     UIView testView = UIViewCreate(myRect, myRect);
+    testView->clipToBounds = 1;
     testView->cornerRadius = 255;
     testView->backgroundColor = UIColorCreateRGBA(0, 0, 0, 255);
     UIViewAddSubview(window->mainView, testView);
@@ -42,12 +43,6 @@ void CreateMacOSWindow()
     UIView testOffset = UIViewCreate(testOffsetRect, testOffsetRect);
     testOffset->backgroundColor = UIColorCreateRGBA(255, 0, 0, 255);
     UIViewAddSubview(testView, testOffset);
-}
-
-void didFinishLaunching(UIApplication *application)
-{
-    CreateMacOSWindow();
-    CreateMacOSWindow();
 }
 
 static UIApplicationDelegate my_delegate = {

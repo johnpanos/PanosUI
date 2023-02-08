@@ -15,11 +15,10 @@ typedef struct _UIWindow
     UIView mainView;
 
     UIWindowController controller;
+    UIRect mousePos;
 
     UIGraphicsContext *graphicsContext;
-
     UIView frameView;
-
     void *_platformData;
 } *UIWindow;
 

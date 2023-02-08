@@ -47,13 +47,21 @@ void UIViewRemoveSubview(UIView superview, UIView subview)
 
 void UIViewDrawInContext(UIView view, UIGraphicsContext *context)
 {
-    UIGraphicsSetFillColor(context, view->backgroundColor);
-    UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-    if (view->borderWidth > 0)
     {
-        UIGraphicsSetStrokeColor(context, view->borderColor);
-        UIGraphicsSetStrokeWidth(context, view->borderWidth);
+        if (view->clipToBounds)
+        {
+            UIGraphicsContextClipToRect(context, view->frame, view->cornerRadius);
+        }
+
+        UIGraphicsSetFillColor(context, view->backgroundColor);
         UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
+
+        if (view->borderWidth > 0)
+        {
+            UIGraphicsSetStrokeColor(context, view->borderColor);
+            UIGraphicsSetStrokeWidth(context, view->borderWidth);
+            UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
+        }
     }
 }
 
