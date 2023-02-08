@@ -158,6 +158,16 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
                                           (window->mousePos.y > 0 && window->mousePos.y < 28))
         {
             _UIPlatformWindowMove(window, event);
+        } else {
+            UIPoint hitPoint = {
+                .x = window->mousePos.x,
+                .y = window->mousePos.y - 28
+            };
+            UIView hitView = UIViewHitTest(window->mainView, hitPoint);
+            // hitView->backgroundColor = UIColorCreateRGBA(255, 0, 0, 255);
+            // UIViewSetNeedsDisplay(hitView);
+
+            printf("Hit view: %p\n", hitView);
         }
     }
 }

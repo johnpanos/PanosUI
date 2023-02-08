@@ -33,4 +33,6 @@ void UIViewDestroy(UIView view);
 void UIViewAddSubview(UIView superview, UIView subview);
 void UIViewRemoveSubview(UIView superview, UIView subview);
 
+UIView UIViewHitTest(UIView view, UIPoint point);
+
 #endif

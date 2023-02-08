@@ -74,3 +74,18 @@ void UIViewSetNeedsDisplay(UIView view)
         current = current->parentView;
     } while (current != NULL);
 }
+
+UIView UIViewHitTest(UIView view, UIPoint point) {
+    if (!view) return NULL;
+    if (!UIPointInRect(point, view->frame)) return NULL;
+
+    for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
+    {
+        UIView subview = ArrayGetValueAtIndex(view->subviews, i);
+        if (!subview->clipToBounds && !UIPointInRect(point, subview->frame)) continue;
+        UIView hitView = UIViewHitTest(subview, point);
+        if (hitView) return hitView;
+    }
+
+    return view;
+}

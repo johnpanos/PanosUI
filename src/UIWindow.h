@@ -15,7 +15,7 @@ typedef struct _UIWindow
     UIView mainView;
 
     UIWindowController controller;
-    UIRect mousePos;
+    UIPoint mousePos;
 
     UIGraphicsContext *graphicsContext;
     UIView frameView;

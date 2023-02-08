@@ -36,4 +36,6 @@ void UIViewRemoveSubview(UIView superview, UIView subview);
 void UIViewDrawInContext(UIView view, UIGraphicsContext *context);
 void UIViewSetNeedsDisplay(UIView view);
 
+UIView UIViewHitTest(UIView view, UIPoint point);
+
 #endif

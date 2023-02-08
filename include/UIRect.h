@@ -2,6 +2,11 @@
 #define _UIRECT_H
 #include <stdlib.h>
 
+typedef struct _UIPoint {
+    int x;
+    int y;
+} UIPoint;
+
 typedef struct _UIRect
 {
     int x, y;
