@@ -17,12 +17,14 @@ typedef struct _UIView
     Array subviews;
 
     int needsDisplay;
+    int needsLayout;
+
+    void (*layoutSubviews)(UIView view);
 
     UIColor backgroundColor;
+    float cornerRadius;
     UIColor borderColor;
     float borderWidth;
-
-    float cornerRadius;
 
     int clipToBounds;
 } *UIView;

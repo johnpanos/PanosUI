@@ -3,6 +3,8 @@
 #include "UIView.h"
 #include "shared/Array.h"
 
+void _UIViewDoNothing(UIView view) {};
+
 UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
     UIView view = malloc(sizeof(struct _UIView));
@@ -11,6 +13,8 @@ UIView UIViewCreate(UIRect frame, UIRect bounds)
     view->parentView = NULL;
     view->subviews = ArrayCreate(sizeof(UIView));
     view->needsDisplay = 1;
+    view->needsLayout = 1;
+    view->layoutSubviews = &_UIViewDoNothing;
     view->cornerRadius = 0.0f;
     view->backgroundColor = UIColorCreateRGBA(0, 0, 0, 0);
     view->borderColor = UIColorCreateRGBA(0, 0, 0, 0);
@@ -47,21 +51,19 @@ void UIViewRemoveSubview(UIView superview, UIView subview)
 
 void UIViewDrawInContext(UIView view, UIGraphicsContext *context)
 {
+    if (view->clipToBounds)
     {
-        if (view->clipToBounds)
-        {
-            UIGraphicsContextClipToRect(context, view->frame, view->cornerRadius);
-        }
+        UIGraphicsContextClipToRect(context, view->frame, view->cornerRadius);
+    }
 
-        UIGraphicsSetFillColor(context, view->backgroundColor);
+    UIGraphicsSetFillColor(context, view->backgroundColor);
+    UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
+
+    if (view->borderWidth > 0)
+    {
+        UIGraphicsSetStrokeColor(context, view->borderColor);
+        UIGraphicsSetStrokeWidth(context, view->borderWidth);
         UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-
-        if (view->borderWidth > 0)
-        {
-            UIGraphicsSetStrokeColor(context, view->borderColor);
-            UIGraphicsSetStrokeWidth(context, view->borderWidth);
-            UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-        }
     }
 }
 
@@ -90,8 +92,7 @@ UIView UIViewHitTest(UIView view, UIPoint point)
             continue;
         UIPoint convertedPoint = {
             .x = point.x - subview->frame.x,
-            .y = point.y - subview->frame.y
-        };
+            .y = point.y - subview->frame.y};
         printf("Converted point: x(%d) y(%d)\n", convertedPoint.x, convertedPoint.y);
         UIView hitView = UIViewHitTest(subview, convertedPoint);
         if (hitView)

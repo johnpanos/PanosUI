@@ -129,6 +129,7 @@ xdg_toplevel_configure_handler(void *data,
         }
         platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->egl_surface, platformData->window->frame.width, platformData->window->frame.height);
         platformData->window->mainView->needsDisplay = 1;
+        platformData->window->controller->windowDidResize(platformData->window);
     }
 }
 

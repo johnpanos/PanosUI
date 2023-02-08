@@ -66,11 +66,11 @@ UIWindow UIWindowCreate(UIRect frame)
 
 void UIWindowShow(UIWindow window)
 {
-    window->controller->windowWillLoad();
+    window->controller->windowWillLoad(window);
 
     _UIPlatformWindowCreate(window);
 
-    window->controller->windowDidLoad();
+    window->controller->windowDidLoad(window);
 }
 
 void UIWindowDestroy(UIWindow window)
@@ -90,6 +90,11 @@ void UIWindowSetTitle(UIWindow window, const char *title)
 
 void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 {
+    if (view->needsLayout) {
+        view->layoutSubviews(view);
+        view->needsLayout = 0;
+    }
+
     UIGraphicsContextSave(context);
     if (view->parentView != NULL)
     {
@@ -171,9 +176,6 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
                 .y = window->mousePos.y - 28
             };
             UIView hitView = UIViewHitTest(window->mainView, hitPoint);
-            // hitView->backgroundColor = UIColorCreateRGBA(255, 0, 0, 255);
-            // UIViewSetNeedsDisplay(hitView);
-
             printf("Hit view: %p\n", hitView);
         }
     }

@@ -6,6 +6,14 @@ void windowDidLoad(UIWindow window)
     printf("THE WINDOW LOADED!\n");
 }
 
+void windowDidResize(UIWindow window) {
+    UIRect newRect = window->frame;
+    newRect.height -= 28;
+    window->mainView->frame = newRect;
+    window->mainView->needsDisplay = 1;
+    window->mainView->needsLayout = 1;
+}
+
 void didFinishLaunching(UIApplication *application)
 {
     UIRect window_frame = {
@@ -17,6 +25,7 @@ void didFinishLaunching(UIApplication *application)
 
     UIWindowController myWindowController = UIWindowControllerCreate();
     myWindowController->windowDidLoad = &windowDidLoad;
+    myWindowController->windowDidResize = &windowDidResize;
 
     window->controller = myWindowController;
 
