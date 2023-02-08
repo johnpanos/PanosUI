@@ -14,6 +14,38 @@ void windowDidResize(UIWindow window) {
     window->mainView->needsLayout = 1;
 }
 
+UIView createSwitchView() {
+    UIRect frame = {
+        .x = 0,
+        .y = 0,
+        .width = 40,
+        .height = 22
+    };
+    UIView switchView = UIViewCreate(frame, frame);
+    switchView->clipToBounds = 1;
+    switchView->cornerRadius = 100.0f;
+    switchView->backgroundColor = UIColorCreateRGBA(0, 122, 255, 255);
+    switchView->borderWidth = 1.5f;
+    switchView->borderColor = UIColorCreateRGBA(0, 0, 0, 31);
+
+    UIRect knobFrame ={
+        .x = 19,
+        .y = 1,
+        .width = 20,
+        .height = 20
+    };
+    UIView knobView = UIViewCreate(knobFrame, knobFrame);
+    knobView->clipToBounds = 1;
+    knobView->cornerRadius = 20.0f;
+    knobView->backgroundColor = UIColorCreateRGBA(255, 255, 255, 255);
+    knobView->borderWidth = 0.0f;
+    knobView->borderColor = UIColorCreateRGBA(0, 0, 0, 31);
+
+    UIViewAddSubview(switchView, knobView);
+
+    return switchView;
+}
+
 void didFinishLaunching(UIApplication *application)
 {
     UIRect window_frame = {
@@ -52,6 +84,8 @@ void didFinishLaunching(UIApplication *application)
     UIView testOffset = UIViewCreate(testOffsetRect, testOffsetRect);
     testOffset->backgroundColor = UIColorCreateRGBA(255, 0, 0, 255);
     UIViewAddSubview(testView, testOffset);
+
+    UIViewAddSubview(window->mainView, createSwitchView());
 }
 
 static UIApplicationDelegate my_delegate = {
