@@ -43,7 +43,6 @@ extern "C"
         };
         if (interface == nullptr && grDirectContext == nullptr)
         {
-            std::cout << "Making GrDirectContext\n";
             interface = GrGLMakeAssembledGLESInterface(nullptr, get_proc);
             grDirectContext = GrDirectContext::MakeGL(interface).release();
         }
@@ -88,8 +87,6 @@ extern "C"
     UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height)
     {
         const char *version = (const char *)glGetString(GL_VERSION);
-        printf("opengl version: %s\n", version);
-        printf("creating context w(%d) h(%d)\n", width, height);
 
         UIGraphicsContext *graphicsContext = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
         graphicsContext->eglSurface = eglSurface;
@@ -154,7 +151,6 @@ extern "C"
 
     void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius)
     {
-        printf("Adding rect x(%d) y(%d) w(%d) h(%d)\n", rect.x, rect.y, rect.width, rect.height);
         SkRect skrect = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
         context->canvas->drawRoundRect(skrect, radius, radius, context->paint);
     }

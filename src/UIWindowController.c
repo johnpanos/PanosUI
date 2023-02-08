@@ -8,8 +8,6 @@ void doNothing()
 
 UIRect defaultWindowWillResize(UIWindow window, UIRect to)
 {
-    printf("Resizing to: w(%d) h(%d)\n", to.width, to.height);
-
     if (to.width == 0 && to.height == 0)
     {
         return window->frame;

@@ -50,7 +50,8 @@ const struct wl_seat_listener seat_listener = {
     .name = seat_handle_name,
 };
 
-static void setup_cursor_image(void *data, uint32_t serial) {
+static void setup_cursor_image(void *data, uint32_t serial)
+{
     struct UIPlatformSeatData *seatData = (struct UIPlatformSeatData *)data;
 
     struct wl_cursor_theme *cursor_theme = wl_cursor_theme_load(NULL, 16, UIPlatformGlobalsShared.wl_shm);
@@ -103,32 +104,40 @@ static void wl_pointer_motion(void *data, struct wl_pointer *wl_pointer,
 {
     struct UIPlatformSeatData *seatData = (struct UIPlatformSeatData *)data;
 
-    if (seatData->window == NULL) {
+    if (seatData->window == NULL)
+    {
         return;
     }
 
     UIEvent event = {
-        .type = UIEventMouseMotion,
+        .type = UIEventTypeMouseMotion,
         .window = seatData->window,
         ._eventData = {
             .mouseMotion = {
                 .x = wl_fixed_to_int(surface_x),
                 .y = wl_fixed_to_int(surface_y)}}};
-    
+
     UIApplicationSendEvent(event);
 }
 
 static void wl_pointer_button(void *data, struct wl_pointer *wl_pointer,
                               uint32_t serial, uint32_t time, uint32_t button, uint32_t state)
 {
-    // if (button == BTN_LEFT && state == 1)
-    // {
-    //     pointer->delegate->on_mouse_click();
-    // }
-    // else if (button == BTN_LEFT && state == 0)
-    // {
-    //     pointer->delegate->on_mouse_up();
-    // }
+    struct UIPlatformSeatData *seatData = (struct UIPlatformSeatData *)data;
+
+    UIEvent event = {
+        .reserved = serial,
+        .type = state ? UIEventTypeMouseDown : UIEventTypeMouseUp,
+        .window = seatData->window,
+        ._eventData = {
+            .mouseButton = {
+                .button = button == BTN_LEFT ? UIEventMouseButtonTypeLeft : UIEventMouseButtonTypeRight,
+                .state = state
+            }
+        }
+    };
+
+    UIApplicationSendEvent(event);
 }
 
 static void wl_pointer_axis(void *data, struct wl_pointer *wl_pointer,
@@ -136,25 +145,28 @@ static void wl_pointer_axis(void *data, struct wl_pointer *wl_pointer,
 {
     struct UIPlatformSeatData *seatData = (struct UIPlatformSeatData *)data;
 
-    if (seatData->window == NULL) {
+    if (seatData->window == NULL)
+    {
         return;
     }
 
     UIEvent event = {
-        .type = UIEventMouseScroll,
+        .type = UIEventTypeMouseScroll,
         .window = seatData->window,
         ._eventData = {
             .mouseScroll = {
                 .direction = axis,
-                .type = UIEventMouseScrollTypeContinuous
-            }}};
-    
-    if (axis) {
+                .type = UIEventMouseScrollTypeContinuous}}};
+
+    if (axis)
+    {
         event._eventData.mouseScroll.x = value;
-    } else {
+    }
+    else
+    {
         event._eventData.mouseScroll.y = value;
     }
-    
+
     UIApplicationSendEvent(event);
 }
 
@@ -195,8 +207,10 @@ struct wl_pointer_listener pointer_listener = {
 
 struct UIPlatformSeatData globalSeatData;
 
-void setupSeat() {
-    if (UIPlatformGlobalsShared.wl_seat == NULL) {
+void setupSeat()
+{
+    if (UIPlatformGlobalsShared.wl_seat == NULL)
+    {
         exit(1);
     }
 

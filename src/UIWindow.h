@@ -29,7 +29,7 @@ void UIWindowDestroy(UIWindow window);
 void UIWindowShow(UIWindow window);
 void UIWindowUpdate(UIWindow window);
 void UIWindowSetTitle(UIWindow window, const char *title);
-// void UIWindowSetWindowController(UIWindow window, UIWindowController windowController);
 void UIWindowSendEvent(UIWindow window, UIEvent event);
+void UIWindowDoDrag(UIWindow window, UIEvent event);
 
 #endif

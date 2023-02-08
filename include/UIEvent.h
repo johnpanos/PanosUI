@@ -2,15 +2,20 @@
 
 typedef enum _UIEventType
 {
-    UIEventMouseDown = 1,
-    UIEventMouseUp = 2,
-    UIEventMouseMotion = 3,
-    UIEventMouseDrag = 4,
-    UIEventMouseEntered = 5,
-    UIEventMouseLeft = 6,
-    UIEventMouseScroll = 7,
-    UIEventKeyboardDown = 8,
+    UIEventTypeMouseDown = 1,
+    UIEventTypeMouseUp = 2,
+    UIEventTypeMouseMotion = 3,
+    UIEventTypeMouseDrag = 4,
+    UIEventTypeMouseEntered = 5,
+    UIEventTypeMouseScroll = 6,
+    UIEventTypeKeyboardDown = 7,
+    UIEventTypeKeyboardUp = 8
 } UIEventType;
+
+enum UIEventMouseButtonType {
+    UIEventMouseButtonTypeLeft = 0,
+    UIEventMouseButtonTypeRight = 1
+};
 
 enum UIEventMouseButtonState
 {
@@ -22,14 +27,13 @@ enum UIEventMouseScrollType
 {
     UIEventMouseScrollTypeDiscrete = 0,
     UIEventMouseScrollTypeContinuous = 1,
-
 };
 
 enum UIEventMouseScrollDirection
 {
     UIEventMouseScrollDirectionVertical = 0,
     UIEventMouseScrollDirectionHorizontal = 1,
-    UIEventMouseScrolLDirectionBoth = 2
+    UIEventMouseScrollDirectionBoth = 2
 };
 
 typedef struct _UIWindow *UIWindow;
@@ -43,7 +47,7 @@ typedef struct _UIEvent
     {
         struct
         {
-            int button;
+            enum UIEventMouseButtonType button;
             enum UIEventMouseButtonState state;
         } mouseButton;
 
@@ -64,4 +68,6 @@ typedef struct _UIEvent
         {
         } keyboard;
     } _eventData;
+
+    int reserved;
 } UIEvent;

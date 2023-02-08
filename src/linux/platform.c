@@ -127,7 +127,6 @@ xdg_toplevel_configure_handler(void *data,
             printf("Destroying context\n");
             UIGraphicsContextDestroy(platformData->window->graphicsContext);
         }
-        printf("Making context\n");
         platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->egl_surface, platformData->window->frame.width, platformData->window->frame.height);
         platformData->window->mainView->needsDisplay = 1;
     }
@@ -153,8 +152,6 @@ void _UIPlatformMain(UIApplication *application)
         fprintf(stderr, "Can't connect to display\n");
         exit(1);
     }
-    printf("Connected to display\n");
-
     struct wl_registry *registry = wl_display_get_registry(UIPlatformGlobalsShared.display);
     wl_registry_add_listener(registry, &registry_listener, NULL);
     wl_display_roundtrip(UIPlatformGlobalsShared.display);
@@ -164,14 +161,12 @@ void _UIPlatformMain(UIApplication *application)
         fprintf(stderr, "Can't find compositor\n");
         exit(1);
     }
-    printf("Found compositor\n");
 
     if (UIPlatformGlobalsShared.wm_base == NULL)
     {
         fprintf(stderr, "Can't find wm_base\n");
         exit(1);
     }
-    printf("Found wm_base\n");
 
     globalEglData = init_egl(UIPlatformGlobalsShared.display);
 
@@ -195,7 +190,6 @@ void _UIPlatformEventLoop(UIApplication *application)
 
 void _UIPlatformWindowCreate(UIWindow window)
 {
-    printf("creating window!\n");
     struct UIWindowPlatformData *platformData = calloc(1, sizeof(struct UIWindowPlatformData));
 
     platformData->window = window;
@@ -226,6 +220,11 @@ void _UIPlatformWindowSetTitle(UIWindow window, const char *title)
 {
     struct UIWindowPlatformData *platformData = ToPlatformData(window);
     xdg_toplevel_set_title(platformData->toplevel, title);
+}
+
+void _UIPlatformWindowMove(UIWindow window, UIEvent event) {
+    struct UIWindowPlatformData *platformData = ToPlatformData(window);
+    xdg_toplevel_move(platformData->toplevel, UIPlatformGlobalsShared.wl_seat, event.reserved);
 }
 
 struct UIWindowPlatformData *ToPlatformData(UIWindow window)

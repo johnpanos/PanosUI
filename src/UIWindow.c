@@ -90,12 +90,18 @@ void UIWindowSetTitle(UIWindow window, const char *title)
 
 void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 {
+    UIGraphicsContextSave(context);
+    if (view->parentView != NULL)
+    {
+        UIGraphicsContextSetTransform(context, view->parentView->frame.x, view->parentView->frame.y);
+    }
     UIViewDrawInContext(view, context);
     for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
     {
         UIView viewToRender = ArrayGetValueAtIndex(view->subviews, i);
         RENDER_SUBVIEWS(viewToRender, context);
     }
+    UIGraphicsContextRestore(context);
 }
 
 void UIWindowUpdate(UIWindow window)
@@ -108,35 +114,37 @@ void UIWindowUpdate(UIWindow window)
 
         // // Draw dropshadow
         UIGraphicsContextSave(window->graphicsContext);
-        // UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 31));
-        // UIRect shadowOffset = {.x = 0, .y = 25, .width = 0, .height = 0};
-        // UIGraphicsContextSetShadow(window->graphicsContext, shadowOffset, 30.0f);
-        // UIGraphicsContextAddRect(window->graphicsContext, window->frame, 10.0f);
-        // UIGraphicsContextRestore(window->graphicsContext);
-
-        // Clip all children to inside
-        printf("window x(%d) y(%d) w(%d) h(%d)\n", window->frame.x, window->frame.y, window->frame.width, window->frame.height);
-        UIGraphicsContextClipToRect(window->graphicsContext, window->frame, 10.0f);
-
-        // Draw background
-        // UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
-        // UIGraphicsContextAddRect(window->graphicsContext, window->frame, 0.0f);
-
-        RENDER_SUBVIEWS(window->frameView, window->graphicsContext);
-
         {
+            // UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 31));
+            // UIRect shadowOffset = {.x = 0, .y = 25, .width = 0, .height = 0};
+            // UIGraphicsContextSetShadow(window->graphicsContext, shadowOffset, 30.0f);
+            // UIGraphicsContextAddRect(window->graphicsContext, window->frame, 10.0f);
+            // UIGraphicsContextRestore(window->graphicsContext);
+
+            // Clip all children to inside
+            UIGraphicsContextClipToRect(window->graphicsContext, window->frame, 10.0f);
+
+            // Draw background
+            UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
+            UIGraphicsContextAddRect(window->graphicsContext, window->frame, 0.0f);
+
+            RENDER_SUBVIEWS(window->frameView, window->graphicsContext);
+
             UIGraphicsContextSave(window->graphicsContext);
             {
-                printf("main w(%d) h(%d)\n", window->mainView->frame.width, window->mainView->frame.height);
                 UIGraphicsContextSetTransform(window->graphicsContext, 0, 28);
-                // UIGraphicsContextClipToRect(window->graphicsContext, window->mainView->frame, 0.0f);
+                UIGraphicsContextClipToRect(window->graphicsContext, window->mainView->frame, 0.0f);
                 RENDER_SUBVIEWS(rootView, window->graphicsContext);
                 rootView->needsDisplay = 0;
             }
             UIGraphicsContextRestore(window->graphicsContext);
         }
+        UIGraphicsContextRestore(window->graphicsContext);
 
         UIGraphicsContextFlush(window->graphicsContext);
-        UIGraphicsContextRestore(window->graphicsContext);
     }
+}   
+
+void UIWindowSendEvent(UIWindow window, UIEvent event) {
+    _UIPlatformWindowMove(window, event);
 }
