@@ -79,7 +79,7 @@ void UIViewSetNeedsDisplay(UIView view)
 
 UIView UIViewHitTest(UIView view, UIPoint point)
 {
-    printf("\nHit test: x(%d) y(%d)\n", point.x, point.y);
+    // printf("\nHit test: x(%d) y(%d)\n", point.x, point.y);
     if (!view)
         return NULL;
     if (!UIPointInRect(point, view->frame))
@@ -93,7 +93,7 @@ UIView UIViewHitTest(UIView view, UIPoint point)
         UIPoint convertedPoint = {
             .x = point.x - subview->frame.x,
             .y = point.y - subview->frame.y};
-        printf("Converted point: x(%d) y(%d)\n", convertedPoint.x, convertedPoint.y);
+        // printf("Converted point: x(%d) y(%d)\n", convertedPoint.x, convertedPoint.y);
         UIView hitView = UIViewHitTest(subview, convertedPoint);
         if (hitView)
             return hitView;

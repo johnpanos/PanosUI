@@ -1,5 +1,4 @@
-#ifndef _UILAYER_H
-#define _UILAYER_H
+#pragma once
 
 #include "UIRect.h"
 #include "UIGraphicsContext.h"
@@ -10,5 +9,3 @@ UILayer *UILayerCreate(UIRect frame, UIRect bounds);
 void UILayerDestroy(UILayer *view);
 
 void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context);
-
-#endif

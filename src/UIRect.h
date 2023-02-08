@@ -1,5 +1,5 @@
-#ifndef _UIRECT_H
-#define _UIRECT_H
+#pragma once
+
 #include <stdlib.h>
 
 typedef struct _UIPoint {
@@ -15,5 +15,3 @@ typedef struct _UIRect
 
 UIRect UIRectOutset(UIRect orig, int left, int right, int top, int bottom);
 UIRect UIRectInset(UIRect orig, int left, int right, int top, int bottom);
-
-#endif

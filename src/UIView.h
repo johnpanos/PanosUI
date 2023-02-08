@@ -1,5 +1,4 @@
-#ifndef _UIVIEW_H
-#define _UIVIEW_H
+#pragma once
 
 #include "UIRect.h"
 #include "UIColor.h"
@@ -36,8 +35,8 @@ void UIViewAddSubview(UIView superview, UIView subview);
 void UIViewRemoveSubview(UIView superview, UIView subview);
 
 void UIViewDrawInContext(UIView view, UIGraphicsContext *context);
+
+void UIViewSetNeedsLayout(UIView view);
 void UIViewSetNeedsDisplay(UIView view);
 
 UIView UIViewHitTest(UIView view, UIPoint point);
-
-#endif

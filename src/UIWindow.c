@@ -161,8 +161,8 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
                 .x = window->mousePos.x,
                 .y = window->mousePos.y - 28
             };
-        UIView hitView = UIViewHitTest(window->mainView, hitPoint);
-        printf("Hit view: %p\n", hitView);
+        // UIView hitView = UIViewHitTest(window->mainView, hitPoint);
+        // printf("Hit view: %p\n", hitView);
     }
     else if (event.type == UIEventTypeMouseDown)
     {
@@ -175,8 +175,8 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
                 .x = window->mousePos.x,
                 .y = window->mousePos.y - 28
             };
-            UIView hitView = UIViewHitTest(window->mainView, hitPoint);
-            printf("Hit view: %p\n", hitView);
+            // UIView hitView = UIViewHitTest(window->mainView, hitPoint);
+            // printf("Hit view: %p\n", hitView);
         }
     }
 }

@@ -1,5 +1,4 @@
-#ifndef _UIWINDOW_H
-#define _UIWINDOW_H
+#pragma once
 
 #include "UIApplication.h"
 #include "UIView.h"
@@ -30,5 +29,3 @@ void UIWindowUpdate(UIWindow window);
 void UIWindowSetTitle(UIWindow window, const char *title);
 void UIWindowSendEvent(UIWindow window, UIEvent event);
 void UIWindowDoDrag(UIWindow window, UIEvent event);
-
-#endif
