@@ -75,16 +75,27 @@ void UIViewSetNeedsDisplay(UIView view)
     } while (current != NULL);
 }
 
-UIView UIViewHitTest(UIView view, UIPoint point) {
-    if (!view) return NULL;
-    if (!UIPointInRect(point, view->frame)) return NULL;
+UIView UIViewHitTest(UIView view, UIPoint point)
+{
+    printf("\nHit test: x(%d) y(%d)\n", point.x, point.y);
+    if (!view)
+        return NULL;
+    if (!UIPointInRect(point, view->frame))
+        return NULL;
 
-    for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
+    for (int i = ArrayGetCapacity(view->subviews) - 1; i >= 0; --i)
     {
         UIView subview = ArrayGetValueAtIndex(view->subviews, i);
-        if (!subview->clipToBounds && !UIPointInRect(point, subview->frame)) continue;
-        UIView hitView = UIViewHitTest(subview, point);
-        if (hitView) return hitView;
+        if (!subview->clipToBounds && !UIPointInRect(point, subview->frame))
+            continue;
+        UIPoint convertedPoint = {
+            .x = point.x - subview->frame.x,
+            .y = point.y - subview->frame.y
+        };
+        printf("Converted point: x(%d) y(%d)\n", convertedPoint.x, convertedPoint.y);
+        UIView hitView = UIViewHitTest(subview, convertedPoint);
+        if (hitView)
+            return hitView;
     }
 
     return view;

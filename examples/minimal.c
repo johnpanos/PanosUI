@@ -29,7 +29,7 @@ void didFinishLaunching(UIApplication *application)
     UIRect myRect = UIRectInset(window->mainView->frame, 75, 75, 75, 75);
 
     UIView testView = UIViewCreate(myRect, myRect);
-    testView->clipToBounds = 1;
+    // testView->clipToBounds = 1;
     testView->cornerRadius = 255;
     testView->backgroundColor = UIColorCreateRGBA(0, 0, 0, 255);
     UIViewAddSubview(window->mainView, testView);

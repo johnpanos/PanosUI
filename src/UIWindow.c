@@ -151,6 +151,13 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
     {
         window->mousePos.x = event._eventData.mouseMotion.x;
         window->mousePos.y = event._eventData.mouseMotion.y;
+
+        UIPoint hitPoint = {
+                .x = window->mousePos.x,
+                .y = window->mousePos.y - 28
+            };
+        UIView hitView = UIViewHitTest(window->mainView, hitPoint);
+        printf("Hit view: %p\n", hitView);
     }
     else if (event.type == UIEventTypeMouseDown)
     {
