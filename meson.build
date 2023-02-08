@@ -66,4 +66,4 @@ panosuilib = shared_library('panosui',
 executable('panos-client', 'examples/minimal.c', include_directories : ['include'], link_with : panosuilib)
 executable('cpp-example', 'examples/cpp.cpp', include_directories : ['include', 'cpp'], link_with : panosuilib)
 
-#subdir('tests')
+subdir('tests')

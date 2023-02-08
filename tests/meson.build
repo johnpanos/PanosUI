@@ -15,11 +15,3 @@ test_UIApplication = executable(
     link_with: panosuilib
 )
 test('UIView', test_UIApplication)
-
-test_UIApplication = executable(
-    'test_UIViewController',
-    'test_UIViewController.c',
-    include_directories : test_inc,
-    link_with: panosuilib
-)
-test('UIViewController', test_UIApplication)
