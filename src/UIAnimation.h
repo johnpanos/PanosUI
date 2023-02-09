@@ -2,7 +2,7 @@
 
 typedef struct _UIAnimation
 {
-    int duration;
+    char* forKey;
     float(easingFunc)(int progress);
     void *(lerp)(int progress, void *startValue, void *endValue);
     void *startValue;

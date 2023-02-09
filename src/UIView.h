@@ -8,7 +8,8 @@
 typedef struct _UIView *UIView;
 typedef struct _UIView
 {
-    UILayer *layer;
+    UILayer layer;
+
     UIRect frame;
     UIRect bounds;
 

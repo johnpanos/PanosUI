@@ -8,6 +8,7 @@ void _UIViewDoNothing(UIView view){};
 UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
     UIView view = calloc(1, sizeof(struct _UIView));
+    view->layer = UILayerCreate();
     view->frame = frame;
     view->bounds = bounds;
     view->subviews = ArrayCreate(sizeof(UIView));
