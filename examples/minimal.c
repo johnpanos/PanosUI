@@ -8,7 +8,8 @@ void windowDidLoad(UIWindow window)
 
 UIView insetView = NULL;
 
-void windowDidResize(UIWindow window) {
+void windowDidResize(UIWindow window)
+{
     UIRect newRect = window->frame;
     newRect.height -= 28;
     window->mainView->frame = newRect;
@@ -16,7 +17,8 @@ void windowDidResize(UIWindow window) {
     window->mainView->needsLayout = 1;
 }
 
-void mainViewLayoutSubviews(UIView mainView) {
+void mainViewLayoutSubviews(UIView mainView)
+{
     insetView->frame = UIRectInset(mainView->frame, 75, 75, 75, 75);
     insetView->needsDisplay = 1;
     insetView->needsLayout = 1;
@@ -28,7 +30,7 @@ void didFinishLaunching(UIApplication *application)
         .x = 0,
         .y = 0,
         .width = 500,
-        .height = 200};
+        .height = 500};
     UIWindow window = UIWindowCreate(window_frame);
 
     UIWindowController myWindowController = UIWindowControllerCreate();
@@ -43,10 +45,18 @@ void didFinishLaunching(UIApplication *application)
     UIColor bg = {.r = 246, .g = 246, .b = 246, .a = 255};
     window->mainView->backgroundColor = bg;
 
-    UIRect myRect = UIRectInset(window->mainView->frame, 75, 75, 75, 75);
+    UIRect myRect = UIRectInset(window->mainView->frame, 50, 50, 50, 50);
 
     UIView testView = UIViewCreate(myRect, myRect);
-    testView->backgroundColor = UIColorCreateRGBA(0, 0, 0, 255);
+    testView->backgroundColor = UIColorCreateRGBA(255, 255, 255, 255);
+    testView->cornerRadius = 10.0f;
+    testView->shadowColor = UIColorCreateRGBA(0, 0, 0, 31);
+    UIPoint shadowOffset = {
+        .x = 10,
+        .y = 10};
+    testView->shadowOffset = shadowOffset;
+    testView->shadowRadius = 10.0f;
+
     insetView = testView;
     UIViewAddSubview(window->mainView, testView);
 

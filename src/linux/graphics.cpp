@@ -157,6 +157,7 @@ extern "C"
 
     void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIRect offset, float blur)
     {
+        context->canvas->translate(offset.x, offset.y);
         context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, blur, false));
     }
 

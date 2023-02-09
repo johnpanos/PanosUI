@@ -50,7 +50,7 @@ if host_machine.system() == 'windows'
 endif
 
 
-skia = declare_dependency(link_args : ['-L/home/john/Developer/skia/out/Release', '-lskia'],
+skia = declare_dependency(link_args : ['-L/home/john/Developer/skia/out/Debug', '-lskia'],
                                include_directories : ['/home/john/Developer/skia'])
 
 deps += skia
@@ -58,9 +58,8 @@ deps += skia
 panosuilib = shared_library('panosui',
                         src,
                         include_directories : ['src', '../', '/home/john/Developer/skia/'],
-                        c_args: ['-O4', '-flto'],
-                        cpp_args: ['-O4'],
-                        link_args: ['-fvtable-gc', '-fdata-sections', '-ffunction-sections', '-Wl,--gc-sections'],
+                        c_args: ['-O0'],
+                        cpp_args: ['-O0'],
                         dependencies : deps,
                         install : true)
 

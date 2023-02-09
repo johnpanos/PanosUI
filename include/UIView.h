@@ -26,6 +26,10 @@ typedef struct _UIView
     UIColor borderColor;
     float borderWidth;
 
+    UIPoint shadowOffset;
+    UIColor shadowColor;
+    float shadowRadius;
+
     int clipToBounds;
 } *UIView;
 

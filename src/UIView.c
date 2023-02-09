@@ -3,22 +3,17 @@
 #include "UIView.h"
 #include "shared/Array.h"
 
-void _UIViewDoNothing(UIView view) {};
+void _UIViewDoNothing(UIView view){};
 
 UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
-    UIView view = malloc(sizeof(struct _UIView));
+    UIView view = calloc(1, sizeof(struct _UIView));
     view->frame = frame;
     view->bounds = bounds;
-    view->parentView = NULL;
     view->subviews = ArrayCreate(sizeof(UIView));
     view->needsDisplay = 1;
     view->needsLayout = 1;
     view->layoutSubviews = &_UIViewDoNothing;
-    view->cornerRadius = 0.0f;
-    view->backgroundColor = UIColorCreateRGBA(0, 0, 0, 0);
-    view->borderColor = UIColorCreateRGBA(0, 0, 0, 0);
-    view->borderWidth = 0.0f;
     return view;
 }
 
@@ -54,6 +49,17 @@ void UIViewDrawInContext(UIView view, UIGraphicsContext *context)
     if (view->clipToBounds)
     {
         UIGraphicsContextClipToRect(context, view->frame, view->cornerRadius);
+    }
+
+    if (view->shadowColor.a > 0)
+    {
+        UIGraphicsContextSave(context);
+        {
+            UIGraphicsContextSetShadow(context, view->shadowOffset, view->shadowRadius);
+            UIGraphicsSetFillColor(context, view->shadowColor);
+            UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
+        }
+        UIGraphicsContextRestore(context);
     }
 
     UIGraphicsSetFillColor(context, view->backgroundColor);

@@ -89,7 +89,8 @@
         "sstream": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "uirect.h": "c"
     },
     "mesonbuild.configureOnOpen": true,
     "print.colourScheme": "Atom One"

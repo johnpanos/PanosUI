@@ -28,7 +28,7 @@ void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double ra
 void UIGraphicsContextAddOval(UIGraphicsContext *context, UIPoint p, int width, int height);
 
 // MARK: Shadow
-void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIRect offset, float blur);
+void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIPoint offset, float blur);
 void UIGraphicsContextSetShadowColor(UIGraphicsContext *context, UIColor color);
 
 void UIGraphicsContextSetTransform(UIGraphicsContext *context, int x, int y);
