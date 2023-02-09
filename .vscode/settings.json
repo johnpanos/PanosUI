@@ -90,7 +90,9 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "variant": "cpp",
-        "uirect.h": "c"
+        "uirect.h": "c",
+        "array.h": "c",
+        "uianimation.h": "c"
     },
     "mesonbuild.configureOnOpen": true,
     "print.colourScheme": "Atom One"

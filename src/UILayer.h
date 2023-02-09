@@ -2,31 +2,38 @@
 
 #include "shared/Array.h"
 #include "UIRect.h"
+#include "UIColor.h"
 #include "UIGraphicsContext.h"
 
-const char* kUILayerKeyPositionX = "position.x";
-const char* kUILayerKeyPositionY = "position.y";
+// MARK: Layer Key Constants
+extern const char *kUILayerKeyPositionX;
+extern const char *kUILayerKeyPositionY;
 
-const char* kUILayerKeyBoundsWidth = "bounds.width";
-const char* kUILayerKeyBoundsHeight = "bounds.height";
+extern const char *kUILayerKeyBoundsWidth;
+extern const char *kUILayerKeyBoundsHeight;
 
-const char* kUILayerKeyBackgroundColor = "backgroundColor";
+extern const char *kUILayerKeyBackgroundColor;
 
-const char* kUILayerKeyBorderWidth = "borderWidth";
-const char* kUILayerKeyBorderColor = "borderColor";
+extern const char *kUILayerKeyBorderWidth;
+extern const char *kUILayerKeyBorderColor;
 
-const char* kUILayerKeyShadowOffset = "shadowOffset";
-const char* kUILayerKeyShadowColor = "shadowColor";
-const char* kUILayerKeyShadowRadius = "shadowRadius";
+extern const char *kUILayerKeyShadowOffset;
+extern const char *kUILayerKeyShadowColor;
+extern const char *kUILayerKeyShadowRadius;
 
-const char* kUILayerKeyOpacity = "opacity";
+extern const char *kUILayerKeyOpacity;
 
-typedef struct _UILayer {
+// MARK: Struct Defs
+typedef struct _UILayer
+{
     Array animations;
     Array sublayers;
 
+    UIRect frame; // Calculated, never set
+    UIRect bounds;
+
     UIColor backgroundColor;
-    
+
     float borderWidth;
     UIColor borderColor;
 
@@ -35,11 +42,12 @@ typedef struct _UILayer {
     float shadowRadius;
 
     float opacity;
-} *UILayer;
+} UILayer;
 
-UILayer UILayerCreate(UIRect frame, UIRect bounds);
+UILayer *UILayerCreate(UIRect frame, UIRect bounds);
 void UILayerDestroy(UILayer layer);
+
+void UILayerAddSublayer(UILayer *layer, UILayer *sublayer);
 
 void UILayerRenderInContext(UILayer layer, UIGraphicsContext *context);
 UILayer UILayerGetInFlight(UILayer layer);
-

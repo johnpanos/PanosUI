@@ -4,7 +4,9 @@ deps = []
 
 src = [
     'src/UIApplication.c',
+    'src/UIAnimation.c',
     'src/UIView.c',
+    'src/UILayer.c',
     'src/UIWindowController.c',
     'src/UIWindow.c',
     'src/UIColor.c',

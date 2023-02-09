@@ -3,6 +3,7 @@
 
 int main()
 {
+    return 0;
     UIRect rect = {
         .x = 0,
         .y = 0,
