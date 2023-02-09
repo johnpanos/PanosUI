@@ -174,6 +174,14 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
         {
             _UIPlatformWindowMove(window, event);
         }
+        else if ((window->mousePos.x > window->frame.width - 8 &&
+                  window->mousePos.x < window->frame.width) &&
+
+                 (window->mousePos.y > window->frame.height-8 &&
+                  window->mousePos.y < window->frame.height))
+        {
+            _UIPlatformWindowResize(window, event);
+        }
         else
         {
             UIPoint hitPoint = {

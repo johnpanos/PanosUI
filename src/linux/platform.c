@@ -223,9 +223,16 @@ void _UIPlatformWindowSetTitle(UIWindow window, const char *title)
     xdg_toplevel_set_title(platformData->toplevel, title);
 }
 
-void _UIPlatformWindowMove(UIWindow window, UIEvent event) {
+void _UIPlatformWindowMove(UIWindow window, UIEvent event)
+{
     struct UIWindowPlatformData *platformData = ToPlatformData(window);
     xdg_toplevel_move(platformData->toplevel, UIPlatformGlobalsShared.wl_seat, event.reserved);
+}
+
+void _UIPlatformWindowResize(UIWindow window, UIEvent event)
+{
+    struct UIWindowPlatformData *platformData = ToPlatformData(window);
+    xdg_toplevel_resize(platformData->toplevel, UIPlatformGlobalsShared.wl_seat, event.reserved, XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT);
 }
 
 struct UIWindowPlatformData *ToPlatformData(UIWindow window)
