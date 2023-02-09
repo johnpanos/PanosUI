@@ -22,9 +22,8 @@ extern const char *kUILayerKeyShadowRadius;
 
 extern const char *kUILayerKeyOpacity;
 
-typedef struct _UIGraphicsContext UIGraphicsContext;
-
 // MARK: Struct Defs
+typedef struct _UIGraphicsContext UIGraphicsContext;
 typedef struct _UILayer
 {
     Array animations;
@@ -43,6 +42,9 @@ typedef struct _UILayer
     float shadowRadius;
 
     float opacity;
+
+    float cornerRadius;
+    int clipToBounds;
 } UILayer;
 
 UILayer *UILayerCreate(UIRect frame, UIRect bounds);
@@ -50,5 +52,5 @@ void UILayerDestroy(UILayer layer);
 
 void UILayerAddSublayer(UILayer *layer, UILayer *sublayer);
 
-void UILayerRenderInContext(UILayer layer, UIGraphicsContext *context);
+void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context);
 UILayer UILayerGetInFlight(UILayer layer);

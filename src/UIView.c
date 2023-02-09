@@ -8,7 +8,7 @@ void _UIViewDoNothing(UIView view){};
 UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
     UIView view = calloc(1, sizeof(struct _UIView));
-    // view->layer = UILayerCreate();
+    view->layer = UILayerCreate(frame, bounds);
     view->frame = frame;
     view->bounds = bounds;
     view->subviews = ArrayCreate(sizeof(UIView));
@@ -107,4 +107,60 @@ UIView UIViewHitTest(UIView view, UIPoint point)
     }
 
     return view;
+}
+
+
+// MARK: Getters
+UIColor UIViewGetBackgroundColor(UIView view) {
+    return view->backgroundColor;
+};
+float UIViewGetCornerRadius(UIView view) {
+    return view->cornerRadius;
+};
+UIColor UIViewGetBorderColor(UIView view) {
+    return view->borderColor;
+};
+float UIViewGetBorderWidth(UIView view) {
+    return view->borderWidth;
+};
+
+UIPoint UIViewGetShadowOffset(UIView view) {
+    return view->shadowOffset;
+};
+UIColor UIViewGetShadowColor(UIView view) {
+    return view->shadowColor;
+};
+float UIViewGetShadowRadius(UIView view) {
+    return view->shadowRadius;
+};
+
+// MARK: Setters
+void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor) {
+    view->backgroundColor = backgroundColor;
+    view->layer->backgroundColor = backgroundColor;
+}
+void UIViewSetCornerRadius(UIView view, float cornerRadius) {
+    view->cornerRadius = cornerRadius;
+    view->layer->cornerRadius = cornerRadius;
+}
+void UIViewSetBorderColor(UIView view, UIColor borderColor) {
+    view->borderColor = borderColor;
+    view->layer->borderColor = borderColor;
+}
+void UIViewSetBorderWidth(UIView view, float borderWidth) {
+    view->borderWidth = borderWidth;
+    view->layer->borderWidth = borderWidth;
+}
+
+void UIViewSetShadowOffset(UIView view, UIPoint shadowOffset) {
+    view->shadowOffset = shadowOffset;
+    view->layer->shadowOffset = shadowOffset;
+}
+void UIViewSetShadowColor(UIView view, UIColor shadowColor) {
+    view->shadowColor = shadowColor;
+    view->layer->shadowColor = shadowColor;
+}
+void UIViewSetShadowRadius(UIView view, float shadowRadius) {
+    view->shadowRadius = shadowRadius;
+    view->layer->shadowRadius = shadowRadius;
 }

@@ -104,7 +104,8 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
     {
         UIGraphicsContextSetTransform(context, view->parentView->frame.x, view->parentView->frame.y);
     }
-    UIViewDrawInContext(view, context);
+    UILayer layer = UILayerGetInFlight(*view->layer);
+    UILayerRenderInContext(&layer, context);
     for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
     {
         UIView viewToRender = ArrayGetValueAtIndex(view->subviews, i);
@@ -117,7 +118,8 @@ void UIWindowUpdate(UIWindow window)
 {
     UIView rootView = window->mainView;
 
-    if (rootView != NULL && rootView->needsDisplay)
+    // if (rootView != NULL && rootView->needsDisplay)
+    if (rootView != NULL)
     {
         UIGraphicsContextMakeCurrent(window->graphicsContext);
 

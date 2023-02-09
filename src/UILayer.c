@@ -52,12 +52,20 @@ UILayer UILayerGetInFlight(UILayer layer)
         UIAnimation *anim = ArrayGetValueAtIndex(copied.animations, i);
 
         uint64_t now = UIAnimationGetCurrentTime();
+        printf("Now: %ul\n", now);
+        printf("Start: %ul\n", anim->startTime);
+        printf("End: %ul\n", anim->endTime);
         int deltaT = now - anim->startTime;
-        printf("dT: %d\n", deltaT);
         float progress = (float)deltaT / (float)anim->duration;
 
-        printf("now  %"PRIu64"\n", now);
-        printf("progress %f\n", progress);
+        if (progress > 1)
+        {
+            progress = 1.0f;
+        }
+        else if (progress < 0)
+        {
+            progress = 0.0f;
+        }
 
         if (KEY_EQUAL(anim, kUILayerKeyBackgroundColor))
         {
@@ -101,6 +109,11 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyShadowRadius))
         {
+            printf("%f\n", progress);
+            copied.shadowRadius = lerp(
+                VALUE_FOR_TYPE(anim, float, startValue),
+                VALUE_FOR_TYPE(anim, float, endValue),
+                progress);
         }
         else
         {
@@ -109,4 +122,33 @@ UILayer UILayerGetInFlight(UILayer layer)
     }
 
     return copied;
+}
+
+void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
+{
+    if (layer->clipToBounds)
+    {
+        UIGraphicsContextClipToRect(context, layer->frame, layer->cornerRadius);
+    }
+
+    if (layer->shadowColor.a > 0)
+    {
+        UIGraphicsContextSave(context);
+        {
+            UIGraphicsContextSetShadow(context, layer->shadowOffset, layer->shadowRadius);
+            UIGraphicsSetFillColor(context, layer->shadowColor);
+            UIGraphicsContextAddRect(context, layer->frame, layer->cornerRadius);
+        }
+        UIGraphicsContextRestore(context);
+    }
+
+    UIGraphicsSetFillColor(context, layer->backgroundColor);
+    UIGraphicsContextAddRect(context, layer->frame, layer->cornerRadius);
+
+    if (layer->borderWidth > 0)
+    {
+        UIGraphicsSetStrokeColor(context, layer->borderColor);
+        UIGraphicsSetStrokeWidth(context, layer->borderWidth);
+        UIGraphicsContextAddRect(context, layer->frame, layer->cornerRadius);
+    }
 }

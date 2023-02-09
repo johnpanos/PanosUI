@@ -92,7 +92,8 @@
         "variant": "cpp",
         "uirect.h": "c",
         "array.h": "c",
-        "uianimation.h": "c"
+        "uianimation.h": "c",
+        "*.inc": "c"
     },
     "mesonbuild.configureOnOpen": true,
     "print.colourScheme": "Atom One"

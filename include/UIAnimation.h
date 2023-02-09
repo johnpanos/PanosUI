@@ -1,13 +1,16 @@
 #pragma once
-#define __STDC_FORMAT_MACROS
-#include <inttypes.h>
+#include <stdint.h>
 
 typedef struct _UIAnimation
 {
+    int finished;
+
     char* forKey;
     int duration;
+
     void *startValue;
     void *endValue;
+    size_t _valueSize;
 
     uint64_t startTime;
     uint64_t endTime;

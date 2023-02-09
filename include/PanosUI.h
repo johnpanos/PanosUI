@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIApplication.h"
+#include "UIAnimation.h"
 #include "UIEvent.h"
 #include "UILayer.h"
 #include "UIRect.h"
