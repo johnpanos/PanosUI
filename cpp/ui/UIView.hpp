@@ -43,6 +43,14 @@ namespace UI
         {
             return this->backing_view->frame;
         }
+
+        void set_background_color(UIColor color) {
+            this->backing_view->backgroundColor = color;
+        }
+
+        UIColor get_background_color() {
+            return this->backing_view->backgroundColor;
+        }
     };
 }
 

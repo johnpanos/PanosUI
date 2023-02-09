@@ -85,12 +85,16 @@ void UIWindowDestroy(UIWindow window)
 void UIWindowSetTitle(UIWindow window, const char *title)
 {
     window->title = title;
-    _UIPlatformWindowSetTitle(window, title);
+    if (window->_platformData != NULL)
+    {
+        _UIPlatformWindowSetTitle(window, title);
+    }
 }
 
 void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 {
-    if (view->needsLayout) {
+    if (view->needsLayout)
+    {
         view->layoutSubviews(view);
         view->needsLayout = 0;
     }
@@ -158,23 +162,23 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
         window->mousePos.y = event._eventData.mouseMotion.y;
 
         UIPoint hitPoint = {
-                .x = window->mousePos.x,
-                .y = window->mousePos.y - 28
-            };
+            .x = window->mousePos.x,
+            .y = window->mousePos.y - 28};
         // UIView hitView = UIViewHitTest(window->mainView, hitPoint);
         // printf("Hit view: %p\n", hitView);
     }
     else if (event.type == UIEventTypeMouseDown)
     {
         if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.width) &&
-                                          (window->mousePos.y > 0 && window->mousePos.y < 28))
+            (window->mousePos.y > 0 && window->mousePos.y < 28))
         {
             _UIPlatformWindowMove(window, event);
-        } else {
+        }
+        else
+        {
             UIPoint hitPoint = {
                 .x = window->mousePos.x,
-                .y = window->mousePos.y - 28
-            };
+                .y = window->mousePos.y - 28};
             // UIView hitView = UIViewHitTest(window->mainView, hitPoint);
             // printf("Hit view: %p\n", hitView);
         }

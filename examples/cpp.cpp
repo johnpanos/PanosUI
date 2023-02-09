@@ -3,24 +3,32 @@
 #include "ui/UIApplication.hpp"
 #include "ui/UIWindow.hpp"
 
+class MyWindowController : public UI::WindowController {
+    UI::View *my_view;
+
+    virtual void window_did_load() {
+        std::cout << "Window did load from C++\n";
+
+        UIRect my_view_frame = UIRectCreate(100, 100, 200, 200);
+        this->my_view = new UI::View(my_view_frame, my_view_frame);
+        this->my_view->set_background_color(UIColorCreateRGBA(255, 0, 0, 255));
+        this->window->get_root_view()->add_subview(this->my_view);
+    }
+};
+
 class MyDelegate : public UI::ApplicationDelegate
 {
     virtual void did_finish_launching()
     {
-        std::cout << "Did finish from C++!\n";
-        UIRect window_frame;
-        window_frame.x = 0;
-        window_frame.y = 0;
-        window_frame.width = 1000;
-        window_frame.height = 300;
+        MyWindowController *window_controller = new MyWindowController();
 
-        UI::Window *window = new UI::Window(window_frame);
+        UI::Window *window = new UI::Window(
+            UIRectCreate(0, 0, 1000, 500)
+        );
+
+        window->set_controller(window_controller);
         window->show();
         window->set_title("cereal");
-
-        UI::Window *window2 = new UI::Window(window_frame);
-        window2->show();
-        window2->set_title("cereal2");
     }
 };
 

@@ -13,6 +13,7 @@ typedef struct _UIRect
     int width, height;
 } UIRect;
 
+UIRect UIRectCreate(int x, int y, int width, int height);
 UIRect UIRectOutset(UIRect orig, int left, int right, int top, int bottom);
 UIRect UIRectInset(UIRect orig, int left, int right, int top, int bottom);
 
