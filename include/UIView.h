@@ -2,6 +2,7 @@
 #define _UIVIEW_H
 
 #include "UIRect.h"
+#include "UIPoint.h"
 #include "UILayer.h"
 #include "UIColor.h"
 #include "Array.h"

@@ -127,7 +127,11 @@ xdg_toplevel_configure_handler(void *data,
         }
         platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->egl_surface, platformData->window->frame.width, platformData->window->frame.height);
         platformData->window->mainView->needsDisplay = 1;
+        printf("before window did resize\n");
         platformData->window->controller->windowDidResize(platformData->window);
+
+        UIRect contentRect = platformData->window->contentFrame;
+        xdg_surface_set_window_geometry(platformData->xdg_surface, contentRect.x, contentRect.y, contentRect.width, contentRect.height);
     }
 }
 

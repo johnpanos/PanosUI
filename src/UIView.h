@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIRect.h"
+#include "UIPoint.h"
 #include "UIColor.h"
 #include "UILayer.h"
 #include "shared/Array.h"

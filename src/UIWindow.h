@@ -11,6 +11,8 @@ typedef struct _UIWindow
 {
     const char *title;
     UIRect frame;
+    UIRect contentFrame;
+
     UIView mainView;
 
     UIWindowController controller;

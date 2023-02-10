@@ -1,15 +1,5 @@
 #include "UIRect.h"
 
-int UIPointInRect(UIPoint p, UIRect rect)
-{
-    if (p.x >= 0 && p.x <= rect.x + rect.width &&
-        p.y >= 0 && p.y <= rect.y + rect.height)
-    {
-        return 1;
-    }
-    return 0;
-}
-
 UIRect UIRectCreate(int x, int y, int width, int height)
 {
     UIRect rect = {

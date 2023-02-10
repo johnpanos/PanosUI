@@ -8,6 +8,7 @@ typedef struct _UIPoint UIPoint;
 typedef struct _UIColor UIColor;
 
 void UIGraphicsContextMakeCurrent(UIGraphicsContext *context);
+void UIGraphicsContextClear(UIGraphicsContext *context);
 void UIGraphicsContextFlush(UIGraphicsContext *context);
 
 void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color);

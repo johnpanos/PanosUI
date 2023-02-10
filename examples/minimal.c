@@ -7,16 +7,6 @@ void windowDidLoad(UIWindow window)
 }
 
 UIView insetView = NULL;
-
-void windowDidResize(UIWindow window)
-{
-    UIRect newRect = window->frame;
-    newRect.height -= 28;
-    window->mainView->frame = newRect;
-    window->mainView->needsDisplay = 1;
-    window->mainView->needsLayout = 1;
-}
-
 void mainViewLayoutSubviews(UIView mainView)
 {
     insetView->frame = UIRectInset(mainView->frame, 25, 25, 25, 25);
@@ -35,7 +25,6 @@ void didFinishLaunching(UIApplication *application)
 
     UIWindowController myWindowController = UIWindowControllerCreate();
     myWindowController->windowDidLoad = &windowDidLoad;
-    myWindowController->windowDidResize = &windowDidResize;
 
     window->controller = myWindowController;
 

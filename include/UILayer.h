@@ -2,6 +2,7 @@
 
 #include "Array.h"
 #include "UIRect.h"
+#include "UIPoint.h"
 #include "UIColor.h"
 #include "UIAnimation.h"
 

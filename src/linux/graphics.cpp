@@ -58,6 +58,10 @@ extern "C"
         }
     }
 
+    void UIGraphicsContextClear(UIGraphicsContext *context) {
+        context->canvas->clear(SK_ColorTRANSPARENT);
+    }
+
     void UIGraphicsContextFlush(UIGraphicsContext *context)
     {
         context->surface->flushAndSubmit();
