@@ -25,13 +25,16 @@ class MyWindowController : public UI::WindowController
         this->window->get_root_view()->add_subview(this->my_view);
 
         UILayerAddAnimation(this->my_view->backing_view->layer,
-                            UI::Animation<int>::create(2000, kUILayerKeyPositionX, &UIAnimationTimingFunctionEaseInOutQuart, 0, 100));
+                            UI::Animation<int>::create(4000, kUILayerKeyPositionX, &UIAnimationTimingFunctionEaseOutBounce, 0, 100));
         UILayerAddAnimation(this->my_view->backing_view->layer,
-                            UI::Animation<int>::create(2000, kUILayerKeyPositionY, &UIAnimationTimingFunctionEaseInOutQuart, 0, 100));
+                            UI::Animation<int>::create(4000, kUILayerKeyPositionY, &UIAnimationTimingFunctionEaseOutBounce, 0, 100));
+        this->my_view->set_frame(UIRectCreate(100, 100, 200, 200));
         UILayerAddAnimation(this->my_view->backing_view->layer,
-                            UI::Animation<float>::create(2000, kUILayerKeyCornerRadius, &UIAnimationTimingFunctionEaseInOutQuart, 0.0f, 100.0f));
+                            UI::Animation<float>::create(4000, kUILayerKeyCornerRadius, &UIAnimationTimingFunctionEaseOutBounce, 0.0f, 100.0f));
+        this->my_view->set_corner_radius(100.0f);
         UILayerAddAnimation(this->my_view->backing_view->layer,
-                            UI::Animation<float>::create(2000, kUILayerKeyShadowRadius, &UIAnimationTimingFunctionEaseInOutQuart, 0.0f, 8.0f));
+                            UI::Animation<float>::create(4000, kUILayerKeyShadowRadius, &UIAnimationTimingFunctionEaseOutBounce, 0.0f, 8.0f));
+        this->my_view->set_shadow_radius(8.0f);
     }
 };
 
@@ -42,11 +45,11 @@ class MyDelegate : public UI::ApplicationDelegate
         MyWindowController *window_controller = new MyWindowController();
 
         UI::Window *window = new UI::Window(
-            UIRectCreate(0, 0, 500, 500));
+            UIRectCreate(0, 0, 425, 425));
 
         window->set_controller(window_controller);
         window->show();
-        window->set_title("cereal");
+        window->set_title("C++ Window");
     }
 };
 

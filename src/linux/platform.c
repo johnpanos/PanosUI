@@ -91,7 +91,10 @@ xdg_toplevel_configure_handler(void *data,
 {
     struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)data;
     UIRect configuredSize = {
-        .x = 0, .y = 0, .width = width, .height = height};
+        .x = 0,
+        .y = 0,
+        .width = width,
+        .height = height};
     UIRect requestedSize = platformData->window->controller->windowWillResize(platformData->window, configuredSize);
 
     if (platformData->egl_window != NULL)
@@ -125,13 +128,28 @@ xdg_toplevel_configure_handler(void *data,
             printf("Destroying context\n");
             UIGraphicsContextDestroy(platformData->window->graphicsContext);
         }
-        platformData->window->graphicsContext = UIGraphicsContextCreate(platformData->egl_surface, platformData->window->frame.width, platformData->window->frame.height);
+
+        platformData->window->graphicsContext = UIGraphicsContextCreate(
+            platformData->egl_surface,
+            platformData->window->frame.width,
+            platformData->window->frame.height);
         platformData->window->mainView->needsDisplay = 1;
+
         printf("before window did resize\n");
         platformData->window->controller->windowDidResize(platformData->window);
 
         UIRect contentRect = platformData->window->contentFrame;
-        xdg_surface_set_window_geometry(platformData->xdg_surface, contentRect.x, contentRect.y, contentRect.width, contentRect.height);
+        xdg_surface_set_window_geometry(
+            platformData->xdg_surface,
+            contentRect.x,
+            contentRect.y,
+            contentRect.width,
+            contentRect.height);
+
+        struct wl_region *inputRegion = wl_compositor_create_region(UIPlatformGlobalsShared.compositor);
+        wl_region_add(inputRegion, contentRect.x, contentRect.y, contentRect.width, contentRect.height);
+        wl_surface_set_input_region(platformData->surface, inputRegion);
+        wl_region_destroy(inputRegion);
     }
 }
 

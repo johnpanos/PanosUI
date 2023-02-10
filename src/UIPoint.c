@@ -11,8 +11,8 @@ UIPoint UIPointCreate(int x, int y) {
 
 int UIPointInRect(UIPoint p, UIRect rect)
 {
-    if (p.x >= 0 && p.x <= rect.x + rect.width &&
-        p.y >= 0 && p.y <= rect.y + rect.height)
+    if (p.x >= rect.x && p.x <= rect.x + rect.width &&
+        p.y >= rect.y && p.y <= rect.y + rect.height)
     {
         return 1;
     }

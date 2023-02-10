@@ -37,6 +37,7 @@ namespace UI
         void set_frame(UIRect to)
         {
             this->backing_view->frame = to;
+            this->backing_view->layer->frame = to;
         }
 
         UIRect get_frame()

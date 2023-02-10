@@ -172,11 +172,13 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
     else if (event.type == UIEventTypeMouseDown)
     {
         UIRect dragger = UIRectCreate(
-            window->contentFrame.x + window->contentFrame.width,
-            window->contentFrame.y + window->contentFrame.height,
+            window->contentFrame.width,
+            window->contentFrame.height,
             0,
             0);
         dragger = UIRectOutset(dragger, 10, 10, 10, 10);
+
+        printf("Dragger: x(%d) y(%d) w(%d) h(%d)\n", dragger.x, dragger.y, dragger.width, dragger.height);
 
         if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.width) &&
             (window->mousePos.y > 0 && window->mousePos.y < 28))
