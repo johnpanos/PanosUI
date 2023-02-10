@@ -29,8 +29,8 @@ void didFinishLaunching(UIApplication *application)
     UIRect window_frame = {
         .x = 0,
         .y = 0,
-        .width = 500,
-        .height = 500};
+        .width = 600,
+        .height = 600};
     UIWindow window = UIWindowCreate(window_frame);
 
     UIWindowController myWindowController = UIWindowControllerCreate();
@@ -45,7 +45,9 @@ void didFinishLaunching(UIApplication *application)
     UIColor bg = {.r = 246, .g = 246, .b = 246, .a = 255};
     window->mainView->backgroundColor = bg;
 
-    UIRect myRect = UIRectInset(window->mainView->frame, 50, 50, 50, 50);
+    UIRect myRect = window->mainView->frame;
+    myRect.height = 100;
+    myRect.width = 100;
 
     UIView testView = UIViewCreate(myRect, myRect);
     UIViewSetBackgroundColor(testView, UIColorCreateRGBA(200, 200, 200, 255));
@@ -65,14 +67,23 @@ void didFinishLaunching(UIApplication *application)
     int end = 200;
 
     UIAnimation radiusAnim;
-    radiusAnim.forKey = kUILayerKeyPositionX;
+    radiusAnim.finished = 0;
+    radiusAnim.forKey = kUILayerKeyBoundsWidth;
+    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
     radiusAnim.startValue = &insetView->frame.x;
     radiusAnim.endValue = &end;
     radiusAnim.startTime = UIAnimationGetCurrentTime();
-    radiusAnim.endTime = UIAnimationGetCurrentTime() + 2000;
+    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
     radiusAnim._valueSize = sizeof(int);
-    radiusAnim.duration = 2000;
+    radiusAnim.duration = 5000;
 
+    UILayerAddAnimation(insetView->layer, radiusAnim);
+
+    radiusAnim.forKey = kUILayerKeyBoundsHeight;
+    radiusAnim.startValue = &insetView->frame.y;
+    radiusAnim.endValue = &end;
+    radiusAnim.startTime = UIAnimationGetCurrentTime();
+    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
     UILayerAddAnimation(insetView->layer, radiusAnim);
 }
 

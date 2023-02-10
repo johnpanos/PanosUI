@@ -7,7 +7,7 @@ Array ArrayCreate(ArrayValueSize valueSize)
 {
     Array array = malloc(sizeof(struct _Array));
 
-    printf("Making array with size: %ld\n", valueSize);
+    // printf("Making array with size: %ld\n", valueSize);
 
     array->valueSize = valueSize;
     array->values = NULL;

@@ -43,7 +43,8 @@ void UILayerAddSublayer(UILayer *layer, UILayer *sublayer)
     ArrayAddValue(layer->sublayers, sublayer);
 }
 
-void UILayerAddAnimation(UILayer *layer, UIAnimation anim) {
+void UILayerAddAnimation(UILayer *layer, UIAnimation anim)
+{
     UIAnimation *copiedAnim = calloc(1, sizeof(UIAnimation));
     *copiedAnim = UIAnimationCopy(anim);
     ArrayAddValue(layer->animations, copiedAnim);
@@ -59,15 +60,21 @@ UILayer UILayerGetInFlight(UILayer layer)
 
         uint64_t now = UIAnimationGetCurrentTime();
         int deltaT = now - anim->startTime;
-        float progress = (float)deltaT / (float)anim->duration;
+        float prog = (float)deltaT / (float)anim->duration;
+        printf("progress: %f\n", prog);
+        float progress = anim->timingFunction(prog);
 
-        if (progress > 1)
+        printf("progress: %f\n", progress);
+
+        if (prog >= 1)
         {
             progress = 1.0f;
+            anim->finished = 1;
         }
-        else if (progress < 0)
+        else if (prog <= 0)
         {
             progress = 0.0f;
+            anim->finished = 0;
         }
 
         if (KEY_EQUAL(anim, kUILayerKeyBackgroundColor))
@@ -87,9 +94,17 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsHeight))
         {
+            copied.frame.height = (int)lerp(
+                VALUE_FOR_TYPE(anim, int, startValue),
+                VALUE_FOR_TYPE(anim, int, endValue),
+                progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsWidth))
         {
+            copied.frame.width = (int)lerp(
+                VALUE_FOR_TYPE(anim, int, startValue),
+                VALUE_FOR_TYPE(anim, int, endValue),
+                progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyOpacity))
         {
@@ -100,14 +115,14 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionX))
         {
-            copied.frame.x = (int) lerp(
+            copied.frame.x = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionY))
         {
-            copied.frame.y = (int) lerp(
+            copied.frame.y = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);
@@ -131,6 +146,22 @@ UILayer UILayerGetInFlight(UILayer layer)
             printf("No animation serializer found for key: %s\n", anim->forKey);
         }
     }
+
+    Array animsToDelete = ArrayCreate(sizeof(UIAnimation *));
+    for (int i = 0; i < ArrayGetCapacity(layer.animations); i++)
+    {
+        UIAnimation *anim = ArrayGetValueAtIndex(layer.animations, i);
+        if (anim->finished) {
+            ArrayAddValue(animsToDelete, anim);
+        }
+    }
+
+    for (int i = 0; i < ArrayGetCapacity(animsToDelete); i++) {
+        UIAnimation *anim = ArrayGetValueAtIndex(animsToDelete, i);
+        ArrayRemoveValueByRef(layer.animations, anim);
+        free(anim);
+    }
+    ArrayDestroy(animsToDelete);
 
     return copied;
 }

@@ -6,33 +6,33 @@ UIView _UIWindowCreateFrameView(UIWindow window)
     UIRect titlebarFrame = {
         .x = 0, .y = 0, .width = window->frame.width, .height = 28};
     UIView titlebar = UIViewCreate(titlebarFrame, titlebarFrame);
-    titlebar->borderColor = UIColorCreateRGBA(0, 0, 0, 21);
-    titlebar->backgroundColor = UIColorCreateRGBA(255, 255, 255, 255);
-    titlebar->borderWidth = 0.5f;
+    UIViewSetBorderColor(titlebar, UIColorCreateRGBA(0, 0, 0, 21));
+    UIViewSetBackgroundColor(titlebar, UIColorCreateRGBA(255, 255, 255, 255));
+    UIViewSetBorderWidth(titlebar, 0.5f);
 
     UIRect redFrame = {.x = 8, .y = 8, .width = 12, .height = 12};
     UIColor red = {.r = 255, .g = 94, .b = 87, .a = 255};
     UIView redLight = UIViewCreate(redFrame, redFrame);
-    redLight->cornerRadius = 12;
-    redLight->backgroundColor = red;
-    redLight->borderColor = UIColorCreateRGBA(0, 0, 0, 21);
-    redLight->borderWidth = 0.5f;
+    UIViewSetCornerRadius(redLight, 12);
+    UIViewSetBackgroundColor(redLight, red);
+    UIViewSetBorderColor(redLight, UIColorCreateRGBA(0, 0, 0, 21));
+    UIViewSetBorderWidth(redLight, 0.5f);
 
     UIRect yellowFrame = {.x = 8 + 20, .y = 8, .width = 12, .height = 12};
     UIColor yellow = {.r = 255, .g = 187, .b = 46, .a = 255};
     UIView yellowLight = UIViewCreate(yellowFrame, yellowFrame);
-    yellowLight->cornerRadius = 12;
-    yellowLight->backgroundColor = yellow;
-    yellowLight->borderColor = UIColorCreateRGBA(0, 0, 0, 21);
-    yellowLight->borderWidth = 0.5f;
+    UIViewSetCornerRadius(yellowLight, 12);
+    UIViewSetBackgroundColor(yellowLight, yellow);
+    UIViewSetBorderColor(yellowLight, UIColorCreateRGBA(0, 0, 0, 21));
+    UIViewSetBorderWidth(yellowLight, 0.5f);
 
     UIRect greenFrame = {.x = 8 + 40, .y = 8, .width = 12, .height = 12};
     UIColor green = {.r = 56, .g = 193, .b = 73, .a = 255};
     UIView greenLight = UIViewCreate(greenFrame, greenFrame);
-    greenLight->cornerRadius = 12;
-    greenLight->backgroundColor = green;
-    greenLight->borderColor = UIColorCreateRGBA(0, 0, 0, 21);
-    greenLight->borderWidth = 0.5f;
+    UIViewSetCornerRadius(greenLight, 12);
+    UIViewSetBackgroundColor(greenLight, green);
+    UIViewSetBorderColor(greenLight, UIColorCreateRGBA(0, 0, 0, 21));
+    UIViewSetBorderWidth(greenLight, 0.5f);
 
     UIViewAddSubview(titlebar, redLight);
     UIViewAddSubview(titlebar, yellowLight);
