@@ -24,10 +24,6 @@ void mainViewLayoutSubviews(UIView mainView)
     insetView->needsLayout = 1;
 }
 
-float startRadius = 0.0f;
-float endRadius = 80.0f;
-UIAnimation radiusAnim;
-
 void didFinishLaunching(UIApplication *application)
 {
     UIRect window_frame = {
@@ -52,28 +48,32 @@ void didFinishLaunching(UIApplication *application)
     UIRect myRect = UIRectInset(window->mainView->frame, 50, 50, 50, 50);
 
     UIView testView = UIViewCreate(myRect, myRect);
-    UIViewSetBackgroundColor(testView, UIColorCreateRGBA(255, 255, 255, 255));
+    UIViewSetBackgroundColor(testView, UIColorCreateRGBA(200, 200, 200, 255));
     UIViewSetCornerRadius(testView, 10.0f);
     UIViewSetShadowColor(testView, UIColorCreateRGBA(0, 0, 0, 100));
     UIPoint shadowOffset = {
         .x = 10,
         .y = 10};
     UIViewSetShadowOffset(testView, shadowOffset);
-    UIViewSetShadowRadius(testView, 0.0f);
+    UIViewSetShadowRadius(testView, 10.0f);
     insetView = testView;
 
     UIViewAddSubview(window->mainView, testView);
 
     window->mainView->layoutSubviews = &mainViewLayoutSubviews;
 
-    radiusAnim.forKey = kUILayerKeyShadowRadius;
-    radiusAnim.startValue = &startRadius;
-    radiusAnim.endValue = &endRadius;
-    radiusAnim.startTime = UIAnimationGetCurrentTime();
-    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
-    radiusAnim.duration = 5000;
+    int end = 200;
 
-    ArrayAddValue(insetView->layer->animations, &radiusAnim);
+    UIAnimation radiusAnim;
+    radiusAnim.forKey = kUILayerKeyPositionX;
+    radiusAnim.startValue = &insetView->frame.x;
+    radiusAnim.endValue = &end;
+    radiusAnim.startTime = UIAnimationGetCurrentTime();
+    radiusAnim.endTime = UIAnimationGetCurrentTime() + 2000;
+    radiusAnim._valueSize = sizeof(int);
+    radiusAnim.duration = 2000;
+
+    UILayerAddAnimation(insetView->layer, radiusAnim);
 }
 
 static UIApplicationDelegate my_delegate = {

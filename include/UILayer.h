@@ -3,6 +3,7 @@
 #include "Array.h"
 #include "UIRect.h"
 #include "UIColor.h"
+#include "UIAnimation.h"
 
 // MARK: Layer Key Constants
 extern const char *kUILayerKeyPositionX;
@@ -51,6 +52,7 @@ UILayer *UILayerCreate(UIRect frame, UIRect bounds);
 void UILayerDestroy(UILayer layer);
 
 void UILayerAddSublayer(UILayer *layer, UILayer *sublayer);
+void UILayerAddAnimation(UILayer *layer, UIAnimation anim);
 
 void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context);
 UILayer UILayerGetInFlight(UILayer layer);

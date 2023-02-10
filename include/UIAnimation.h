@@ -1,11 +1,12 @@
 #pragma once
 #include <stdint.h>
+#include <sys/types.h>
 
 typedef struct _UIAnimation
 {
     int finished;
 
-    char* forKey;
+    const char* forKey;
     int duration;
 
     void *startValue;
@@ -19,6 +20,8 @@ typedef struct _UIAnimation
 typedef struct _UITransaction UITransaction;
 
 uint64_t UIAnimationGetCurrentTime();
+
+UIAnimation UIAnimationCopy(UIAnimation anim);
 
 void UIAnimationTransactionBegin();
 void UIAnimationTransactionSetDuration();
