@@ -21,6 +21,7 @@ extern const char *kUILayerKeyShadowOffset;
 extern const char *kUILayerKeyShadowColor;
 extern const char *kUILayerKeyShadowRadius;
 
+extern const char *kUILayerKeyCornerRadius;
 extern const char *kUILayerKeyOpacity;
 
 // MARK: Struct Defs

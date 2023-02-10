@@ -16,19 +16,4 @@ int main()
         .endTime = UIAnimationGetCurrentTime() + 2000,
         .duration = 2000};
     ArrayAddValue(layer->animations, &opacityAnim);
-    printf("Start: %ul\n", opacityAnim.startTime);
-    printf("End: %ul\n", opacityAnim.endTime);
-
-    UILayer copy = UILayerGetInFlight(*layer);
-    printf("Color r(%d) g(%d) b(%d) a(%d)\n",
-           copy.backgroundColor.r,
-           copy.backgroundColor.g,
-           copy.backgroundColor.b,
-           copy.backgroundColor.a);
-    printf("Opacity %f\n", copy.opacity);
-
-    sleep(1);
-
-    copy = UILayerGetInFlight(*layer);
-    printf("Opacity %f\n", copy.opacity);
 }

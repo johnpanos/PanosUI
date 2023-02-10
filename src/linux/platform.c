@@ -94,8 +94,6 @@ xdg_toplevel_configure_handler(void *data,
         .x = 0, .y = 0, .width = width, .height = height};
     UIRect requestedSize = platformData->window->controller->windowWillResize(platformData->window, configuredSize);
 
-    printf("\nxdg toplevel configure\n");
-
     if (platformData->egl_window != NULL)
     {
         wl_egl_window_resize(platformData->egl_window, requestedSize.width, requestedSize.height, 0, 0);

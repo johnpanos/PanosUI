@@ -1,11 +1,7 @@
 #ifndef _UIRECT_H
 #define _UIRECT_H
 #include <stdlib.h>
-
-typedef struct _UIPoint {
-    int x;
-    int y;
-} UIPoint;
+#include "UIPoint.h"
 
 typedef struct _UIRect
 {

@@ -35,7 +35,6 @@ static void seat_handle_capabilities(void *data, struct wl_seat *wl_seat, uint32
 
     if (caps & WL_SEAT_CAPABILITY_POINTER)
     {
-        printf("Has pointer\n");
         seatData->wl_pointer = wl_seat_get_pointer(wl_seat);
         wl_pointer_add_listener(seatData->wl_pointer, &pointer_listener, seatData);
     }

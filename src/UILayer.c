@@ -19,6 +19,7 @@ const char *kUILayerKeyShadowOffset = "shadowOffset";
 const char *kUILayerKeyShadowColor = "shadowColor";
 const char *kUILayerKeyShadowRadius = "shadowRadius";
 
+const char *kUILayerKeyCornerRadius = "cornerRadius";
 const char *kUILayerKeyOpacity = "opacity";
 
 #define KEY_EQUAL(anim, str) strcmp(anim->forKey, str) == 0
@@ -61,10 +62,7 @@ UILayer UILayerGetInFlight(UILayer layer)
         uint64_t now = UIAnimationGetCurrentTime();
         int deltaT = now - anim->startTime;
         float prog = (float)deltaT / (float)anim->duration;
-        printf("progress: %f\n", prog);
         float progress = anim->timingFunction(prog);
-
-        printf("progress: %f\n", progress);
 
         if (prog >= 1)
         {
@@ -135,8 +133,13 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyShadowRadius))
         {
-            printf("%f\n", progress);
             copied.shadowRadius = lerp(
+                VALUE_FOR_TYPE(anim, float, startValue),
+                VALUE_FOR_TYPE(anim, float, endValue),
+                progress);
+        }
+        else if (KEY_EQUAL(anim, kUILayerKeyCornerRadius)) {
+            copied.cornerRadius = lerp(
                 VALUE_FOR_TYPE(anim, float, startValue),
                 VALUE_FOR_TYPE(anim, float, endValue),
                 progress);

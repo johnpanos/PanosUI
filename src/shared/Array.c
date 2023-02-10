@@ -64,8 +64,6 @@ void ArrayRemoveValueByRef(Array array, ArrayValue value)
     int i = -1;
     for (int j = 0; j < array->capacity; j++)
     {
-        printf("array %p\n", array->values[j]);
-        printf("value %p\n", value);
         if ((array->values)[j] == value)
         {
             i = j;
