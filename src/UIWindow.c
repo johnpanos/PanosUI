@@ -49,6 +49,8 @@ UIWindow UIWindowCreate(UIRect frame)
 {
     UIWindow window = calloc(1, sizeof(struct _UIWindow));
 
+    window->responder = UIEventResponderCreate();
+
     ArrayAddValue(UIApplicationShared()->windows, window);
 
     window->frame = UIRectOutset(frame, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT);
@@ -94,12 +96,6 @@ void UIWindowSetTitle(UIWindow window, const char *title)
 
 void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 {
-    if (view->needsLayout)
-    {
-        view->layoutSubviews(view);
-        view->needsLayout = 0;
-    }
-
     UIGraphicsContextSave(context);
     if (view->parentView != NULL)
     {
@@ -107,21 +103,60 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
     }
     UILayer layer = UILayerGetInFlight(*view->layer);
     UILayerRenderInContext(&layer, context);
-    for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
+    ArrayForEach(UIView viewToRender, view->subviews)
     {
-        UIView viewToRender = ArrayGetValueAtIndex(view->subviews, i);
         RENDER_SUBVIEWS(viewToRender, context);
     }
     UIGraphicsContextRestore(context);
+}
+
+void _UIWindowLayoutPhase_UIViewLayout(UIView viewToLayout)
+{
+    if (viewToLayout->needsLayout)
+    {
+        viewToLayout->layoutSubviews(viewToLayout);
+    }
+
+    ArrayForEach(UIView child, viewToLayout->subviews)
+    {
+        _UIWindowLayoutPhase_UIViewLayout(child);
+    }
+}
+
+int _UIWindowRenderPhase_ShouldRender(UIView view)
+{
+    if (ArrayGetCapacity(view->layer->animations) > 0 || view->needsDisplay)
+    {
+        view->needsDisplay = 0;
+        return 1;
+    }
+
+    else
+    {
+        ArrayForEach(UIView child, view->subviews)
+        {
+            if (_UIWindowRenderPhase_ShouldRender(child) || child->needsDisplay)
+            {
+                child->needsDisplay = 0;
+                return 1;
+            }
+        }
+    }
+
+    return 0;
 }
 
 void UIWindowUpdate(UIWindow window)
 {
     UIView rootView = window->mainView;
 
-    // if (rootView != NULL && rootView->needsDisplay)
-    if (rootView != NULL)
+    _UIWindowLayoutPhase_UIViewLayout(rootView);
+
+    int shouldRender = _UIWindowRenderPhase_ShouldRender(rootView);
+
+    if (shouldRender)
     {
+        // printf("Should render: %d\n", shouldRender);
         UIGraphicsContextMakeCurrent(window->graphicsContext);
         UIGraphicsContextClear(window->graphicsContext);
 
@@ -163,39 +198,65 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
     {
         window->mousePos.x = event._eventData.mouseMotion.x - window->contentFrame.x;
         window->mousePos.y = event._eventData.mouseMotion.y - window->contentFrame.y;
-
-        printf("x(%d) y(%d)\n", window->mousePos.x, window->mousePos.y);
-
-        UIView hitView = UIViewHitTest(window->mainView, window->mousePos);
-        printf("Hit view: %p\n", hitView);
     }
-    else if (event.type == UIEventTypeMouseDown)
+
+    UIRect dragger = UIRectCreate(
+        window->contentFrame.width,
+        window->contentFrame.height,
+        0,
+        0);
+    dragger = UIRectOutset(dragger, 10, 10, 10, 10);
+
+    if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.width) &&
+        (window->mousePos.y > 0 && window->mousePos.y < 28))
     {
-        UIRect dragger = UIRectCreate(
-            window->contentFrame.width,
-            window->contentFrame.height,
-            0,
-            0);
-        dragger = UIRectOutset(dragger, 10, 10, 10, 10);
-
-        printf("Dragger: x(%d) y(%d) w(%d) h(%d)\n", dragger.x, dragger.y, dragger.width, dragger.height);
-
-        if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.width) &&
-            (window->mousePos.y > 0 && window->mousePos.y < 28))
+        _UIPlatformWindowMove(window, event);
+    }
+    else if (UIPointInRect(window->mousePos, dragger))
+    {
+        _UIPlatformWindowResize(window, event);
+    }
+    else
+    {
+        UIPoint hitPoint = {
+            .x = window->mousePos.x,
+            .y = window->mousePos.y};
+        UIView hitView = UIViewHitTest(window->mainView, hitPoint);
+        switch (event.type)
         {
-            _UIPlatformWindowMove(window, event);
-        }
-        else if (UIPointInRect(window->mousePos, dragger))
-        {
-            _UIPlatformWindowResize(window, event);
-        }
-        else
-        {
-            UIPoint hitPoint = {
-                .x = window->mousePos.x,
-                .y = window->mousePos.y - 28};
-            // UIView hitView = UIViewHitTest(window->mainView, hitPoint);
-            // printf("Hit view: %p\n", hitView);
-        }
+        case UIEventTypeMouseDown:
+            if (event._eventData.mouseButton.button == UIEventMouseButtonTypeLeft)
+            {
+                hitView->responder->leftMouseDown(
+                    hitView->responder,
+                    event);
+            }
+            else if (event._eventData.mouseButton.button == UIEventMouseButtonTypeRight)
+            {
+                hitView->responder->rightMouseDown(
+                    hitView->responder,
+                    event);
+            }
+            break;
+        case UIEventTypeMouseUp:
+            if (event._eventData.mouseButton.button == UIEventMouseButtonTypeLeft)
+            {
+                hitView->responder->leftMouseUp(
+                    hitView->responder,
+                    event);
+            }
+            else if (event._eventData.mouseButton.button == UIEventMouseButtonTypeRight)
+            {
+                hitView->responder->rightMouseUp(
+                    hitView->responder,
+                    event);
+            }
+            break;
+        case UIEventTypeMouseMotion:
+            hitView->responder->mouseMove(
+                hitView->responder,
+                event);
+            break;
+        };
     }
 }

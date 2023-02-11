@@ -6,12 +6,25 @@ void windowDidLoad(UIWindow window)
     printf("THE WINDOW LOADED!\n");
 }
 
-UIView insetView = NULL;
-void mainViewLayoutSubviews(UIView mainView)
+UIView VIEW;
+
+void onViewClick(UIEventResponder self, UIEvent event)
 {
-    insetView->frame = UIRectInset(mainView->frame, 25, 25, 25, 25);
-    insetView->needsDisplay = 1;
-    insetView->needsLayout = 1;
+    printf("On Click\n");
+    int end = 200;
+
+    UIAnimation radiusAnim;
+    radiusAnim.finished = 0;
+    radiusAnim.forKey = kUILayerKeyBoundsWidth;
+    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
+    radiusAnim.startValue = &VIEW->frame.width;
+    radiusAnim.endValue = &end;
+    radiusAnim.startTime = UIAnimationGetCurrentTime();
+    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
+    radiusAnim._valueSize = sizeof(int);
+    radiusAnim.duration = 5000;
+
+    UILayerAddAnimation(VIEW->layer, radiusAnim);
 }
 
 void didFinishLaunching(UIApplication *application)
@@ -39,6 +52,10 @@ void didFinishLaunching(UIApplication *application)
     myRect.width = 100;
 
     UIView testView = UIViewCreate(myRect, myRect);
+    VIEW = testView;
+
+    testView->responder->leftMouseDown = &onViewClick;
+
     UIViewSetBackgroundColor(testView, UIColorCreateRGBA(200, 200, 200, 255));
     UIViewSetCornerRadius(testView, 10.0f);
     UIViewSetShadowColor(testView, UIColorCreateRGBA(0, 0, 0, 100));
@@ -47,33 +64,14 @@ void didFinishLaunching(UIApplication *application)
         .y = 10};
     UIViewSetShadowOffset(testView, shadowOffset);
     UIViewSetShadowRadius(testView, 10.0f);
-    insetView = testView;
-
     UIViewAddSubview(window->mainView, testView);
 
-    window->mainView->layoutSubviews = &mainViewLayoutSubviews;
-
-    int end = 200;
-
-    UIAnimation radiusAnim;
-    radiusAnim.finished = 0;
-    radiusAnim.forKey = kUILayerKeyBoundsWidth;
-    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
-    radiusAnim.startValue = &insetView->frame.x;
-    radiusAnim.endValue = &end;
-    radiusAnim.startTime = UIAnimationGetCurrentTime();
-    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
-    radiusAnim._valueSize = sizeof(int);
-    radiusAnim.duration = 5000;
-
-    UILayerAddAnimation(insetView->layer, radiusAnim);
-
-    radiusAnim.forKey = kUILayerKeyBoundsHeight;
-    radiusAnim.startValue = &insetView->frame.y;
-    radiusAnim.endValue = &end;
-    radiusAnim.startTime = UIAnimationGetCurrentTime();
-    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
-    UILayerAddAnimation(insetView->layer, radiusAnim);
+    // radiusAnim.forKey = kUILayerKeyBoundsHeight;
+    // radiusAnim.startValue = &testView->frame.y;
+    // radiusAnim.endValue = &end;
+    // radiusAnim.startTime = UIAnimationGetCurrentTime();
+    // radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
+    // UILayerAddAnimation(testView->layer, radiusAnim);
 }
 
 static UIApplicationDelegate my_delegate = {

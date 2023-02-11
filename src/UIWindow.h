@@ -4,6 +4,7 @@
 #include "UIView.h"
 #include "UIRect.h"
 #include "UIEvent.h"
+#include "UIEventResponder.h"
 #include "UIWindowController.h"
 #include "UIGraphicsContext.h"
 
@@ -12,6 +13,8 @@ typedef struct _UIWindow
     const char *title;
     UIRect frame;
     UIRect contentFrame;
+
+    UIEventResponder responder;
 
     UIView mainView;
 

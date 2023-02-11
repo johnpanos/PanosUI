@@ -8,6 +8,7 @@ src = [
     'src/UIView.c',
     'src/UILayer.c',
     'src/UIWindowController.c',
+    'src/UIEventResponder.c',
     'src/UIWindow.c',
     'src/UIColor.c',
     'src/UIRect.c',

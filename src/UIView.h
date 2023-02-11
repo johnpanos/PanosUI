@@ -4,12 +4,14 @@
 #include "UIPoint.h"
 #include "UIColor.h"
 #include "UILayer.h"
+#include "UIEventResponder.h"
 #include "shared/Array.h"
 
 typedef struct _UIView *UIView;
 typedef struct _UIView
 {
     UILayer *layer;
+    UIEventResponder responder;
 
     UIRect frame;
     UIRect bounds;

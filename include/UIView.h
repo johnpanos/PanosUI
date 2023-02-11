@@ -5,12 +5,15 @@
 #include "UIPoint.h"
 #include "UILayer.h"
 #include "UIColor.h"
+#include "UIEventResponder.h"
 #include "Array.h"
 
 typedef struct _UIView *UIView;
 typedef struct _UIView
 {
     UILayer *layer;
+    UIEventResponder responder;
+
     UIRect frame;
     UIRect bounds;
 

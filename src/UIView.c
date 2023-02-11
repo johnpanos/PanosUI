@@ -3,12 +3,16 @@
 #include "UIView.h"
 #include "shared/Array.h"
 
-void _UIViewDoNothing(UIView view){};
+void _UIViewDoNothing(UIView view)
+{
+    view->needsLayout = 0;
+};
 
 UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
     UIView view = calloc(1, sizeof(struct _UIView));
     view->layer = UILayerCreate(frame, bounds);
+    view->responder = UIEventResponderCreate();
     view->frame = frame;
     view->bounds = bounds;
     view->subviews = ArrayCreate(sizeof(UIView));
@@ -86,7 +90,7 @@ void UIViewSetNeedsDisplay(UIView view)
 
 UIView UIViewHitTest(UIView view, UIPoint point)
 {
-    // printf("\nHit test: x(%d) y(%d)\n", point.x, point.y);
+    printf("\nHit test: x(%d) y(%d)\n", point.x, point.y);
     if (!view)
         return NULL;
     if (!UIPointInRect(point, view->frame))
@@ -95,12 +99,13 @@ UIView UIViewHitTest(UIView view, UIPoint point)
     for (int i = ArrayGetCapacity(view->subviews) - 1; i >= 0; --i)
     {
         UIView subview = ArrayGetValueAtIndex(view->subviews, i);
-        if (!subview->clipToBounds && !UIPointInRect(point, subview->frame))
-            continue;
         UIPoint convertedPoint = {
             .x = point.x - subview->frame.x,
             .y = point.y - subview->frame.y};
-        // printf("Converted point: x(%d) y(%d)\n", convertedPoint.x, convertedPoint.y);
+        if (!subview->clipToBounds && !UIPointInRect(convertedPoint, subview->frame))
+            continue;
+
+        printf("Converted point: x(%d) y(%d)\n", convertedPoint.x, convertedPoint.y);
         UIView hitView = UIViewHitTest(subview, convertedPoint);
         if (hitView)
             return hitView;
@@ -109,58 +114,71 @@ UIView UIViewHitTest(UIView view, UIPoint point)
     return view;
 }
 
-
 // MARK: Getters
-UIColor UIViewGetBackgroundColor(UIView view) {
+UIColor UIViewGetBackgroundColor(UIView view)
+{
     return view->backgroundColor;
 };
-float UIViewGetCornerRadius(UIView view) {
+float UIViewGetCornerRadius(UIView view)
+{
     return view->cornerRadius;
 };
-UIColor UIViewGetBorderColor(UIView view) {
+UIColor UIViewGetBorderColor(UIView view)
+{
     return view->borderColor;
 };
-float UIViewGetBorderWidth(UIView view) {
+float UIViewGetBorderWidth(UIView view)
+{
     return view->borderWidth;
 };
 
-UIPoint UIViewGetShadowOffset(UIView view) {
+UIPoint UIViewGetShadowOffset(UIView view)
+{
     return view->shadowOffset;
 };
-UIColor UIViewGetShadowColor(UIView view) {
+UIColor UIViewGetShadowColor(UIView view)
+{
     return view->shadowColor;
 };
-float UIViewGetShadowRadius(UIView view) {
+float UIViewGetShadowRadius(UIView view)
+{
     return view->shadowRadius;
 };
 
 // MARK: Setters
-void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor) {
+void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor)
+{
     view->backgroundColor = backgroundColor;
     view->layer->backgroundColor = backgroundColor;
 }
-void UIViewSetCornerRadius(UIView view, float cornerRadius) {
+void UIViewSetCornerRadius(UIView view, float cornerRadius)
+{
     view->cornerRadius = cornerRadius;
     view->layer->cornerRadius = cornerRadius;
 }
-void UIViewSetBorderColor(UIView view, UIColor borderColor) {
+void UIViewSetBorderColor(UIView view, UIColor borderColor)
+{
     view->borderColor = borderColor;
     view->layer->borderColor = borderColor;
 }
-void UIViewSetBorderWidth(UIView view, float borderWidth) {
+void UIViewSetBorderWidth(UIView view, float borderWidth)
+{
     view->borderWidth = borderWidth;
     view->layer->borderWidth = borderWidth;
 }
 
-void UIViewSetShadowOffset(UIView view, UIPoint shadowOffset) {
+void UIViewSetShadowOffset(UIView view, UIPoint shadowOffset)
+{
     view->shadowOffset = shadowOffset;
     view->layer->shadowOffset = shadowOffset;
 }
-void UIViewSetShadowColor(UIView view, UIColor shadowColor) {
+void UIViewSetShadowColor(UIView view, UIColor shadowColor)
+{
     view->shadowColor = shadowColor;
     view->layer->shadowColor = shadowColor;
 }
-void UIViewSetShadowRadius(UIView view, float shadowRadius) {
+void UIViewSetShadowRadius(UIView view, float shadowRadius)
+{
     view->shadowRadius = shadowRadius;
     view->layer->shadowRadius = shadowRadius;
 }
