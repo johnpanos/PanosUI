@@ -27,12 +27,8 @@ struct UIPlatformWindow
 {
     UIWindow window;
 
-    struct wl_surface *surface;
     struct xdg_surface *xdg_surface;
     struct xdg_toplevel *toplevel;
-
-    struct wl_egl_window *egl_window;
-    EGLSurface egl_surface;
 };
 
 extern struct UIPlatformGlobals UIPlatformGlobalsShared;

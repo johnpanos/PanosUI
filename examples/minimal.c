@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include "PanosUI.h"
 
-void windowDidLoad(UIWindow window)
-{
-    printf("THE WINDOW LOADED!\n");
-}
-
 UIView VIEW;
 
 void onViewClick(UIEventResponder self, UIEvent event)
@@ -27,25 +22,12 @@ void onViewClick(UIEventResponder self, UIEvent event)
     UILayerAddAnimation(VIEW->layer, radiusAnim);
 }
 
-void didFinishLaunching(UIApplication *application)
+void windowDidLoad(UIWindow window)
 {
-    UIRect window_frame = {
-        .x = 0,
-        .y = 0,
-        .width = 600,
-        .height = 600};
-    UIWindow window = UIWindowCreate(window_frame);
+    printf("THE WINDOW LOADED!\n");
 
-    UIWindowController myWindowController = UIWindowControllerCreate();
-    myWindowController->windowDidLoad = &windowDidLoad;
-
-    window->controller = myWindowController;
-
-    UIWindowShow(window);
-    UIWindowSetTitle(window, "C Example");
-
-    UIColor bg = {.r = 246, .g = 246, .b = 246, .a = 255};
-    window->mainView->backgroundColor = bg;
+    UIViewSetBackgroundColor(window->mainView, UIColorCreateRGBA(0, 0, 0, 255));
+    UIViewSetCornerRadius(window->mainView, 0.0f);
 
     UIRect myRect = window->mainView->frame;
     myRect.height = 100;
@@ -65,6 +47,24 @@ void didFinishLaunching(UIApplication *application)
     UIViewSetShadowOffset(testView, shadowOffset);
     UIViewSetShadowRadius(testView, 10.0f);
     UIViewAddSubview(window->mainView, testView);
+}
+
+void didFinishLaunching(UIApplication *application)
+{
+    UIRect window_frame = {
+        .x = 0,
+        .y = 0,
+        .width = 600,
+        .height = 600};
+    UIWindow window = UIWindowCreate(window_frame);
+
+    UIWindowController myWindowController = UIWindowControllerCreate();
+    myWindowController->windowDidLoad = &windowDidLoad;
+
+    window->controller = myWindowController;
+
+    UIWindowShow(window);
+    UIWindowSetTitle(window, "C Example");
 }
 
 static UIApplicationDelegate my_delegate = {

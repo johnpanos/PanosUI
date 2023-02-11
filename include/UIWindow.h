@@ -5,6 +5,7 @@
 #include "UIEventResponder.h"
 
 typedef struct _UIView *UIView;
+typedef struct _UILayer UILayer;
 typedef struct _UIWindowController *UIWindowController;
 typedef struct _UIWindow
 {
@@ -14,6 +15,7 @@ typedef struct _UIWindow
 
     UIEventResponder responder;
 
+    UILayer *rootLayer;
     UIView mainView;
 
     UIWindowController controller;

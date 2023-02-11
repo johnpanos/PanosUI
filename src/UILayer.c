@@ -33,6 +33,7 @@ float lerp(float a, float b, float t)
 
 UILayer *UILayerCreate(UIRect frame, UIRect bounds)
 {
+    printf("Creating layer w(%d) h(%d)\n", frame.width, frame.height);
     UILayer *layer = calloc(1, sizeof(UILayer));
     layer->frame = frame;
     layer->bounds = bounds;
@@ -45,12 +46,14 @@ UILayer *UILayerCreate(UIRect frame, UIRect bounds)
 void UILayerAddSublayer(UILayer *layer, UILayer *sublayer)
 {
     ArrayAddValue(layer->sublayers, sublayer);
+    sublayer->parent = layer;
     _UIPlatformLayerAddSublayer(layer, sublayer);
 }
 
 void UILayerRemoveSublayer(UILayer *layer, UILayer *sublayer)
 {
     ArrayRemoveValueByRef(layer->sublayers, sublayer);
+    sublayer->parent = NULL;
     _UIPlatformLayerRemoveSublayer(layer, sublayer);
 }
 
@@ -201,10 +204,10 @@ UILayer UILayerGetInFlight(UILayer layer)
 
 void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
 {
-    if (layer->clipToBounds)
-    {
-        UIGraphicsContextClipToRect(context, layer->bounds, layer->cornerRadius);
-    }
+    // if (layer->clipToBounds)
+    // {
+    //     UIGraphicsContextClipToRect(context, layer->bounds, layer->cornerRadius);
+    // }
 
     if (layer->shadowColor.a > 0)
     {

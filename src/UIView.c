@@ -11,10 +11,13 @@ void _UIViewDoNothing(UIView view)
 UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
     UIView view = calloc(1, sizeof(struct _UIView));
-    view->layer = UILayerCreate(frame, bounds);
+    UIRect boundsCopy = bounds;
+    boundsCopy.x = 0;
+    boundsCopy.y = 0;
+    view->layer = UILayerCreate(frame, boundsCopy);
     view->responder = UIEventResponderCreate();
     view->frame = frame;
-    view->bounds = bounds;
+    view->bounds = boundsCopy;
     view->subviews = ArrayCreate(sizeof(UIView));
     view->needsDisplay = 1;
     view->needsLayout = 1;
@@ -162,8 +165,7 @@ void UIViewSetCornerRadius(UIView view, float cornerRadius)
         kUILayerKeyCornerRadius,
         sizeof(float),
         &view->layer->cornerRadius,
-        &view->cornerRadius
-    );
+        &view->cornerRadius);
     UILayerAddAnimation(view->layer, anim);
 
     view->layer->cornerRadius = cornerRadius;

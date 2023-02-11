@@ -17,6 +17,7 @@ typedef struct _UIWindow
 
     UIEventResponder responder;
 
+    UILayer *rootLayer;
     UIView mainView;
 
     UIWindowController controller;
@@ -24,7 +25,7 @@ typedef struct _UIWindow
 
     UIGraphicsContext *graphicsContext;
     UIView frameView;
-    
+
     UIPlatformWindow *platformWindow;
 } *UIWindow;
 

@@ -6,7 +6,8 @@ UIView _UIWindowCreateFrameView(UIWindow window)
     UIRect titlebarFrame = {
         .x = 8, .y = 8, .width = window->frame.width, .height = 28};
     UIView titlebar = UIViewCreate(titlebarFrame, titlebarFrame);
-    UIViewSetBackgroundColor(titlebar, UIColorCreateRGBA(255, 255, 255, 0));
+    UIViewSetBackgroundColor(titlebar, UIColorCreateRGBA(255, 255, 255, 255));
+    UIViewSetCornerRadius(titlebar, 0.0f);
 
     UIViewSetBorderColor(titlebar, UIColorCreateRGBA(0, 0, 0, 50));
     UIViewSetBorderWidth(titlebar, 0.0f);
@@ -57,10 +58,6 @@ UIWindow UIWindowCreate(UIRect frame)
     window->frame.x = 0;
     window->frame.y = 0;
     window->contentFrame = UIRectInset(window->frame, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT);
-
-    // window->frameView = _UIWindowCreateFrameView(window);
-    window->mainView = UIViewCreate(frame, frame);
-    window->mainView->clipToBounds = 1;
     window->graphicsContext = NULL;
     window->controller = UIWindowControllerGetDefault();
 
@@ -72,6 +69,15 @@ void UIWindowShow(UIWindow window)
     window->controller->windowWillLoad(window);
 
     _UIPlatformWindowCreate(window);
+    window->mainView = UIViewCreate(window->frame, window->frame);
+    UIViewSetCornerRadius(window->mainView, 0.0f);
+    window->frameView = _UIWindowCreateFrameView(window);
+    UIViewSetCornerRadius(window->frameView, 0.0f);
+
+    UILayerAddSublayer(window->rootLayer, window->mainView->layer);
+    UILayerAddSublayer(window->rootLayer, window->frameView->layer);
+
+    // window->mainView->clipToBounds = 1;
 
     window->controller->windowDidLoad(window);
 }
@@ -148,11 +154,11 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 
 void UIWindowUpdate(UIWindow window)
 {
-    UIGraphicsContextMakeCurrent(window->graphicsContext);
-    UIGraphicsContextClear(window->graphicsContext);
-    UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
-    UIGraphicsContextAddRect(window->graphicsContext, window->frame, 0.0f);
-    UIGraphicsContextFlush(window->graphicsContext);
+    // UIGraphicsContextMakeCurrent(window->graphicsContext);
+    // UIGraphicsContextClear(window->graphicsContext);
+    // UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
+    // UIGraphicsContextAddRect(window->graphicsContext, window->frame, 0.0f);
+    // UIGraphicsContextFlush(window->graphicsContext);
     return;
     UIView rootView = window->mainView;
 

@@ -7,6 +7,7 @@
 #include "include/UIEvent.h"
 #include "../UIWindow.h"
 #include "../UIApplication.h"
+#include "UILayer_linux.h"
 #include "globals.h"
 #include "platform.h"
 
@@ -80,7 +81,7 @@ static void wl_pointer_enter(void *data, struct wl_pointer *wl_pointer,
     {
         UIWindow window = ArrayGetValueAtIndex(windows, i);
         struct UIPlatformWindow *platformData = ToPlatformData(window);
-        if (platformData->surface == surface)
+        if (platformData->window->rootLayer->platformLayer->surface == surface)
         {
             windowForEvent = window;
         }
@@ -130,10 +131,7 @@ static void wl_pointer_button(void *data, struct wl_pointer *wl_pointer,
         ._eventData = {
             .mouseButton = {
                 .button = button == BTN_LEFT ? UIEventMouseButtonTypeLeft : UIEventMouseButtonTypeRight,
-                .state = state
-            }
-        }
-    };
+                .state = state}}};
 
     UIApplicationSendEvent(event);
 }

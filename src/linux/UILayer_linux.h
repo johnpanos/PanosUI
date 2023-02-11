@@ -14,4 +14,6 @@ typedef struct _UIPlatformLayer
     EGLSurface egl_surface;
 } UIPlatformLayer;
 
+static const struct wl_callback_listener frame_listener;
+
 UIPlatformLayer *_UIPlatformCreateLayer();

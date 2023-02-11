@@ -11,25 +11,39 @@ static void frame_done(void *data, struct wl_callback *callback,
     printf("frame handler\n");
     UILayer *layer = (UILayer *)data;
 
-    if (ArrayGetCapacity(layer->animations) < 1) {
+    if (ArrayGetCapacity(layer->animations) < 1)
+    {
         return;
     }
 
     UILayer inflight = UILayerGetInFlight(*layer);
-    wl_subsurface_set_position(
-        layer->platformLayer->subsurface,
-        inflight.frame.x,
-        inflight.frame.y);
+    if (layer->platformLayer->subsurface != NULL)
+    {
+        if (layer->parent != NULL)
+        {
+            wl_subsurface_set_position(
+                layer->platformLayer->subsurface,
+                inflight.frame.x - layer->parent->bounds.x,
+                inflight.frame.y - layer->parent->bounds.y);
+        }
+        else
+        {
+            wl_subsurface_set_position(
+                layer->platformLayer->subsurface,
+                inflight.frame.x,
+                inflight.frame.y);
+        }
+    }
+
     wl_egl_window_resize(
         layer->platformLayer->egl_window,
         inflight.bounds.width,
         inflight.bounds.height,
         0,
-        0
-    );
+        0);
 
     layer->ctx = UIGraphicsContextCreate(layer->platformLayer->egl_surface, inflight.bounds.width, inflight.bounds.height);
-    
+
     UIGraphicsContextMakeCurrent(layer->ctx);
     UIGraphicsContextClear(layer->ctx);
     UILayerRenderInContext(&inflight, layer->ctx);
@@ -93,7 +107,7 @@ void _UIPlatformLayerAddSublayer(UILayer *layer, UILayer *sublayer)
     }
     else
     {
-        glClearColor(0, 0, 0, 0.0);
+        glClearColor(0, 0, 0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, sublayer->platformLayer->egl_surface) == EGL_FALSE)
@@ -114,7 +128,8 @@ void _UIPlatformLayerRemoveSublayer(UILayer *layer, UILayer *sublayer)
     wl_subsurface_destroy(sublayer->platformLayer->subsurface);
 }
 
-void _UIPlatformLayerAddAnimation(UILayer *layer) {
+void _UIPlatformLayerAddAnimation(UILayer *layer)
+{
     struct wl_callback *cb = wl_surface_frame(layer->platformLayer->surface);
     wl_callback_add_listener(cb, &frame_listener, layer);
     wl_surface_damage(layer->platformLayer->surface, layer->bounds.x, layer->bounds.y, layer->bounds.width, layer->bounds.height);
