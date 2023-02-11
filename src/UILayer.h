@@ -27,10 +27,14 @@ extern const char *kUILayerKeyCornerRadius;
 extern const char *kUILayerKeyOpacity;
 
 // MARK: Struct Defs
+typedef struct _UIPlatformLayer UIPlatformLayer;
+typedef struct _UILayer UILayer;
 typedef struct _UILayer
 {
     Array animations;
     Array sublayers;
+
+    UILayer *parent;
 
     UIRect frame; // Calculated, never set
     UIRect bounds;
@@ -48,12 +52,15 @@ typedef struct _UILayer
 
     float cornerRadius;
     int clipToBounds;
+
+    UIPlatformLayer *platformLayer;
 } UILayer;
 
 UILayer *UILayerCreate(UIRect frame, UIRect bounds);
 void UILayerDestroy(UILayer layer);
 
 void UILayerAddSublayer(UILayer *layer, UILayer *sublayer);
+void UILayerRemoveSublayer(UILayer *layer, UILayer *sublayer);
 void UILayerAddAnimation(UILayer *layer, UIAnimation anim);
 
 void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context);

@@ -60,12 +60,12 @@ void _UIPlatformWindowCreate(UIWindow *window) {
   //   [myWindow setDelegate:myView]; // set window's delegate
   [myWindow makeKeyAndOrderFront:nil]; // display window
 
-  window->_platformData = myWindow;
+  window->platformWindow = myWindow;
 }
 void _UIPlatformWindowDestroy(UIWindow *window) {}
 
 void _UIPlatformWindowSetTitle(UIWindow *window, const char *title) {
-  NSWindow *nsWindow = (NSWindow *)window->_platformData;
+  NSWindow *nsWindow = (NSWindow *)window->platformWindow;
   [nsWindow setTitle:[NSString stringWithUTF8String:title]];
 }
 void _UIPlatformWindowRender(UIWindow *window) {}

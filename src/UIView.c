@@ -41,12 +41,14 @@ void UIViewAddSubview(UIView superview, UIView subview)
 {
     ArrayAddValue(superview->subviews, subview);
     subview->parentView = superview;
+    UILayerAddSublayer(superview->layer, subview->layer);
 }
 
 void UIViewRemoveSubview(UIView superview, UIView subview)
 {
     ArrayRemoveValueByRef(superview->subviews, subview);
     subview->parentView = NULL;
+    UILayerRemoveSublayer(superview->layer, subview->layer);
 }
 
 void UIViewDrawInContext(UIView view, UIGraphicsContext *context)

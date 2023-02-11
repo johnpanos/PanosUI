@@ -27,10 +27,13 @@ extern const char *kUILayerKeyOpacity;
 
 // MARK: Struct Defs
 typedef struct _UIGraphicsContext UIGraphicsContext;
+typedef struct _UILayer UILayer;
 typedef struct _UILayer
 {
     Array animations;
     Array sublayers;
+
+    UILayer *parent;
 
     UIRect frame; // Calculated, never set
     UIRect bounds;

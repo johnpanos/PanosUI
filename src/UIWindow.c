@@ -58,7 +58,7 @@ UIWindow UIWindowCreate(UIRect frame)
     window->frame.y = 0;
     window->contentFrame = UIRectInset(window->frame, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT);
 
-    window->frameView = _UIWindowCreateFrameView(window);
+    // window->frameView = _UIWindowCreateFrameView(window);
     window->mainView = UIViewCreate(frame, frame);
     window->mainView->clipToBounds = 1;
     window->graphicsContext = NULL;
@@ -88,7 +88,7 @@ void UIWindowDestroy(UIWindow window)
 void UIWindowSetTitle(UIWindow window, const char *title)
 {
     window->title = title;
-    if (window->_platformData != NULL)
+    if (window->platformWindow != NULL)
     {
         _UIPlatformWindowSetTitle(window, title);
     }
@@ -148,6 +148,13 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 
 void UIWindowUpdate(UIWindow window)
 {
+    printf("UIWindowUpdate\n");
+    UIGraphicsContextMakeCurrent(window->graphicsContext);
+    UIGraphicsContextClear(window->graphicsContext);
+    UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
+    UIGraphicsContextAddRect(window->graphicsContext, window->frame, 8.0f);
+    UIGraphicsContextFlush(window->graphicsContext);
+    return;
     UIView rootView = window->mainView;
 
     _UIWindowLayoutPhase_UIViewLayout(rootView);

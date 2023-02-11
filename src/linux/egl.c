@@ -1,6 +1,9 @@
-#include "egl.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "globals.h"
+#include "platform.h"
+#include <EGL/eglext.h>
 
 const EGLint config_attributes[] = {
     EGL_SURFACE_TYPE,
@@ -25,8 +28,6 @@ const EGLint context_attributes[] = {
     2,
     EGL_NONE,
 };
-
-EGLData globalEglData;
 
 EGLData init_egl(struct wl_display *wl_display)
 {

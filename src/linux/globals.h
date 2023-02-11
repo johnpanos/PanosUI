@@ -1,20 +1,29 @@
 #pragma once
-
-#include "../UIWindow.h"
 #include <wayland-egl.h>
 #include <EGL/egl.h>
+
+typedef struct _EGLData
+{
+    EGLDisplay eglDisplay;
+    EGLContext eglContext;
+    EGLConfig eglConfig;
+} EGLData;
 
 struct UIPlatformGlobals
 {
     struct wl_display *display;
     struct wl_compositor *compositor;
+    struct wl_subcompositor *subcompositor;
     struct wl_seat *wl_seat;
     struct wl_shm *wl_shm;
     struct wl_registry *wl_registry;
     struct xdg_wm_base *wm_base;
+
+    EGLData eglData;
 };
 
-struct UIWindowPlatformData
+typedef struct _UIWindow *UIWindow;
+struct UIPlatformWindow
 {
     UIWindow window;
 
@@ -26,9 +35,4 @@ struct UIWindowPlatformData
     EGLSurface egl_surface;
 };
 
-UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height);
-void UIGraphicsContextDestroy(UIGraphicsContext *context);
-
-struct UIWindowPlatformData *ToPlatformData(UIWindow window);
-
-void setupSeat();
+extern struct UIPlatformGlobals UIPlatformGlobalsShared;

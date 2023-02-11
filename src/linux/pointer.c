@@ -7,9 +7,8 @@
 #include "include/UIEvent.h"
 #include "../UIWindow.h"
 #include "../UIApplication.h"
-#include "platformData.h"
-
-extern struct UIPlatformGlobals UIPlatformGlobalsShared;
+#include "globals.h"
+#include "platform.h"
 
 struct UIPlatformSeatData
 {
@@ -80,7 +79,7 @@ static void wl_pointer_enter(void *data, struct wl_pointer *wl_pointer,
     for (int i = 0; i < ArrayGetCapacity(windows); i++)
     {
         UIWindow window = ArrayGetValueAtIndex(windows, i);
-        struct UIWindowPlatformData *platformData = ToPlatformData(window);
+        struct UIPlatformWindow *platformData = ToPlatformData(window);
         if (platformData->surface == surface)
         {
             windowForEvent = window;

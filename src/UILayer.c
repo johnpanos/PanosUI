@@ -3,6 +3,7 @@
 #include <string.h>
 #include "UILayer.h"
 #include "UIAnimation.h"
+#include "platform.h"
 
 const char *kUILayerKeyPositionX = "position.x";
 const char *kUILayerKeyPositionY = "position.y";
@@ -36,12 +37,21 @@ UILayer *UILayerCreate(UIRect frame, UIRect bounds)
     layer->frame = frame;
     layer->bounds = bounds;
     layer->animations = ArrayCreate(sizeof(UIAnimation));
+    layer->sublayers = ArrayCreate(sizeof(UILayer *));
+    layer->platformLayer = _UIPlatformLayerCreate();
     return layer;
 }
 
 void UILayerAddSublayer(UILayer *layer, UILayer *sublayer)
 {
     ArrayAddValue(layer->sublayers, sublayer);
+    _UIPlatformLayerAddSublayer(layer, sublayer);
+}
+
+void UILayerRemoveSublayer(UILayer *layer, UILayer *sublayer)
+{
+    ArrayRemoveValueByRef(layer->sublayers, sublayer);
+    _UIPlatformLayerRemoveSublayer(layer, sublayer);
 }
 
 void UILayerAddAnimation(UILayer *layer, UIAnimation anim)
@@ -138,7 +148,8 @@ UILayer UILayerGetInFlight(UILayer layer)
                 VALUE_FOR_TYPE(anim, float, endValue),
                 progress);
         }
-        else if (KEY_EQUAL(anim, kUILayerKeyCornerRadius)) {
+        else if (KEY_EQUAL(anim, kUILayerKeyCornerRadius))
+        {
             copied.cornerRadius = lerp(
                 VALUE_FOR_TYPE(anim, float, startValue),
                 VALUE_FOR_TYPE(anim, float, endValue),
@@ -154,12 +165,14 @@ UILayer UILayerGetInFlight(UILayer layer)
     for (int i = 0; i < ArrayGetCapacity(layer.animations); i++)
     {
         UIAnimation *anim = ArrayGetValueAtIndex(layer.animations, i);
-        if (anim->finished) {
+        if (anim->finished)
+        {
             ArrayAddValue(animsToDelete, anim);
         }
     }
 
-    for (int i = 0; i < ArrayGetCapacity(animsToDelete); i++) {
+    for (int i = 0; i < ArrayGetCapacity(animsToDelete); i++)
+    {
         UIAnimation *anim = ArrayGetValueAtIndex(animsToDelete, i);
         ArrayRemoveValueByRef(layer.animations, anim);
         free(anim);

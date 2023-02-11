@@ -10,16 +10,15 @@
 #include <string.h>
 
 #include "../platform.h"
-#include "platformData.h"
 #include "../UIWindow.h"
 #include "../UIApplication.h"
 #include "../UIView.h"
 
 #include "deps/linux-dmabuf_unstable-v1.h"
 #include "deps/xdg-shell.h"
-#include "egl.h"
-
-struct UIPlatformGlobals UIPlatformGlobalsShared = {.compositor = NULL, .display = NULL, .wl_registry = NULL, .wl_seat = NULL, .wl_shm = NULL};
+#include "platform.h"
+#include "globals.h"
+#include "UILayer_linux.h"
 
 static void global_registry_handler(void *data, struct wl_registry *registry, uint32_t id,
                                     const char *interface, uint32_t version)
@@ -27,10 +26,18 @@ static void global_registry_handler(void *data, struct wl_registry *registry, ui
     // printf("Got a registry event for %s id %d\n", interface, id);
 
     if (strcmp(interface, "wl_compositor") == 0)
+    {
         UIPlatformGlobalsShared.compositor = wl_registry_bind(registry,
                                                               id,
                                                               &wl_compositor_interface,
                                                               1);
+    }
+
+    if (strcmp(interface, "wl_subcompositor") == 0)
+    {
+        printf("found wl_subcompositor\n");
+        UIPlatformGlobalsShared.subcompositor = wl_registry_bind(registry, id, &wl_subcompositor_interface, 1);
+    }
 
     if (strcmp(interface, "xdg_wm_base") == 0)
     {
@@ -89,7 +96,7 @@ xdg_toplevel_configure_handler(void *data,
                                int32_t height,
                                struct wl_array *states)
 {
-    struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)data;
+    struct UIPlatformWindow *platformData = (struct UIPlatformWindow *)data;
     UIRect configuredSize = {
         .x = 0,
         .y = 0,
@@ -104,7 +111,7 @@ xdg_toplevel_configure_handler(void *data,
     else
     {
         platformData->egl_window = wl_egl_window_create(platformData->surface, requestedSize.width, requestedSize.height);
-        platformData->egl_surface = eglCreateWindowSurface(globalEglData.eglDisplay, globalEglData.eglConfig, platformData->egl_window, NULL);
+        platformData->egl_surface = eglCreateWindowSurface(UIPlatformGlobalsShared.eglData.eglDisplay, UIPlatformGlobalsShared.eglData.eglConfig, platformData->egl_window, NULL);
     }
 
     platformData->window->frame.width = requestedSize.width;
@@ -116,7 +123,7 @@ xdg_toplevel_configure_handler(void *data,
         exit(1);
     }
 
-    if (eglMakeCurrent(globalEglData.eglDisplay, platformData->egl_surface, platformData->egl_surface, globalEglData.eglContext) == EGL_FALSE)
+    if (eglMakeCurrent(UIPlatformGlobalsShared.eglData.eglDisplay, platformData->egl_surface, platformData->egl_surface, UIPlatformGlobalsShared.eglData.eglContext) == EGL_FALSE)
     {
 
         printf("Could not make egl context current: %d\n", eglGetError());
@@ -155,7 +162,7 @@ xdg_toplevel_configure_handler(void *data,
 
 static void xdg_toplevel_close_handler(void *data, struct xdg_toplevel *xdg_toplevel)
 {
-    struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)data;
+    struct UIPlatformWindow *platformData = (struct UIPlatformWindow *)data;
     UIWindowDestroy(platformData->window);
 }
 
@@ -189,7 +196,7 @@ void _UIPlatformMain(UIApplication *application)
         exit(1);
     }
 
-    globalEglData = init_egl(UIPlatformGlobalsShared.display);
+    UIPlatformGlobalsShared.eglData = init_egl(UIPlatformGlobalsShared.display);
 
     xdg_wm_base_add_listener(UIPlatformGlobalsShared.wm_base, &wm_base_listener, NULL);
 
@@ -204,32 +211,35 @@ void _UIPlatformEventLoop(UIApplication *application)
 
     for (int i = 0; i < ArrayGetCapacity(application->windows); i++)
     {
-        struct UIWindowPlatformData *platformData = ToPlatformData(ArrayGetValueAtIndex(application->windows, i));
+        struct UIPlatformWindow *platformData = ToPlatformData(ArrayGetValueAtIndex(application->windows, i));
         UIWindowUpdate(platformData->window);
     }
 }
 
 void _UIPlatformWindowCreate(UIWindow window)
 {
-    struct UIWindowPlatformData *platformData = calloc(1, sizeof(struct UIWindowPlatformData));
+    struct UIPlatformWindow *platformData = calloc(1, sizeof(struct UIPlatformWindow));
 
     platformData->window = window;
 
     platformData->surface = wl_compositor_create_surface(UIPlatformGlobalsShared.compositor);
+
+    platformData->window->mainView->layer->platformLayer->surface = platformData->surface;
+
     platformData->xdg_surface = xdg_wm_base_get_xdg_surface(UIPlatformGlobalsShared.wm_base, platformData->surface);
     xdg_surface_add_listener(platformData->xdg_surface, &xdg_surface_listener, platformData);
 
     platformData->toplevel = xdg_surface_get_toplevel(platformData->xdg_surface);
     xdg_toplevel_add_listener(platformData->toplevel, &xdg_top_level_listener, platformData);
 
-    window->_platformData = platformData;
+    window->platformWindow = platformData;
 
     wl_surface_commit(platformData->surface);
 }
 
 void _UIPlatformWindowDestroy(UIWindow window)
 {
-    struct UIWindowPlatformData *platformData = ToPlatformData(window);
+    struct UIPlatformWindow *platformData = ToPlatformData(window);
 
     wl_egl_window_destroy(platformData->egl_window);
     xdg_toplevel_destroy(platformData->toplevel);
@@ -239,24 +249,24 @@ void _UIPlatformWindowDestroy(UIWindow window)
 
 void _UIPlatformWindowSetTitle(UIWindow window, const char *title)
 {
-    struct UIWindowPlatformData *platformData = ToPlatformData(window);
+    struct UIPlatformWindow *platformData = ToPlatformData(window);
     xdg_toplevel_set_title(platformData->toplevel, title);
 }
 
 void _UIPlatformWindowMove(UIWindow window, UIEvent event)
 {
-    struct UIWindowPlatformData *platformData = ToPlatformData(window);
+    struct UIPlatformWindow *platformData = ToPlatformData(window);
     xdg_toplevel_move(platformData->toplevel, UIPlatformGlobalsShared.wl_seat, event.reserved);
 }
 
 void _UIPlatformWindowResize(UIWindow window, UIEvent event)
 {
-    struct UIWindowPlatformData *platformData = ToPlatformData(window);
+    struct UIPlatformWindow *platformData = ToPlatformData(window);
     xdg_toplevel_resize(platformData->toplevel, UIPlatformGlobalsShared.wl_seat, event.reserved, XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT);
 }
 
-struct UIWindowPlatformData *ToPlatformData(UIWindow window)
+struct UIPlatformWindow *ToPlatformData(UIWindow window)
 {
-    struct UIWindowPlatformData *platformData = (struct UIWindowPlatformData *)window->_platformData;
+    struct UIPlatformWindow *platformData = (struct UIPlatformWindow *)window->platformWindow;
     return platformData;
 }

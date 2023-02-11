@@ -20,7 +20,7 @@
 
 #include "../UIRect.h"
 #include "../UIColor.h"
-#include "egl.h"
+#include "globals.h"
 
 typedef struct _UIGraphicsContext
 {
@@ -52,20 +52,21 @@ extern "C"
 
     void UIGraphicsContextMakeCurrent(UIGraphicsContext *context)
     {
-        if (eglMakeCurrent(globalEglData.eglDisplay, context->eglSurface, context->eglSurface, globalEglData.eglContext) == EGL_FALSE)
+        if (eglMakeCurrent(UIPlatformGlobalsShared.eglData.eglDisplay, context->eglSurface, context->eglSurface, UIPlatformGlobalsShared.eglData.eglContext) == EGL_FALSE)
         {
             printf("Could not make egl context current: %d\n", eglGetError());
         }
     }
 
-    void UIGraphicsContextClear(UIGraphicsContext *context) {
+    void UIGraphicsContextClear(UIGraphicsContext *context)
+    {
         context->canvas->clear(SK_ColorTRANSPARENT);
     }
 
     void UIGraphicsContextFlush(UIGraphicsContext *context)
     {
         context->surface->flushAndSubmit();
-        if (eglSwapBuffers(globalEglData.eglDisplay, context->eglSurface) == EGL_FALSE)
+        if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, context->eglSurface) == EGL_FALSE)
         {
             fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
         }
@@ -91,6 +92,8 @@ extern "C"
     UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height)
     {
         const char *version = (const char *)glGetString(GL_VERSION);
+
+        printf("Creating context with w(%d) h(%d)\n", width, height);
 
         UIGraphicsContext *graphicsContext = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
         graphicsContext->eglSurface = eglSurface;
@@ -165,7 +168,8 @@ extern "C"
         context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, blur, false));
     }
 
-    void UIGraphicsContextSetTransform(UIGraphicsContext *context, int x, int y) {
+    void UIGraphicsContextSetTransform(UIGraphicsContext *context, int x, int y)
+    {
         context->canvas->translate(x, y);
     }
 }

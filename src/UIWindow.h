@@ -8,6 +8,7 @@
 #include "UIWindowController.h"
 #include "UIGraphicsContext.h"
 
+typedef struct _UIPlatformWindow UIPlatformWindow;
 typedef struct _UIWindow
 {
     const char *title;
@@ -23,7 +24,8 @@ typedef struct _UIWindow
 
     UIGraphicsContext *graphicsContext;
     UIView frameView;
-    void *_platformData;
+    
+    UIPlatformWindow *platformWindow;
 } *UIWindow;
 
 UIWindow UIWindowCreate(UIRect frame);

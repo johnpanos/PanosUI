@@ -66,14 +66,14 @@ extern "C"
             NULL        // Additional application data
         );
 
-        window->_platformData = hwnd;
+        window->platformWindow = hwnd;
 
         ShowWindow(hwnd, 1);
     }
 
     void _UIPlatformWindowDestroy(UIWindow *window)
     {
-        DestroyWindow((HWND)window->_platformData);
+        DestroyWindow((HWND)window->platformWindow);
     }
 
     void _UIPlatformWindowSetTitle(UIWindow *window, const char *title)
@@ -82,7 +82,7 @@ extern "C"
         wchar_t *wide_title = new wchar_t[size];
         MultiByteToWideChar(CP_UTF8, 0, title, -1, wide_title, size);
         LPCWSTR lpcwstr_title = wide_title;
-        SetWindowText((HWND)window->_platformData, lpcwstr_title);
+        SetWindowText((HWND)window->platformWindow, lpcwstr_title);
     }
 
     void _UIPlatformWindowRender(UIWindow *window)

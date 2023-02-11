@@ -18,11 +18,14 @@ src = [
 
 if host_machine.system() == 'linux'
     src += 'src/linux/platform.c'
+    src += 'src/linux/globals.c'
     src += 'src/linux/pointer.c'
     src += 'src/linux/egl.c'
     src += 'src/linux/graphics.cpp'
     src += 'src/linux/deps/linux-dmabuf_unstable-v1.c'
     src += 'src/linux/deps/xdg-shell.c'
+
+    src += 'src/linux/UILayer_linux.c'
 
     egl = dependency('egl')
     glesv2 = dependency('glesv2')
