@@ -10,5 +10,3 @@ EGLData init_egl(struct wl_display *wl_display);
 
 UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height);
 void UIGraphicsContextDestroy(UIGraphicsContext *context);
-
-struct UIPlatformWindow *ToPlatformData(UIWindow window);

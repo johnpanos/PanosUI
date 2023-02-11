@@ -69,17 +69,6 @@ void UIWindowShow(UIWindow window)
     window->controller->windowWillLoad(window);
 
     _UIPlatformWindowCreate(window);
-    window->mainView = UIViewCreate(window->frame, window->frame);
-    UIViewSetCornerRadius(window->mainView, 0.0f);
-    window->frameView = _UIWindowCreateFrameView(window);
-    UIViewSetCornerRadius(window->frameView, 0.0f);
-
-    UILayerAddSublayer(window->rootLayer, window->mainView->layer);
-    UILayerAddSublayer(window->rootLayer, window->frameView->layer);
-
-    // window->mainView->clipToBounds = 1;
-
-    window->controller->windowDidLoad(window);
 }
 
 void UIWindowDestroy(UIWindow window)

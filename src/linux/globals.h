@@ -22,13 +22,4 @@ struct UIPlatformGlobals
     EGLData eglData;
 };
 
-typedef struct _UIWindow *UIWindow;
-struct UIPlatformWindow
-{
-    UIWindow window;
-
-    struct xdg_surface *xdg_surface;
-    struct xdg_toplevel *toplevel;
-};
-
 extern struct UIPlatformGlobals UIPlatformGlobalsShared;

@@ -25,13 +25,13 @@ void onViewClick(UIEventResponder self, UIEvent event)
 void windowDidLoad(UIWindow window)
 {
     printf("THE WINDOW LOADED!\n");
+    window->mainView = UIViewCreate(window->frame, window->frame);
+    UILayerAddSublayer(window->rootLayer, window->mainView->layer);
 
     UIViewSetBackgroundColor(window->mainView, UIColorCreateRGBA(0, 0, 0, 255));
     UIViewSetCornerRadius(window->mainView, 0.0f);
 
-    UIRect myRect = window->mainView->frame;
-    myRect.height = 100;
-    myRect.width = 100;
+    UIRect myRect = UIRectCreate(100, 100, 100, 100);
 
     UIView testView = UIViewCreate(myRect, myRect);
     VIEW = testView;
@@ -47,6 +47,27 @@ void windowDidLoad(UIWindow window)
     UIViewSetShadowOffset(testView, shadowOffset);
     UIViewSetShadowRadius(testView, 10.0f);
     UIViewAddSubview(window->mainView, testView);
+
+    UIRect r = UIRectCreate(0, 0, 20, 20);
+    UIView secondView = UIViewCreate(r, r);
+    UIViewSetBackgroundColor(secondView, UIColorCreateRGBA(0, 0, 0, 255));
+    UIViewAddSubview(VIEW, secondView);
+
+    int start = 10;
+    int end = 800;
+
+    UIAnimation radiusAnim;
+    radiusAnim.finished = 0;
+    radiusAnim.forKey = kUILayerKeyBoundsWidth;
+    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
+    radiusAnim.startValue = &start;
+    radiusAnim.endValue = &end;
+    radiusAnim.startTime = UIAnimationGetCurrentTime();
+    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
+    radiusAnim._valueSize = sizeof(int);
+    radiusAnim.duration = 5000;
+
+    UILayerAddAnimation(secondView->layer, radiusAnim);
 }
 
 void didFinishLaunching(UIApplication *application)

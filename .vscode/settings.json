@@ -105,7 +105,8 @@
         "__tree": "cpp",
         "__tuple": "cpp",
         "__assert": "cpp",
-        "globals.h": "c"
+        "globals.h": "c",
+        "uiwindow_linux.h": "c"
     },
     "mesonbuild.configureOnOpen": true,
     "print.colourScheme": "Atom One"
