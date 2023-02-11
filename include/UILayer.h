@@ -6,6 +6,8 @@
 #include "UIColor.h"
 #include "UIAnimation.h"
 
+typedef struct _UIGraphicsContext UIGraphicsContext;
+
 // MARK: Layer Key Constants
 extern const char *kUILayerKeyPositionX;
 extern const char *kUILayerKeyPositionY;
@@ -51,6 +53,8 @@ typedef struct _UILayer
 
     float cornerRadius;
     int clipToBounds;
+
+    UIGraphicsContext *ctx;
 } UILayer;
 
 UILayer *UILayerCreate(UIRect frame, UIRect bounds);

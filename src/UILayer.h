@@ -53,6 +53,8 @@ typedef struct _UILayer
     float cornerRadius;
     int clipToBounds;
 
+    UIGraphicsContext *ctx;
+
     UIPlatformLayer *platformLayer;
 } UILayer;
 

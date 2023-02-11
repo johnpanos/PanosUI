@@ -186,7 +186,7 @@ void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
 {
     if (layer->clipToBounds)
     {
-        UIGraphicsContextClipToRect(context, layer->frame, layer->cornerRadius);
+        UIGraphicsContextClipToRect(context, layer->bounds, layer->cornerRadius);
     }
 
     if (layer->shadowColor.a > 0)
@@ -195,18 +195,18 @@ void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
         {
             UIGraphicsContextSetShadow(context, layer->shadowOffset, layer->shadowRadius);
             UIGraphicsSetFillColor(context, layer->shadowColor);
-            UIGraphicsContextAddRect(context, layer->frame, layer->cornerRadius);
+            UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
         }
         UIGraphicsContextRestore(context);
     }
 
     UIGraphicsSetFillColor(context, layer->backgroundColor);
-    UIGraphicsContextAddRect(context, layer->frame, layer->cornerRadius);
+    UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
 
     if (layer->borderWidth > 0)
     {
         UIGraphicsSetStrokeColor(context, layer->borderColor);
         UIGraphicsSetStrokeWidth(context, layer->borderWidth);
-        UIGraphicsContextAddRect(context, layer->frame, layer->cornerRadius);
+        UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
     }
 }

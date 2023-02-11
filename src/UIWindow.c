@@ -148,7 +148,6 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 
 void UIWindowUpdate(UIWindow window)
 {
-    printf("UIWindowUpdate\n");
     UIGraphicsContextMakeCurrent(window->graphicsContext);
     UIGraphicsContextClear(window->graphicsContext);
     UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
