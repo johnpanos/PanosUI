@@ -32,6 +32,7 @@ void UIAnimationTransactionFlush();
 void UIAnimationCoreTick();
 
 // MARK: Easing functions
+float UIAnimationTimingFunctionLinear(float t);
 float UIAnimationTimingFunctionEaseInSine(float t);
 float UIAnimationTimingFunctionEaseOutSine(float t);
 float UIAnimationTimingFunctionEaseInOutSine(float t);

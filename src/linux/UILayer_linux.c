@@ -22,13 +22,13 @@ static void frame_done(void *data, struct wl_callback *callback,
         inflight.frame.y);
     wl_egl_window_resize(
         layer->platformLayer->egl_window,
-        inflight.frame.width,
-        inflight.frame.height,
+        inflight.bounds.width,
+        inflight.bounds.height,
         0,
         0
     );
 
-    layer->ctx = UIGraphicsContextCreate(layer->platformLayer->egl_surface, inflight.frame.width, inflight.frame.height);
+    layer->ctx = UIGraphicsContextCreate(layer->platformLayer->egl_surface, inflight.bounds.width, inflight.bounds.height);
     
     UIGraphicsContextMakeCurrent(layer->ctx);
     UIGraphicsContextClear(layer->ctx);
@@ -112,4 +112,11 @@ void _UIPlatformLayerAddSublayer(UILayer *layer, UILayer *sublayer)
 void _UIPlatformLayerRemoveSublayer(UILayer *layer, UILayer *sublayer)
 {
     wl_subsurface_destroy(sublayer->platformLayer->subsurface);
+}
+
+void _UIPlatformLayerAddAnimation(UILayer *layer) {
+    struct wl_callback *cb = wl_surface_frame(layer->platformLayer->surface);
+    wl_callback_add_listener(cb, &frame_listener, layer);
+    wl_surface_damage(layer->platformLayer->surface, layer->bounds.x, layer->bounds.y, layer->bounds.width, layer->bounds.height);
+    wl_surface_commit(layer->platformLayer->surface);
 }

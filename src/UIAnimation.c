@@ -25,7 +25,7 @@ UIAnimation UIAnimationDestroy()
 {
 }
 
-float LinearInterpolation(float p)
+float UIAnimationTimingFunctionLinear(float p)
 {
     return p;
 }

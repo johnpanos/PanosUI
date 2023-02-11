@@ -156,6 +156,16 @@ void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor)
 void UIViewSetCornerRadius(UIView view, float cornerRadius)
 {
     view->cornerRadius = cornerRadius;
+
+    UIAnimation anim = UILayerGetAnimationFor(
+        view->layer,
+        kUILayerKeyCornerRadius,
+        sizeof(float),
+        &view->layer->cornerRadius,
+        &view->cornerRadius
+    );
+    UILayerAddAnimation(view->layer, anim);
+
     view->layer->cornerRadius = cornerRadius;
 }
 void UIViewSetBorderColor(UIView view, UIColor borderColor)

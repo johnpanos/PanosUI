@@ -59,6 +59,23 @@ void UILayerAddAnimation(UILayer *layer, UIAnimation anim)
     UIAnimation *copiedAnim = calloc(1, sizeof(UIAnimation));
     *copiedAnim = UIAnimationCopy(anim);
     ArrayAddValue(layer->animations, copiedAnim);
+    _UIPlatformLayerAddAnimation(layer);
+}
+
+UIAnimation UILayerGetAnimationFor(UILayer *layer, const char *key, size_t valueSize, void *startValue, void *endValue)
+{
+    UIAnimation implicitAnim;
+    implicitAnim.finished = 0;
+    implicitAnim.forKey = key;
+    implicitAnim.timingFunction = &UIAnimationTimingFunctionLinear;
+    implicitAnim.startValue = startValue;
+    implicitAnim.endValue = endValue;
+    implicitAnim.startTime = UIAnimationGetCurrentTime();
+    implicitAnim.endTime = UIAnimationGetCurrentTime();
+    implicitAnim._valueSize = valueSize;
+    implicitAnim.duration = 0;
+
+    return UIAnimationCopy(implicitAnim);
 }
 
 UILayer UILayerGetInFlight(UILayer layer)
@@ -102,14 +119,14 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsHeight))
         {
-            copied.frame.height = (int)lerp(
+            copied.bounds.height = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsWidth))
         {
-            copied.frame.width = (int)lerp(
+            copied.bounds.width = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);

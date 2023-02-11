@@ -151,7 +151,7 @@ void UIWindowUpdate(UIWindow window)
     UIGraphicsContextMakeCurrent(window->graphicsContext);
     UIGraphicsContextClear(window->graphicsContext);
     UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
-    UIGraphicsContextAddRect(window->graphicsContext, window->frame, 8.0f);
+    UIGraphicsContextAddRect(window->graphicsContext, window->frame, 0.0f);
     UIGraphicsContextFlush(window->graphicsContext);
     return;
     UIView rootView = window->mainView;

@@ -65,13 +65,6 @@ void didFinishLaunching(UIApplication *application)
     UIViewSetShadowOffset(testView, shadowOffset);
     UIViewSetShadowRadius(testView, 10.0f);
     UIViewAddSubview(window->mainView, testView);
-
-    // radiusAnim.forKey = kUILayerKeyBoundsHeight;
-    // radiusAnim.startValue = &testView->frame.y;
-    // radiusAnim.endValue = &end;
-    // radiusAnim.startTime = UIAnimationGetCurrentTime();
-    // radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
-    // UILayerAddAnimation(testView->layer, radiusAnim);
 }
 
 static UIApplicationDelegate my_delegate = {

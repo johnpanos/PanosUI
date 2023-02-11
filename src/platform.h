@@ -13,8 +13,10 @@ void _UIPlatformEventLoop(UIApplication *application);
 void _UIPlatformWindowCreate(UIWindow window);
 void _UIPlatformWindowDestroy(UIWindow window);
 
+// MARK: Platform Layer
 UIPlatformLayer *_UIPlatformLayerCreate();
 void _UIPlatformLayerDestroy(UILayer *layer);
+void _UIPlatformLayerAddAnimation(UILayer *layer);
 
 void _UIPlatformWindowSetTitle(UIWindow window, const char *title);
 void _UIPlatformWindowMove(UIWindow window, UIEvent event);

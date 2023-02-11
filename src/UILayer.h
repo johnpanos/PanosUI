@@ -61,6 +61,8 @@ typedef struct _UILayer
 UILayer *UILayerCreate(UIRect frame, UIRect bounds);
 void UILayerDestroy(UILayer layer);
 
+UIAnimation UILayerGetAnimationFor(UILayer *layer, const char *key, size_t valueSize, void *startValue, void *endValue);
+
 void UILayerAddSublayer(UILayer *layer, UILayer *sublayer);
 void UILayerRemoveSublayer(UILayer *layer, UILayer *sublayer);
 void UILayerAddAnimation(UILayer *layer, UIAnimation anim);
