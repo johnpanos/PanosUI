@@ -4,10 +4,11 @@ extern "C"
 {
 #include "UIView.h"
 }
+#include "UIEventResponder.hpp"
 
 namespace UI
 {
-    class View
+    class View : public EventResponder
     {
     public:
         UIView backing_view;
@@ -17,11 +18,13 @@ namespace UI
         View(UIRect frame, UIRect bounds)
         {
             this->backing_view = UIViewCreate(frame, bounds);
+            this->set(this->backing_view->responder);
         }
 
         View(UIView backing_view)
         {
             this->backing_view = backing_view;
+            this->set(this->backing_view->responder);
         }
 
         ~View()

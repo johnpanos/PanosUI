@@ -1,5 +1,10 @@
+#pragma once
+
 #include <string>
+extern "C"
+{
 #include "UIAnimation.h"
+}
 
 namespace UI
 {

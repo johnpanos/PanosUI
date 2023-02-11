@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <functional>
+#include "Callback.hpp"
 
 extern "C"
 {
@@ -11,24 +12,7 @@ extern "C"
 #include "UIView.hpp"
 }
 
-template <typename T>
-struct Callback;
-
-template <typename Ret, typename... Params>
-struct Callback<Ret(Params...)>
-{
-    template <typename... Args>
-    static Ret callback(Args... args)
-    {
-        return func(args...);
-    }
-    static std::function<Ret(Params...)> func;
-};
-
-template <typename Ret, typename... Params>
-std::function<Ret(Params...)> Callback<Ret(Params...)>::func;
-
-typedef void (*callback_t)(UIWindow window);
+typedef void (*window_callback_t)(UIWindow window);
 
 namespace UI
 {
@@ -44,7 +28,7 @@ namespace UI
         {
             this->backing_window_controller = UIWindowControllerCreate();
             Callback<void(UIWindow window)>::func = std::bind(&WindowController::_window_did_load, this, std::placeholders::_1);
-            this->backing_window_controller->windowDidLoad = static_cast<callback_t>(Callback<void(UIWindow window)>::callback);
+            this->backing_window_controller->windowDidLoad = static_cast<window_callback_t>(Callback<void(UIWindow window)>::callback);
         }
 
         void _window_did_load(UIWindow window)
