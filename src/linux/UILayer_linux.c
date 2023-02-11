@@ -107,7 +107,7 @@ void _UIPlatformLayerAddSublayer(UILayer *layer, UILayer *sublayer)
     }
     else
     {
-        glClearColor(0, 0, 0, 1.0);
+        glClearColor(0, 0, 0, 0.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, sublayer->platformLayer->egl_surface) == EGL_FALSE)

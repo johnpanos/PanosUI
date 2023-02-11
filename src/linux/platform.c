@@ -149,7 +149,7 @@ xdg_toplevel_configure_handler(void *data,
             contentRect.width,
             contentRect.height);
 
-        glClearColor(0, 0, 0, 1);
+        // glClearColor(0, 0, 0, 1);
         eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, platformData->window->rootLayer->platformLayer->egl_surface);
 
         // struct wl_region *inputRegion = wl_compositor_create_region(UIPlatformGlobalsShared.compositor);

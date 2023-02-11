@@ -25,6 +25,7 @@ class MyWindowController : public UI::WindowController
 
         UIRect my_view_frame = UIRectCreate(0, 0, 200, 200);
         this->my_view = new MyView(my_view_frame, my_view_frame);
+        this->window->root_view = new UI::View(this->window->backing_window->mainView);
 
         this->window->get_root_view()->add_subview(this->my_view);
 
@@ -53,16 +54,16 @@ class MyWindowController : public UI::WindowController
                                 0.0f, 100.0f));
         this->my_view->set_corner_radius(100.0f);
 
-        // UIRect view2_frame = UIRectCreate(0, 0, 50, 50);
-        // view2 = new UI::View(view2_frame, view2_frame);
-        // this->my_view->add_subview(view2);
-        // view2->set_background_color(UIColorCreateRGBA(0, 0, 0, 255));
-        // UILayerAddAnimation(this->view2->backing_view->layer,
-        //                     UI::Animation<float>::create(
-        //                         1000,
-        //                         kUILayerKeyCornerRadius,
-        //                         &UIAnimationTimingFunctionEaseInOutCirc,
-        //                         0.0f, 2.0f));
+        UIRect view2_frame = UIRectCreate(0, 0, 50, 50);
+        view2 = new UI::View(view2_frame, view2_frame);
+        this->my_view->add_subview(view2);
+        view2->set_background_color(UIColorCreateRGBA(0, 0, 0, 255));
+        UILayerAddAnimation(this->view2->backing_view->layer,
+                            UI::Animation<float>::create(
+                                1000,
+                                kUILayerKeyCornerRadius,
+                                &UIAnimationTimingFunctionEaseInOutCirc,
+                                0.0f, 2.0f));
     }
 };
 

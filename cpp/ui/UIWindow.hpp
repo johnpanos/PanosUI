@@ -49,15 +49,16 @@ namespace UI
     class Window
     {
     private:
-        UIWindow backing_window;
         UI::WindowController *controller;
-        UI::View *root_view;
 
     public:
+        UIWindow backing_window;
+        UI::View *root_view;
+
         Window(UIRect frame)
         {
             this->backing_window = UIWindowCreate(frame);
-            this->root_view = new UI::View(this->backing_window->mainView);
+            this->root_view = nullptr;
         }
 
         ~Window()
