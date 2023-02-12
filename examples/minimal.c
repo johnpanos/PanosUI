@@ -24,7 +24,12 @@ void onViewClick(UIEventResponder self, UIEvent event)
 
 void windowDidLoad(UIWindow window)
 {
+    if (window->mainView != NULL)
+    {
+        return;
+    }
     printf("THE WINDOW LOADED!\n");
+
     window->mainView = UIViewCreate(window->frame, window->frame);
     UILayerAddSublayer(window->rootLayer, window->mainView->layer);
 
@@ -36,7 +41,7 @@ void windowDidLoad(UIWindow window)
     UIView testView = UIViewCreate(myRect, myRect);
     VIEW = testView;
 
-    testView->responder->leftMouseDown = &onViewClick;
+    // testView->responder->leftMouseDown = &onViewClick;
 
     UIViewSetBackgroundColor(testView, UIColorCreateRGBA(200, 200, 200, 255));
     UIViewSetCornerRadius(testView, 10.0f);
@@ -50,7 +55,7 @@ void windowDidLoad(UIWindow window)
 
     UIRect r = UIRectCreate(0, 0, 20, 20);
     UIView secondView = UIViewCreate(r, r);
-    UIViewSetBackgroundColor(secondView, UIColorCreateRGBA(0, 0, 0, 255));
+    UIViewSetBackgroundColor(secondView, UIColorCreateRGBA(100, 0, 0, 255));
     UIViewAddSubview(VIEW, secondView);
 
     int start = 10;
@@ -58,15 +63,19 @@ void windowDidLoad(UIWindow window)
 
     UIAnimation radiusAnim;
     radiusAnim.finished = 0;
-    radiusAnim.forKey = kUILayerKeyBoundsWidth;
-    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
+    radiusAnim.forKey = kUILayerKeyPositionX;
+    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseInOutCubic;
     radiusAnim.startValue = &start;
     radiusAnim.endValue = &end;
     radiusAnim.startTime = UIAnimationGetCurrentTime();
-    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
+    radiusAnim.endTime = UIAnimationGetCurrentTime() + 2500;
     radiusAnim._valueSize = sizeof(int);
-    radiusAnim.duration = 5000;
+    radiusAnim.duration = 2500;
 
+    UILayerAddAnimation(VIEW->layer, radiusAnim);
+    radiusAnim.forKey = kUILayerKeyBoundsWidth;
+    UILayerAddAnimation(VIEW->layer, radiusAnim);
+    radiusAnim.forKey = kUILayerKeyPositionY;
     UILayerAddAnimation(secondView->layer, radiusAnim);
 }
 

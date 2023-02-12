@@ -93,7 +93,7 @@ extern "C"
     {
         const char *version = (const char *)glGetString(GL_VERSION);
 
-        printf("Creating context with w(%d) h(%d)\n", width, height);
+        // printf("Creating context with w(%d) h(%d)\n", width, height);
 
         UIGraphicsContext *graphicsContext = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
         graphicsContext->eglSurface = eglSurface;

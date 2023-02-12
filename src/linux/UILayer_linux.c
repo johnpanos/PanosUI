@@ -8,7 +8,7 @@ static const struct wl_callback_listener frame_listener;
 static void frame_done(void *data, struct wl_callback *callback,
                        uint32_t time)
 {
-    printf("frame handler\n");
+    // printf("frame handler\n");
     UILayer *layer = (UILayer *)data;
 
     if (ArrayGetCapacity(layer->animations) < 1)
@@ -20,7 +20,7 @@ static void frame_done(void *data, struct wl_callback *callback,
     UILayer inflight = UILayerGetInFlight(*layer);
     if (layer->parent != NULL)
     {
-        printf("Setting position x(%d) y(%d)\n", inflight.frame.x - layer->parent->bounds.x, inflight.frame.y - layer->parent->bounds.y);
+        // printf("Setting position x(%d) y(%d)\n", inflight.frame.x - layer->parent->bounds.x, inflight.frame.y - layer->parent->bounds.y);
         wl_subsurface_set_position(
             layer->platformLayer->subsurface,
             inflight.frame.x - layer->parent->bounds.x,
@@ -51,8 +51,9 @@ static void frame_done(void *data, struct wl_callback *callback,
 
     struct wl_callback *cb = wl_surface_frame(layer->platformLayer->surface);
     wl_callback_add_listener(cb, &frame_listener, data);
-    wl_surface_damage(layer->platformLayer->surface, 0, 0, layer->bounds.width, layer->bounds.height);
+    wl_surface_damage(layer->platformLayer->surface, layer->frame.x, layer->frame.y, layer->bounds.width, layer->bounds.height);
     wl_surface_commit(layer->platformLayer->surface);
+    wl_surface_commit(layer->parent->platformLayer->surface);
 }
 
 static const struct wl_callback_listener frame_listener = {
@@ -76,7 +77,7 @@ void _UIPlatformLayerAddSublayer(UILayer *layer, UILayer *sublayer)
         sublayer->platformLayer->surface, // Child
         layer->platformLayer->surface);   // Parent
 
-    wl_subsurface_set_sync(sublayer->platformLayer->subsurface);
+    wl_subsurface_set_desync(sublayer->platformLayer->subsurface);
 
     wl_subsurface_set_position(
         sublayer->platformLayer->subsurface,
@@ -94,7 +95,7 @@ void _UIPlatformLayerAddSublayer(UILayer *layer, UILayer *sublayer)
         sublayer->platformLayer->egl_window,
         NULL);
 
-    sublayer->ctx = UIGraphicsContextCreate(layer->platformLayer->egl_surface, sublayer->bounds.width, sublayer->bounds.height);
+    sublayer->ctx = UIGraphicsContextCreate(sublayer->platformLayer->egl_surface, sublayer->bounds.width, sublayer->bounds.height);
 
     UIGraphicsContextMakeCurrent(sublayer->ctx);
     UIGraphicsContextClear(sublayer->ctx);
@@ -104,7 +105,7 @@ void _UIPlatformLayerAddSublayer(UILayer *layer, UILayer *sublayer)
     struct wl_callback *cb = wl_surface_frame(sublayer->platformLayer->surface);
     wl_callback_add_listener(cb, &frame_listener, sublayer);
 
-    wl_surface_damage(sublayer->platformLayer->surface, 0, 0, sublayer->bounds.width, sublayer->bounds.height);
+    wl_surface_damage(sublayer->platformLayer->surface, sublayer->frame.x, sublayer->frame.y, sublayer->bounds.width, sublayer->bounds.height);
     wl_surface_commit(sublayer->platformLayer->surface);
 }
 
@@ -117,8 +118,9 @@ void _UIPlatformLayerAddAnimation(UILayer *layer)
 {
     if (layer->platformLayer->egl_surface == NULL)
         return;
+
     struct wl_callback *cb = wl_surface_frame(layer->platformLayer->surface);
     wl_callback_add_listener(cb, &frame_listener, layer);
-    wl_surface_damage(layer->platformLayer->surface, 0, 0, layer->bounds.width, layer->bounds.height);
+    wl_surface_damage(layer->platformLayer->surface, layer->frame.x, layer->frame.y, layer->bounds.width, layer->bounds.height);
     wl_surface_commit(layer->platformLayer->surface);
 }

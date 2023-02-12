@@ -117,6 +117,5 @@ void _UIPlatformEventLoop(UIApplication *application)
     {
         UIWindow window = ArrayGetValueAtIndex(application->windows, i);
         UIWindowUpdate(window);
-        wl_surface_commit(window->rootLayer->platformLayer->surface);
     }
 }

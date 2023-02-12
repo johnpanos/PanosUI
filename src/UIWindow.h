@@ -23,7 +23,6 @@ typedef struct _UIWindow
     UIWindowController controller;
     UIPoint mousePos;
 
-    UIGraphicsContext *graphicsContext;
     UIView frameView;
 
     UIPlatformWindow *platformWindow;
