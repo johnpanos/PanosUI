@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UIRect.h"
+#include "UIGeometry.h"
 
 typedef struct _UIWindow *UIWindow;
 typedef struct _UIWindowController

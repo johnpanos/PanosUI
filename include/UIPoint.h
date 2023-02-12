@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UIRect.h"
+#include "UIGeometry.h"
 
 typedef struct _UIPoint {
     int x;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "UIRect.h"
-#include "UIPoint.h"
+#include "UIGeometry.h"
+
 #include "UIColor.h"
 #include "UILayer.h"
 #include "UIEventResponder.h"

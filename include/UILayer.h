@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Array.h"
-#include "UIRect.h"
-#include "UIPoint.h"
+#include "UIGeometry.h"
+
 #include "UIColor.h"
 #include "UIAnimation.h"
 

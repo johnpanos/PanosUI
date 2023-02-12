@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UIEvent.h"
-#include "UIRect.h"
+#include "UIGeometry.h"
 #include "UIEventResponder.h"
 
 typedef struct _UIView *UIView;

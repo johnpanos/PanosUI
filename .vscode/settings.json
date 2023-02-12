@@ -106,7 +106,8 @@
         "__tuple": "cpp",
         "__assert": "cpp",
         "globals.h": "c",
-        "uiwindow_linux.h": "c"
+        "uiwindow_linux.h": "c",
+        "uigeometry.h": "c"
     },
     "mesonbuild.configureOnOpen": true,
     "print.colourScheme": "Atom One"

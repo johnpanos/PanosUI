@@ -4,7 +4,7 @@
 #include "UIAnimation.h"
 #include "UIEvent.h"
 #include "UILayer.h"
-#include "UIRect.h"
+#include "UIGeometry.h"
 #include "UIView.h"
 #include "UIWindow.h"
 #include "UIWindowController.h"

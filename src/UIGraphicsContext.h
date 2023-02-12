@@ -1,7 +1,7 @@
 #ifndef _UIGRAPHICSCONTEXT_H
 #define _UIGRAPHICSCONTEXT_H
 
-#include "UIRect.h"
+#include "UIGeometry.h"
 
 typedef struct _UIGraphicsContext UIGraphicsContext;
 typedef struct _UIPoint UIPoint;

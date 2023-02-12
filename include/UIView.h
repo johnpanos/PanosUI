@@ -1,8 +1,8 @@
 #ifndef _UIVIEW_H
 #define _UIVIEW_H
 
-#include "UIRect.h"
-#include "UIPoint.h"
+#include "UIGeometry.h"
+
 #include "UILayer.h"
 #include "UIColor.h"
 #include "UIEventResponder.h"

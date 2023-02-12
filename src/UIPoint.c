@@ -1,20 +1,24 @@
-#include "UIPoint.h"
-#include "UIRect.h"
+#include "UIGeometry.h"
 
-UIPoint UIPointCreate(int x, int y) {
+UIPoint UIPointCreate(UIFloat x, UIFloat y)
+{
     UIPoint p = {
         .x = x,
-        .y = y
-    };
+        .y = y};
     return p;
 }
 
-int UIPointInRect(UIPoint p, UIRect rect)
+bool UIPointInRect(UIPoint p, UIRect r)
 {
-    if (p.x >= rect.x && p.x <= rect.x + rect.width &&
-        p.y >= rect.y && p.y <= rect.y + rect.height)
+    if (p.x >= UIRectGetMinX(r) &&
+        p.x <= UIRectGetMaxX(r) &&
+        p.y >= UIRectGetMinY(r) &&
+        p.y <= UIRectGetMaxY(r))
     {
-        return 1;
+        return true;
     }
-    return 0;
+    else
+    {
+        return false;
+    }
 }

@@ -2,7 +2,7 @@
 
 #include "UIApplication.h"
 #include "UIView.h"
-#include "UIRect.h"
+#include "UIGeometry.h"
 #include "UIEvent.h"
 #include "UIEventResponder.h"
 #include "UIWindowController.h"
