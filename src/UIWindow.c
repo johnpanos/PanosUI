@@ -3,8 +3,7 @@
 
 UIView _UIWindowCreateFrameView(UIWindow window)
 {
-    UIRect titlebarFrame = {
-        .x = 8, .y = 8, .width = window->frame.width, .height = 28};
+    UIRect titlebarFrame = UIRectCreate(8, 8, UIRectGetWidth(window->frame), 28);
     UIView titlebar = UIViewCreate(titlebarFrame, titlebarFrame);
     UIViewSetBackgroundColor(titlebar, UIColorCreateRGBA(255, 255, 255, 255));
     UIViewSetCornerRadius(titlebar, 0.0f);
@@ -12,24 +11,26 @@ UIView _UIWindowCreateFrameView(UIWindow window)
     UIViewSetBorderColor(titlebar, UIColorCreateRGBA(0, 0, 0, 50));
     UIViewSetBorderWidth(titlebar, 0.0f);
 
-    UIRect redFrame = {.x = 8, .y = 8, .width = 16, .height = 16};
-    UIColor red = {.r = 120, .g = 27, .b = 112, .a = 255};
+    UIRect redFrame = UIRectCreate(8, 8, 16, 16);
+    UIColor red = UIColorCreateRGBA(120, 27, 112, 255);
     UIView redLight = UIViewCreate(redFrame, redFrame);
     UIViewSetCornerRadius(redLight, 12);
     UIViewSetBackgroundColor(redLight, red);
     UIViewSetBorderColor(redLight, UIColorCreateRGBA(0, 0, 0, 21));
     UIViewSetBorderWidth(redLight, 0.5f);
 
-    UIRect yellowFrame = {.x = 8 + 24, .y = 8, .width = 16, .height = 16};
-    UIColor yellow = {.r = 120, .g = 27, .b = 112, .a = 100};
+    UIRect yellowFrame = redFrame;
+    yellowFrame.origin = UIPointOffset(yellowFrame.origin, 24, 0);
+    UIColor yellow = UIColorCreateRGBA(120, 27, 112, 100);
     UIView yellowLight = UIViewCreate(yellowFrame, yellowFrame);
     UIViewSetCornerRadius(yellowLight, 12);
     UIViewSetBackgroundColor(yellowLight, yellow);
     UIViewSetBorderColor(yellowLight, UIColorCreateRGBA(0, 0, 0, 21));
     UIViewSetBorderWidth(yellowLight, 0.5f);
 
-    UIRect greenFrame = {.x = 8 + 48, .y = 8, .width = 16, .height = 16};
-    UIColor green = {.r = 120, .g = 27, .b = 112, .a = 100};
+    UIRect greenFrame = yellowFrame;
+    greenFrame.origin = UIPointOffset(greenFrame.origin, 24, 0);
+    UIColor green = UIColorCreateRGBA(120, 27, 112, 100);
     UIView greenLight = UIViewCreate(greenFrame, greenFrame);
     UIViewSetCornerRadius(greenLight, 12);
     UIViewSetBackgroundColor(greenLight, green);
@@ -54,10 +55,10 @@ UIWindow UIWindowCreate(UIRect frame)
 
     ArrayAddValue(UIApplicationShared()->windows, window);
 
-    window->frame = UIRectOutset(frame, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT);
-    window->frame.x = 0;
-    window->frame.y = 0;
-    window->contentFrame = UIRectInset(window->frame, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT, INSET_AMOUNT);
+    window->frame = UIRectOutset(frame, INSET_AMOUNT, INSET_AMOUNT);
+    window->frame.origin.x = 0;
+    window->frame.origin.y = 0;
+    window->contentFrame = UIRectInset(window->frame, INSET_AMOUNT, INSET_AMOUNT);
     window->controller = UIWindowControllerGetDefault();
 
     return window;
@@ -93,7 +94,7 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
     UIGraphicsContextSave(context);
     if (view->parentView != NULL)
     {
-        UIGraphicsContextSetTransform(context, view->parentView->frame.x, view->parentView->frame.y);
+        UIGraphicsContextSetTransform(context, view->parentView->frame.origin.x, view->parentView->frame.origin.y);
     }
     UILayer layer = UILayerGetInFlight(*view->layer);
     UILayerRenderInContext(&layer, context);
@@ -196,18 +197,18 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
 {
     if (event.type == UIEventTypeMouseMotion)
     {
-        window->mousePos.x = event._eventData.mouseMotion.x - window->contentFrame.x;
-        window->mousePos.y = event._eventData.mouseMotion.y - window->contentFrame.y;
+        window->mousePos.x = event._eventData.mouseMotion.x - window->contentFrame.origin.x;
+        window->mousePos.y = event._eventData.mouseMotion.y - window->contentFrame.origin.y;
     }
 
     UIRect dragger = UIRectCreate(
-        window->contentFrame.width,
-        window->contentFrame.height,
+        window->contentFrame.size.width,
+        window->contentFrame.size.height,
         0,
         0);
-    dragger = UIRectOutset(dragger, 10, 10, 10, 10);
+    dragger = UIRectOutset(dragger, 10, 10);
 
-    if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.width) &&
+    if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.size.width) &&
         (window->mousePos.y > 0 && window->mousePos.y < 28))
     {
         _UIPlatformWindowMove(window, event);

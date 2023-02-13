@@ -33,7 +33,7 @@ float lerp(float a, float b, float t)
 
 UILayer *UILayerCreate(UIRect frame, UIRect bounds)
 {
-    printf("Creating layer w(%d) h(%d)\n", frame.width, frame.height);
+    printf("Creating layer w(%f) h(%f)\n", frame.size.width, frame.size.height);
     UILayer *layer = calloc(1, sizeof(UILayer));
     layer->frame = frame;
     layer->bounds = bounds;
@@ -122,14 +122,14 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsHeight))
         {
-            copied.bounds.height = (int)lerp(
+            copied.bounds.size.height = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsWidth))
         {
-            copied.bounds.width = (int)lerp(
+            copied.bounds.size.width = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);
@@ -143,14 +143,14 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionX))
         {
-            copied.frame.x = (int)lerp(
+            copied.frame.origin.x = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionY))
         {
-            copied.frame.y = (int)lerp(
+            copied.frame.origin.y = (int)lerp(
                 VALUE_FOR_TYPE(anim, int, startValue),
                 VALUE_FOR_TYPE(anim, int, endValue),
                 progress);

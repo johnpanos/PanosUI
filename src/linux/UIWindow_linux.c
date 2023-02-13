@@ -28,11 +28,7 @@ xdg_toplevel_configure_handler(void *data,
 {
     printf("XDG TOPLEVEL\n");
     UIWindow window = (UIWindow)data;
-    UIRect configuredSize = {
-        .x = 0,
-        .y = 0,
-        .width = width,
-        .height = height};
+    UIRect configuredSize = UIRectCreate(0, 0, (UIFloat)width, (UIFloat)height);
     UIRect requestedSize = window->controller->windowWillResize(window, configuredSize);
 
     UIPlatformLayer *platformLayer = window->rootLayer->platformLayer;
@@ -116,8 +112,8 @@ UILayer *_UIPlatformWindowCreateUILayer(UIRect frame, UIRect bounds)
 
     layer->platformLayer->egl_window = wl_egl_window_create(
         layer->platformLayer->surface,
-        frame.width,
-        frame.height);
+        frame.size.width,
+        frame.size.height);
 
     if (layer->platformLayer->egl_window == EGL_NO_SURFACE)
     {

@@ -18,7 +18,7 @@
 #include <GL/gl.h>
 #include <GLES2/gl2.h>
 
-#include "../UIRect.h"
+#include "../UIGeometry.h"
 #include "../UIColor.h"
 #include "globals.h"
 
@@ -151,20 +151,20 @@ extern "C"
     // MARK:
     void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect, double radius)
     {
-        SkRect skrect = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
+        SkRect skrect = SkRect::MakeXYWH(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         SkRRect skrrect = SkRRect::MakeRectXY(skrect, radius, radius);
         context->canvas->clipRRect(skrrect, true);
     }
 
     void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius)
     {
-        SkRect skrect = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
+        SkRect skrect = SkRect::MakeXYWH(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         context->canvas->drawRoundRect(skrect, radius, radius, context->paint);
     }
 
     void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIRect offset, float blur)
     {
-        context->canvas->translate(offset.x, offset.y);
+        context->canvas->translate(offset.origin.x, offset.origin.y);
         context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, blur, false));
     }
 

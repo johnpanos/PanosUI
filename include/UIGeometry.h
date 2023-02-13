@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-#define UIFloat float
+typedef float UIFloat;
 
 typedef struct _UIPoint
 {
@@ -35,4 +35,5 @@ UIRect UIRectOutset(UIRect r, UIFloat dx, UIFloat dy);
 
 // MARK: UIPoint
 UIPoint UIPointCreate(UIFloat x, UIFloat y);
+UIPoint UIPointOffset(UIPoint p, UIFloat dx, UIFloat dy);
 bool UIPointInRect(UIPoint p, UIRect r);

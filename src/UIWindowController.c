@@ -9,8 +9,8 @@ void doNothing()
 
 UIRect defaultWindowWillResize(UIWindow window, UIRect to)
 {
-    printf("Window will resize: w(%d) h(%d)\n", to.width, to.height);
-    if (to.width == 0 && to.height == 0)
+    printf("Window will resize: w(%f) h(%f)\n", to.size.width, to.size.height);
+    if (to.size.width == 0 && to.size.height == 0)
     {
         return window->frame;
     }
@@ -19,8 +19,8 @@ UIRect defaultWindowWillResize(UIWindow window, UIRect to)
 }
 
 void defaultWindowDidResize(UIWindow window) {
-    printf("Window did resize: w(%d) h(%d)\n", window->frame.width, window->frame.height);
-    window->contentFrame = UIRectInset(window->frame, 16, 16, 16, 16);
+    printf("Window did resize: w(%f) h(%f)\n", window->frame.size.width, window->frame.size.height);
+    window->contentFrame = UIRectInset(window->frame, 16, 16);
 }
 
 struct _UIWindowController UIWindowControllerDefault = {

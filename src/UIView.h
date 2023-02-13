@@ -47,6 +47,7 @@ void UIViewDrawInContext(UIView view, UIGraphicsContext *context);
 void UIViewSetNeedsLayout(UIView view);
 void UIViewSetNeedsDisplay(UIView view);
 
+UIPoint UIViewConvertPoint(UIView from, UIView to, UIPoint point);
 UIView UIViewHitTest(UIView view, UIPoint point);
 
 // MARK: Getters

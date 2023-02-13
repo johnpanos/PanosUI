@@ -8,6 +8,13 @@ UIPoint UIPointCreate(UIFloat x, UIFloat y)
     return p;
 }
 
+UIPoint UIPointOffset(UIPoint p, UIFloat dx, UIFloat dy) {
+    UIPoint c = p;
+    c.x += dx;
+    c.y += dy;
+    return c;
+}
+
 bool UIPointInRect(UIPoint p, UIRect r)
 {
     if (p.x >= UIRectGetMinX(r) &&

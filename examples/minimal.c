@@ -12,7 +12,7 @@ void onViewClick(UIEventResponder self, UIEvent event)
     radiusAnim.finished = 0;
     radiusAnim.forKey = kUILayerKeyBoundsWidth;
     radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
-    radiusAnim.startValue = &VIEW->frame.width;
+    radiusAnim.startValue = &VIEW->frame.size.width;
     radiusAnim.endValue = &end;
     radiusAnim.startTime = UIAnimationGetCurrentTime();
     radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
@@ -81,12 +81,8 @@ void windowDidLoad(UIWindow window)
 
 void didFinishLaunching(UIApplication *application)
 {
-    UIRect window_frame = {
-        .x = 0,
-        .y = 0,
-        .width = 600,
-        .height = 600};
-    UIWindow window = UIWindowCreate(window_frame);
+    UIRect windowFrame = UIRectCreate(0, 0, 600, 600);
+    UIWindow window = UIWindowCreate(windowFrame);
 
     UIWindowController myWindowController = UIWindowControllerCreate();
     myWindowController->windowDidLoad = &windowDidLoad;
