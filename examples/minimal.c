@@ -30,6 +30,17 @@ void windowDidLoad(UIWindow window)
     }
     printf("THE WINDOW LOADED!\n");
 
+    UIRect rect1 = UIRectCreate(50, 50, 128, 128);
+    UIView view1 = UIViewCreate(rect1, rect1);
+
+    UIRect rect2 = UIRectCreate(200, 200, 128, 128);
+    UIView view2 = UIViewCreate(rect2, rect2);
+
+    UIPoint tap = UIPointCreate(10, 10);
+    UIPoint convertedTap = UIViewConvertPoint(view1, view2, tap);
+
+    printf("Converted tap: x(%f) y(%f)\n", convertedTap.x, convertedTap.y);
+
     window->mainView = UIViewCreate(window->frame, window->frame);
     UILayerAddSublayer(window->rootLayer, window->mainView->layer);
 

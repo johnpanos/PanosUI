@@ -32,9 +32,9 @@ typedef struct _UILayer UILayer;
 typedef struct _UILayer
 {
     Array animations;
-    Array sublayers;
 
     UILayer *parent;
+    Array sublayers;   
 
     UIRect frame; // Calculated, never set
     UIRect bounds;

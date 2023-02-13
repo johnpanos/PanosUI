@@ -143,54 +143,48 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 
 void UIWindowUpdate(UIWindow window)
 {
-    // UIGraphicsContextMakeCurrent(window->graphicsContext);
-    // UIGraphicsContextClear(window->graphicsContext);
-    // UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
-    // UIGraphicsContextAddRect(window->graphicsContext, window->frame, 0.0f);
-    // UIGraphicsContextFlush(window->graphicsContext);
-    return;
-    // UIView rootView = window->mainView;
+    UIView rootView = window->mainView;
 
-    // _UIWindowLayoutPhase_UIViewLayout(rootView);
+    _UIWindowLayoutPhase_UIViewLayout(rootView);
 
-    // int shouldRender = _UIWindowRenderPhase_ShouldRender(rootView);
+    int shouldRender = _UIWindowRenderPhase_ShouldRender(rootView);
 
-    // if (shouldRender)
-    // {
-    //     // printf("Should render: %d\n", shouldRender);
-    //     UIGraphicsContextMakeCurrent(window->graphicsContext);
-    //     UIGraphicsContextClear(window->graphicsContext);
+    if (shouldRender)
+    {
+        // printf("Should render: %d\n", shouldRender);
+        UIGraphicsContextMakeCurrent(window->graphicsContext);
+        UIGraphicsContextClear(window->graphicsContext);
 
-    //     // Draw dropshadow
-    //     UIGraphicsContextSave(window->graphicsContext);
-    //     {
-    //         UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 42));
-    //         UIGraphicsContextSetShadow(window->graphicsContext, UIPointCreate(0, 0), 12.0f);
-    //         UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
-    //         UIGraphicsContextRestore(window->graphicsContext);
+        // Draw dropshadow
+        UIGraphicsContextSave(window->graphicsContext);
+        {
+            UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 42));
+            UIGraphicsContextSetShadow(window->graphicsContext, UIPointCreate(0, 0), 12.0f);
+            UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
+            UIGraphicsContextRestore(window->graphicsContext);
 
-    //         // Clip all children to inside
-    //         UIGraphicsContextClipToRect(window->graphicsContext, window->contentFrame, 8.0f);
+            // Clip all children to inside
+            UIGraphicsContextClipToRect(window->graphicsContext, window->contentFrame, 8.0f);
 
-    //         // Draw background
-    //         UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
-    //         UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
+            // Draw background
+            UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
+            UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
 
-    //         UIGraphicsContextSave(window->graphicsContext);
-    //         {
-    //             UIGraphicsContextSetTransform(window->graphicsContext, window->contentFrame.x, window->contentFrame.y);
-    //             UIGraphicsContextClipToRect(window->graphicsContext, window->mainView->frame, 0.0f);
-    //             RENDER_SUBVIEWS(rootView, window->graphicsContext);
+            UIGraphicsContextSave(window->graphicsContext);
+            {
+                UIGraphicsContextSetTransform(window->graphicsContext, window->contentFrame.x, window->contentFrame.y);
+                UIGraphicsContextClipToRect(window->graphicsContext, window->mainView->frame, 0.0f);
+                RENDER_SUBVIEWS(rootView, window->graphicsContext);
 
-    //             RENDER_SUBVIEWS(window->frameView, window->graphicsContext);
-    //             rootView->needsDisplay = 0;
-    //         }
-    //         UIGraphicsContextRestore(window->graphicsContext);
-    //     }
-    //     UIGraphicsContextRestore(window->graphicsContext);
+                RENDER_SUBVIEWS(window->frameView, window->graphicsContext);
+                rootView->needsDisplay = 0;
+            }
+            UIGraphicsContextRestore(window->graphicsContext);
+        }
+        UIGraphicsContextRestore(window->graphicsContext);
 
-    //     UIGraphicsContextFlush(window->graphicsContext);
-    // }
+        UIGraphicsContextFlush(window->graphicsContext);
+    }
 }
 
 void UIWindowSendEvent(UIWindow window, UIEvent event)

@@ -39,7 +39,6 @@ UILayer *UILayerCreate(UIRect frame, UIRect bounds)
     layer->bounds = bounds;
     layer->animations = ArrayCreate(sizeof(UIAnimation));
     layer->sublayers = ArrayCreate(sizeof(UILayer *));
-    layer->platformLayer = _UIPlatformLayerCreate();
     return layer;
 }
 
@@ -47,7 +46,6 @@ void UILayerAddSublayer(UILayer *layer, UILayer *sublayer)
 {
     ArrayAddValue(layer->sublayers, sublayer);
     sublayer->parent = layer;
-    _UIPlatformLayerAddSublayer(layer, sublayer);
 }
 
 void UILayerRemoveSublayer(UILayer *layer, UILayer *sublayer)
@@ -62,7 +60,6 @@ void UILayerAddAnimation(UILayer *layer, UIAnimation anim)
     UIAnimation *copiedAnim = calloc(1, sizeof(UIAnimation));
     *copiedAnim = UIAnimationCopy(anim);
     ArrayAddValue(layer->animations, copiedAnim);
-    _UIPlatformLayerAddAnimation(layer);
 }
 
 UIAnimation UILayerGetAnimationFor(UILayer *layer, const char *key, size_t valueSize, void *startValue, void *endValue)

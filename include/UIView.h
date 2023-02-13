@@ -43,6 +43,7 @@ void UIViewDestroy(UIView view);
 void UIViewAddSubview(UIView superview, UIView subview);
 void UIViewRemoveSubview(UIView superview, UIView subview);
 
+UIPoint UIViewConvertPoint(UIView from, UIView to, UIPoint point);
 UIView UIViewHitTest(UIView view, UIPoint point);
 
 // MARK: Getters
