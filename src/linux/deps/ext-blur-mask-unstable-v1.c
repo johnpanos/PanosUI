@@ -58,7 +58,7 @@ WL_PRIVATE const struct wl_interface ext_blur_mask_manager_v1_interface = {
 };
 
 static const struct wl_message ext_blur_mask_v1_requests[] = {
-	{ "set_mask", "n", ext_blur_mask_unstable_v1_types + 2 },
+	{ "set_mask", "o", ext_blur_mask_unstable_v1_types + 2 },
 	{ "release", "", ext_blur_mask_unstable_v1_types + 0 },
 };
 

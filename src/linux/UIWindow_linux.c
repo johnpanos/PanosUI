@@ -3,6 +3,7 @@
 #include <GLES2/gl2.h>
 #include "UIWindow_linux.h"
 #include "deps/xdg-shell.h"
+#include "deps/ext-blur-mask-unstable-v1.h"
 #include "UILayer_linux.h"
 
 // XDG SURFACE
@@ -32,6 +33,9 @@ xdg_toplevel_configure_handler(void *data,
     UIRect requestedSize = window->controller->windowWillResize(window, configuredSize);
 
     UIPlatformLayer *platformLayer = window->rootLayer->platformLayer;
+
+    struct ext_blur_mask_v1 *blurMask = ext_blur_mask_manager_v1_get_blur(UIPlatformGlobalsShared.blur_mask_manager, platformLayer->surface);
+    ext_blur_mask_v1_set_mask(blurMask);
 
     // wl_egl_window_resize(platformLayer->egl_window, requestedSize.width, requestedSize.height, 0, 0);
 

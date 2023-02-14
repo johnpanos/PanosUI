@@ -31,15 +31,6 @@
             This interface defines a mechanism for a Wayland client to tell the
             compositor to blur the background of a wl_surface given a specified
             wl_buffer based blur mask.
-
-            Warning! The protocol described in this file is experimental and
-            backward incompatible changes may be made. Backward compatible changes
-            may be added together with the corresponding interface version bump.
-            Backward incompatible changes are done by bumping the version number in
-            the protocol and interface names and resetting the interface version.
-            Once the protocol is to be declared stable, the 'z' prefix and the
-            version number in the protocol and interface names are removed and the
-            interface version number is reset.
         </description>
 
         <enum name="error">
@@ -77,7 +68,7 @@
                 on various conditions like hardware capabilities, surface state and
                 user preferences.
             </description>
-            <arg name="id" type="new_id" interface="wl_buffer" />
+            <arg name="buffer_mask" type="object" interface="wl_buffer" />
         </request>
 
         <request name="release" type="destructor">

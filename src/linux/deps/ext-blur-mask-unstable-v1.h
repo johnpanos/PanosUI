@@ -228,15 +228,11 @@ ext_blur_mask_v1_destroy(struct ext_blur_mask_v1 *ext_blur_mask_v1)
  * on various conditions like hardware capabilities, surface state and
  * user preferences.
  */
-static inline struct wl_buffer *
-ext_blur_mask_v1_set_mask(struct ext_blur_mask_v1 *ext_blur_mask_v1)
+static inline void
+ext_blur_mask_v1_set_mask(struct ext_blur_mask_v1 *ext_blur_mask_v1, struct wl_buffer *buffer_mask)
 {
-	struct wl_proxy *id;
-
-	id = wl_proxy_marshal_flags((struct wl_proxy *) ext_blur_mask_v1,
-			 EXT_BLUR_MASK_V1_SET_MASK, &wl_buffer_interface, wl_proxy_get_version((struct wl_proxy *) ext_blur_mask_v1), 0, NULL);
-
-	return (struct wl_buffer *) id;
+	wl_proxy_marshal_flags((struct wl_proxy *) ext_blur_mask_v1,
+			 EXT_BLUR_MASK_V1_SET_MASK, NULL, wl_proxy_get_version((struct wl_proxy *) ext_blur_mask_v1), 0, buffer_mask);
 }
 
 /**
