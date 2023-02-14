@@ -34,26 +34,24 @@ typedef struct _UILayer
     Array animations;
 
     UILayer *parent;
-    Array sublayers;   
+    Array sublayers;
 
     UIRect frame; // Calculated, never set
     UIRect bounds;
 
     UIColor backgroundColor;
 
-    float borderWidth;
+    UIFloat borderWidth;
     UIColor borderColor;
 
     UIPoint shadowOffset;
     UIColor shadowColor;
-    float shadowRadius;
+    UIFloat shadowRadius;
 
-    float opacity;
+    UIFloat opacity;
 
-    float cornerRadius;
-    int clipToBounds;
-
-    UIGraphicsContext *ctx;
+    UIFloat cornerRadius;
+    bool clipToBounds;
 
     UIPlatformLayer *platformLayer;
 } UILayer;

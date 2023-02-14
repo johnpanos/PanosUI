@@ -5,14 +5,21 @@
 #include "wayland-egl.h"
 #include <EGL/egl.h>
 
-typedef struct _UIPlatformLayer
+typedef struct _UILayerWindow
+{
+    EGLSurface eglSurface;
+    struct wl_surface *surface;
+    struct wl_egl_window *eglWindow;
+} UILayerWindow;
+
+typedef struct _UILayerSubsurface
 {
     struct wl_surface *surface;
     struct wl_subsurface *subsurface;
-    struct wl_egl_window *egl_window;
+    struct wl_egl_window *eglWindow;
 
-    EGLSurface egl_surface;
-} UIPlatformLayer;
+    EGLSurface surface;
+} UILayerSubsurface;
 
 static const struct wl_callback_listener frame_listener;
 

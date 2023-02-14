@@ -12,23 +12,23 @@ void UIGraphicsContextFlush(UIGraphicsContext *context);
 
 void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color);
 void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color);
-void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, float width);
+void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, UIFloat width);
 
 // MARK: Context
 void UIGraphicsContextSave(UIGraphicsContext *context);
 void UIGraphicsContextRestore(UIGraphicsContext *context);
 
 // MARK:
-void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect, double radius);
+void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect, UIFloat radius);
 
 // MARK: Shapes
 void UIGraphicsContextAddPath(UIGraphicsContext *context);
 void UIGraphicsContextAddLine(UIGraphicsContext *context, UIPoint p1, const UIPoint p2);
-void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius);
-void UIGraphicsContextAddOval(UIGraphicsContext *context, UIPoint p, int width, int height);
+void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, UIFloat radius);
+void UIGraphicsContextAddOval(UIGraphicsContext *context, UIPoint p, UIFloat width, UIFloat height);
 
 // MARK: Shadow
-void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIPoint offset, float blur);
+void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIPoint offset, UIFloat blur);
 void UIGraphicsContextSetShadowColor(UIGraphicsContext *context, UIColor color);
 
-void UIGraphicsContextSetTransform(UIGraphicsContext *context, int x, int y);
+void UIGraphicsContextSetTransform(UIGraphicsContext *context, UIFloat x, UIFloat y);

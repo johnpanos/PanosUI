@@ -172,7 +172,7 @@ void UIWindowUpdate(UIWindow window)
 
             UIGraphicsContextSave(window->graphicsContext);
             {
-                UIGraphicsContextSetTransform(window->graphicsContext, window->contentFrame.x, window->contentFrame.y);
+                UIGraphicsContextSetTransform(window->graphicsContext, window->contentFrame.origin.x, window->contentFrame.origin.y);
                 UIGraphicsContextClipToRect(window->graphicsContext, window->mainView->frame, 0.0f);
                 RENDER_SUBVIEWS(rootView, window->graphicsContext);
 

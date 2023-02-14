@@ -25,6 +25,8 @@ typedef struct _UIWindow
 
     UIView frameView;
 
+    UIGraphicsContext *graphicsContext;
+
     UIPlatformWindow *platformWindow;
 } *UIWindow;
 

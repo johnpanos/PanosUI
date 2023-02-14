@@ -6,6 +6,8 @@
 #include "include/gpu/gl/egl/GrGLMakeEGLInterface.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkBlurTypes.h"
@@ -24,10 +26,17 @@
 
 typedef struct _UIGraphicsContext
 {
-    EGLSurface eglSurface;
-    SkSurface *surface;
     SkCanvas *canvas;
     SkPaint paint;
+
+    EGLSurface eglSurface;
+    SkSurface *surface;
+
+    SkRTreeFactory bbhFactory;
+    SkPictureRecorder recorder;
+
+    SkPicture *picture;
+
 } UIGraphicsContext;
 
 extern "C"
@@ -50,6 +59,16 @@ extern "C"
         return grDirectContext;
     }
 
+    UIGraphicsContext *UIGraphicsContextGetLayerContext(UIRect bounds)
+    {
+        UIGraphicsContext *ctx = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
+
+        ctx->canvas = ctx->recorder.beginRecording(
+            bounds.size.width,
+            bounds.size.height,
+            &ctx->bbhFactory);
+    }
+
     void UIGraphicsContextMakeCurrent(UIGraphicsContext *context)
     {
         if (eglMakeCurrent(UIPlatformGlobalsShared.eglData.eglDisplay, context->eglSurface, context->eglSurface, UIPlatformGlobalsShared.eglData.eglContext) == EGL_FALSE)
@@ -65,11 +84,12 @@ extern "C"
 
     void UIGraphicsContextFlush(UIGraphicsContext *context)
     {
-        context->surface->flushAndSubmit();
-        if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, context->eglSurface) == EGL_FALSE)
-        {
-            fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
-        }
+        // context->surface->flushAndSubmit();
+        // if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, context->eglSurface) == EGL_FALSE)
+        // {
+        //     fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
+        // }
+        context->picture = context->recorder.finishRecordingAsPicture().release();
     }
 
     void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color)

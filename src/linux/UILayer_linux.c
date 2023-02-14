@@ -41,13 +41,13 @@ static void frame_done(void *data, struct wl_callback *callback,
         0,
         0);
 
-    layer->ctx = UIGraphicsContextCreate(layer->platformLayer->egl_surface, inflight.bounds.size.width, inflight.bounds.size.height);
+    // layer->ctx = UIGraphicsContextCreate(layer->platformLayer->egl_surface, inflight.bounds.size.width, inflight.bounds.size.height);
 
-    UIGraphicsContextMakeCurrent(layer->ctx);
-    UIGraphicsContextClear(layer->ctx);
-    UILayerRenderInContext(&inflight, layer->ctx);
-    UIGraphicsContextFlush(layer->ctx);
-    UIGraphicsContextDestroy(layer->ctx);
+    // UIGraphicsContextMakeCurrent(layer->ctx);
+    // UIGraphicsContextClear(layer->ctx);
+    // UILayerRenderInContext(&inflight, layer->ctx);
+    // UIGraphicsContextFlush(layer->ctx);
+    // UIGraphicsContextDestroy(layer->ctx);
 
     struct wl_callback *cb = wl_surface_frame(layer->platformLayer->surface);
     wl_callback_add_listener(cb, &frame_listener, data);
@@ -95,12 +95,12 @@ void _UIPlatformLayerAddSublayer(UILayer *layer, UILayer *sublayer)
         sublayer->platformLayer->egl_window,
         NULL);
 
-    sublayer->ctx = UIGraphicsContextCreate(sublayer->platformLayer->egl_surface, sublayer->bounds.size.width, sublayer->bounds.size.height);
+    // sublayer->ctx = UIGraphicsContextCreate(sublayer->platformLayer->egl_surface, sublayer->bounds.size.width, sublayer->bounds.size.height);
 
-    UIGraphicsContextMakeCurrent(sublayer->ctx);
-    UIGraphicsContextClear(sublayer->ctx);
-    UIGraphicsContextFlush(sublayer->ctx);
-    UIGraphicsContextDestroy(sublayer->ctx);
+    // UIGraphicsContextMakeCurrent(sublayer->ctx);
+    // UIGraphicsContextClear(sublayer->ctx);
+    // UIGraphicsContextFlush(sublayer->ctx);
+    // UIGraphicsContextDestroy(sublayer->ctx);
 
     struct wl_callback *cb = wl_surface_frame(sublayer->platformLayer->surface);
     wl_callback_add_listener(cb, &frame_listener, sublayer);

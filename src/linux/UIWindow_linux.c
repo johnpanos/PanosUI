@@ -68,8 +68,6 @@ xdg_toplevel_configure_handler(void *data,
             fprintf(stderr, "Swapped buffers failed\n");
         }
 
-        window->controller->windowDidLoad(window);
-
         // UIRect contentRect = window->frame;
         // xdg_surface_set_window_geometry(
         //     window->platformWindow->xdg_surface,

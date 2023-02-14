@@ -52,7 +52,6 @@ void UILayerRemoveSublayer(UILayer *layer, UILayer *sublayer)
 {
     ArrayRemoveValueByRef(layer->sublayers, sublayer);
     sublayer->parent = NULL;
-    _UIPlatformLayerRemoveSublayer(layer, sublayer);
 }
 
 void UILayerAddAnimation(UILayer *layer, UIAnimation anim)
@@ -201,29 +200,33 @@ UILayer UILayerGetInFlight(UILayer layer)
 
 void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
 {
-    // if (layer->clipToBounds)
-    // {
-    //     UIGraphicsContextClipToRect(context, layer->bounds, layer->cornerRadius);
-    // }
-
-    if (layer->shadowColor.a > 0)
+    UIGraphicsContextSave(context);
     {
-        UIGraphicsContextSave(context);
+        if (layer->clipToBounds)
         {
-            UIGraphicsContextSetShadow(context, layer->shadowOffset, layer->shadowRadius);
-            UIGraphicsSetFillColor(context, layer->shadowColor);
+            UIGraphicsContextClipToRect(context, layer->bounds, layer->cornerRadius);
+        }
+
+        if (layer->shadowColor.a > 0)
+        {
+            UIGraphicsContextSave(context);
+            {
+                UIGraphicsContextSetShadow(context, layer->shadowOffset, layer->shadowRadius);
+                UIGraphicsSetFillColor(context, layer->shadowColor);
+                UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
+            }
+            UIGraphicsContextRestore(context);
+        }
+
+        UIGraphicsSetFillColor(context, layer->backgroundColor);
+        UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
+
+        if (layer->borderWidth > 0)
+        {
+            UIGraphicsSetStrokeColor(context, layer->borderColor);
+            UIGraphicsSetStrokeWidth(context, layer->borderWidth);
             UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
         }
-        UIGraphicsContextRestore(context);
     }
-
-    UIGraphicsSetFillColor(context, layer->backgroundColor);
-    UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
-
-    if (layer->borderWidth > 0)
-    {
-        UIGraphicsSetStrokeColor(context, layer->borderColor);
-        UIGraphicsSetStrokeWidth(context, layer->borderWidth);
-        UIGraphicsContextAddRect(context, layer->bounds, layer->cornerRadius);
-    }
+    UIGraphicsContextRestore(context);
 }
