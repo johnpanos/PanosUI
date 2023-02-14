@@ -110,7 +110,7 @@ void _UIPlatformMain(UIApplication *application)
 
     xdg_wm_base_add_listener(UIPlatformGlobalsShared.wm_base, &wm_base_listener, NULL);
 
-    // setupSeat();
+    setupSeat();
 
     wl_display_roundtrip(UIPlatformGlobalsShared.display);
 }

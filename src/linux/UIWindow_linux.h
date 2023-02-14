@@ -1,4 +1,7 @@
 #pragma once
+#include <EGL/egl.h>
+#include <wayland-client.h>
+#include <wayland-egl.h>
 #include "../UIWindow.h"
 
 typedef struct _UIPlatformWindow

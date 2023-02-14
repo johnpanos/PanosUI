@@ -61,7 +61,6 @@ extern "C"
 
     UIGraphicsContext *UIGraphicsContextGetLayerContext(UIRect bounds)
     {
-        
     }
 
     void UIGraphicsContextMakeCurrent(UIGraphicsContext *context)
@@ -80,8 +79,8 @@ extern "C"
     void UIGraphicsContextFlush(UIGraphicsContext *context)
     {
         context->picture = context->recorder->finishRecordingAsPicture().release();
-        context->picture->playback(context->surface->getCanvas());
-        // context->surface->getCanvas()->drawPicture(context->picture);
+        // context->picture->playback(context->surface->getCanvas());
+        context->surface->getCanvas()->drawPicture(context->picture);
         context->surface->flushAndSubmit();
     }
 
@@ -176,7 +175,6 @@ extern "C"
 
     void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIPoint offset, UIFloat blur)
     {
-        printf("blur %f\n", blur);
         context->canvas->translate(offset.x, offset.y);
         context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, SkFloatToScalar(blur), true));
     }

@@ -168,8 +168,8 @@ void UIWindowUpdate(UIWindow window)
         // Draw dropshadow
         UIGraphicsContextSave(window->graphicsContext);
         {
-            UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 42));
-            UIGraphicsContextSetShadow(window->graphicsContext, UIPointCreate(0, 0), 12.0f);
+            UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 61));
+            UIGraphicsContextSetShadow(window->graphicsContext, UIPointCreate(0, 0), 8.0f);
             UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
             UIGraphicsContextRestore(window->graphicsContext);
 
@@ -202,8 +202,8 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
 {
     if (event.type == UIEventTypeMouseMotion)
     {
-        window->mousePos.x = event._eventData.mouseMotion.x - window->contentFrame.origin.x;
-        window->mousePos.y = event._eventData.mouseMotion.y - window->contentFrame.origin.y;
+        window->mousePos.x = ((UIFloat)event._eventData.mouseMotion.x) - window->contentFrame.origin.x;
+        window->mousePos.y = ((UIFloat)event._eventData.mouseMotion.y) - window->contentFrame.origin.y;
     }
 
     UIRect dragger = UIRectCreate(
@@ -259,9 +259,12 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
             }
             break;
         case UIEventTypeMouseMotion:
-            hitView->responder->mouseMove(
-                hitView->responder,
-                event);
+            if (hitView != NULL)
+            {
+                hitView->responder->mouseMove(
+                    hitView->responder,
+                    event);
+            }
             break;
         };
     }

@@ -77,42 +77,31 @@ xdg_toplevel_configure_handler(void *data,
     }
     else
     {
+        window->frame = requestedSize;
         printf("before window did resize\n");
         window->controller->windowDidResize(window);
 
-        if (window->graphicsContext != NULL) {
+        if (window->graphicsContext != NULL)
+        {
             UIGraphicsContextDestroy(window->graphicsContext);
         }
 
         window->graphicsContext = UIGraphicsContextCreate(platformWindow->eglSurface, window->frame.size.width, window->frame.size.height);
+        window->mainView->needsDisplay = 1;
+        window->mainView->needsLayout = 1;
 
-        // glClearColor(1.0, 1.0, 1.0, 0.0);
-        // glClear(GL_COLOR_BUFFER_BIT);
-        // glFlush();
-        // if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, platformWindow->eglSurface))
-        // {
-        //     fprintf(stderr, "Swapped buffers\n");
-        // }
-        // else
-        // {
-        //     fprintf(stderr, "Swapped buffers failed\n");
-        // }
+        UIRect contentRect = window->contentFrame;
+        xdg_surface_set_window_geometry(
+            window->platformWindow->xdgSurface,
+            contentRect.origin.x,
+            contentRect.origin.y,
+            contentRect.size.width,
+            contentRect.size.height);
 
-        // UIRect contentRect = window->frame;
-        // xdg_surface_set_window_geometry(
-        //     window->platformWindow->xdg_surface,
-        //     contentRect.x,
-        //     contentRect.y,
-        //     contentRect.width,
-        //     contentRect.height);
-
-        // glClearColor(0, 0, 0, 1);
-        // eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, platformLayer->egl_surface);
-
-        // struct wl_region *inputRegion = wl_compositor_create_region(UIPlatformGlobalsShared.compositor);
-        // wl_region_add(inputRegion, contentRect.x, contentRect.y, contentRect.width, contentRect.height);
-        // wl_surface_set_input_region(platformLayer->surface, inputRegion);
-        // wl_region_destroy(inputRegion);
+        struct wl_region *inputRegion = wl_compositor_create_region(UIPlatformGlobalsShared.compositor);
+        wl_region_add(inputRegion, contentRect.origin.x, contentRect.origin.y, contentRect.size.width, contentRect.size.height);
+        wl_surface_set_input_region(window->platformWindow->wlSurface, inputRegion);
+        wl_region_destroy(inputRegion);
     }
 }
 
@@ -169,8 +158,9 @@ void _UIPlatformWindowResize(UIWindow window, UIEvent event)
     xdg_toplevel_resize(window->platformWindow->xdgToplevel, UIPlatformGlobalsShared.wl_seat, event.reserved, XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT);
 }
 
-void _UIPlatformWindowMakeCurrent(UIWindow window) {
-if (
+void _UIPlatformWindowMakeCurrent(UIWindow window)
+{
+    if (
         eglMakeCurrent(
             UIPlatformGlobalsShared.eglData.eglDisplay,
             window->platformWindow->eglSurface,
@@ -182,13 +172,14 @@ if (
     }
 }
 
-void _UIPlatformWindowFlush(UIWindow window) {
-        if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, window->platformWindow->eglSurface))
-        {
-            fprintf(stderr, "Swapped buffers\n");
-        }
-        else
-        {
-            fprintf(stderr, "Swapped buffers failed\n");
-        }
+void _UIPlatformWindowFlush(UIWindow window)
+{
+    if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, window->platformWindow->eglSurface))
+    {
+        // fprintf(stderr, "Swapped buffers\n");
+    }
+    else
+    {
+        fprintf(stderr, "Swapped buffers failed\n");
+    }
 }
