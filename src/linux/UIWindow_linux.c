@@ -91,15 +91,30 @@ xdg_toplevel_configure_handler(void *data,
         window->mainView->needsLayout = 1;
 
         UIRect contentRect = window->contentFrame;
+        printf("contentRect: x(%f) y(%f) w(%f) h(%f)\n",
+               window->frame.origin.x,
+               window->frame.origin.y,
+               window->frame.size.width,
+               window->frame.size.height);
+        printf("contentRect: x(%f) y(%f) w(%f) h(%f)\n",
+               contentRect.origin.x,
+               contentRect.origin.y,
+               contentRect.size.width,
+               contentRect.size.height);
         xdg_surface_set_window_geometry(
             window->platformWindow->xdgSurface,
-            contentRect.origin.x,
-            contentRect.origin.y,
-            contentRect.size.width,
-            contentRect.size.height);
+            (int32_t)contentRect.origin.x,
+            (int32_t)contentRect.origin.y,
+            (int32_t)contentRect.size.width,
+            (int32_t)contentRect.size.height);
 
         struct wl_region *inputRegion = wl_compositor_create_region(UIPlatformGlobalsShared.compositor);
-        wl_region_add(inputRegion, contentRect.origin.x, contentRect.origin.y, contentRect.size.width, contentRect.size.height);
+        wl_region_add(
+            inputRegion,
+            (int32_t)contentRect.origin.x,
+            (int32_t)contentRect.origin.y,
+            (int32_t)contentRect.size.width,
+            (int32_t)contentRect.size.height);
         wl_surface_set_input_region(window->platformWindow->wlSurface, inputRegion);
         wl_region_destroy(inputRegion);
     }

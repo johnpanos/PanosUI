@@ -21,7 +21,7 @@ UIRect defaultWindowWillResize(UIWindow window, UIRect to)
 void defaultWindowDidResize(UIWindow window)
 {
     printf("Window did resize: w(%f) h(%f)\n", window->frame.size.width, window->frame.size.height);
-    window->contentFrame = UIRectInset(window->frame, 16, 16);
+    window->contentFrame = UIRectInset(window->frame, 16.0f, 16.0f);
 }
 
 struct _UIWindowController UIWindowControllerDefault = {

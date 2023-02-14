@@ -1,64 +1,40 @@
 #include <stdio.h>
 #include "PanosUI.h"
 
+UIView WindowActionButtonCreate(UIFloat x, UIColor bg)
+{
+    UIRect f = UIRectCreate(x, 0, 14, 14);
+    UIView button = UIViewCreate(f, f);
+
+    UIViewSetCornerRadius(button, 5.0f);
+    UIViewSetBackgroundColor(button, bg);
+
+    return button;
+}
+
+UIView WindowActionsViewCreate()
+{
+    UIRect rootFrame = UIRectCreate(16.0f, 16.0f, 58, 14);
+    UIView root = UIViewCreate(rootFrame, rootFrame);
+
+    UIViewAddSubview(root, WindowActionButtonCreate(0.0f, UIColorCreateRGBA(107, 122, 255, 255)));
+    UIViewAddSubview(root, WindowActionButtonCreate(22.0f, UIColorCreateRGBA(149, 160, 178, 204)));
+    UIViewAddSubview(root, WindowActionButtonCreate(44.0f, UIColorCreateRGBA(149, 160, 178, 204)));
+
+    return root;
+}
+
 UIView VIEW;
 
 void onViewClick(UIEventResponder self, UIEvent event)
 {
     printf("On Click\n");
-    int end = 200;
-
-    UIAnimation radiusAnim;
-    radiusAnim.finished = 0;
-    radiusAnim.forKey = kUILayerKeyBoundsWidth;
-    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
-    radiusAnim.startValue = &VIEW->frame.size.width;
-    radiusAnim.endValue = &end;
-    radiusAnim.startTime = UIAnimationGetCurrentTime();
-    radiusAnim.endTime = UIAnimationGetCurrentTime() + 5000;
-    radiusAnim._valueSize = sizeof(int);
-    radiusAnim.duration = 5000;
-
-    UILayerAddAnimation(VIEW->layer, radiusAnim);
-}
-
-void windowDidLoad(UIWindow window)
-{
-    printf("THE WINDOW LOADED!\n");
-
-    // UIRect rect1 = UIRectCreate(50, 50, 128, 128);
-    // UIView view1 = UIViewCreate(rect1, rect1);
-
-    // UIRect rect2 = UIRectCreate(200, 200, 128, 128);
-    // UIView view2 = UIViewCreate(rect2, rect2);
-
-    // UIPoint tap = UIPointCreate(10, 10);
-    // UIPoint convertedTap = UIViewConvertPoint(view1, view2, tap);
-
-    // printf("Converted tap: x(%f) y(%f)\n", convertedTap.x, convertedTap.y);
-
-    UIRect myRect = UIRectCreate(100, 100, 100, 100);
-    UIView testView = UIViewCreate(myRect, myRect);
-    VIEW = testView;
-
-    // testView->responder->leftMouseDown = &onViewClick;
-
-    UIViewSetBackgroundColor(testView, UIColorCreateRGBA(200, 200, 200, 255));
-    UIViewSetCornerRadius(testView, 10.0f);
-    UIViewSetShadowColor(testView, UIColorCreateRGBA(0, 0, 0, 100));
-    UIPoint shadowOffset = {
-        .x = 10,
-        .y = 10};
-    UIViewSetShadowOffset(testView, shadowOffset);
-    UIViewSetShadowRadius(testView, 10.0f);
-    UIViewAddSubview(window->mainView, testView);
-
-    UIRect newRect = UIRectInset(window->frame, 36.0f, 36.0f);
+    UIRect newRect = VIEW->parentView->frame;
 
     UIFloat start, end;
 
-    start = testView->frame.origin.x;
-    end = 36.0f/2.0f;
+    start = VIEW->frame.origin.x;
+    end = 0.0f;
 
     UIAnimation radiusAnim;
     radiusAnim.finished = 0;
@@ -72,36 +48,58 @@ void windowDidLoad(UIWindow window)
     radiusAnim.duration = 2500;
     UILayerAddAnimation(VIEW->layer, radiusAnim);
 
-    start = testView->frame.origin.y;
-    end = 36.0f/2.0f;
+    // start = VIEW->frame.size.width;
+    // end = newRect.size.width;
+    // radiusAnim.forKey = kUILayerKeyBoundsWidth;
+    // UILayerAddAnimation(VIEW->layer, radiusAnim);
 
-    radiusAnim.forKey = kUILayerKeyPositionY;
-    UILayerAddAnimation(VIEW->layer, radiusAnim);
+    // start = VIEW->frame.size.height;
+    // end = newRect.size.height;
+    // radiusAnim.forKey = kUILayerKeyBoundsHeight;
+    // UILayerAddAnimation(VIEW->layer, radiusAnim);
+}
 
-    start = testView->frame.size.width;
-    end = newRect.size.width;
-    radiusAnim.forKey = kUILayerKeyBoundsWidth;
-    UILayerAddAnimation(VIEW->layer, radiusAnim);
+void windowDidLoad(UIWindow window)
+{
+    printf("THE WINDOW LOADED!\n");
 
-    start = testView->frame.size.height;
-    end = newRect.size.height;
-    radiusAnim.forKey = kUILayerKeyBoundsHeight;
-    UILayerAddAnimation(VIEW->layer, radiusAnim);
+    UIViewSetBackgroundColor(window->mainView, UIColorCreateRGBA(255, 255, 255, 204));
 
-    start = 0.0f;
-    end = 10.0f;
-    radiusAnim.forKey = kUILayerKeyCornerRadius;
-    UILayerAddAnimation(VIEW->layer, radiusAnim);
+    // UIRect rect1 = UIRectCreate(50, 50, 128, 128);
+    // UIView view1 = UIViewCreate(rect1, rect1);
 
-    start = 48.0f;
-    end = 8.0f;
-    radiusAnim.forKey = kUILayerKeyShadowRadius;
-    UILayerAddAnimation(VIEW->layer, radiusAnim);
+    // UIRect rect2 = UIRectCreate(200, 200, 128, 128);
+    // UIView view2 = UIViewCreate(rect2, rect2);
+
+    // UIPoint tap = UIPointCreate(10, 10);
+    // UIPoint convertedTap = UIViewConvertPoint(view1, view2, tap);
+
+    // printf("Converted tap: x(%f) y(%f)\n", convertedTap.x, convertedTap.y);
+
+    UIRect myRect = UIRectCreate(224, 0, window->mainView->frame.size.width - 224, window->mainView->frame.size.height);
+    UIView testView = UIViewCreate(myRect, myRect);
+    VIEW = testView;
+
+    testView->responder->leftMouseDown = &onViewClick;
+
+    UIViewSetBackgroundColor(testView, UIColorCreateRGBA(255, 255, 255, 255));
+    UIViewSetCornerRadius(testView, 0.0f);
+    UIViewSetShadowColor(testView, UIColorCreateRGBA(0, 0, 0, 28));
+    UIPoint shadowOffset = {
+        .x = -4.0f,
+        .y = 0};
+    UIViewSetShadowOffset(testView, shadowOffset);
+    UIViewSetShadowRadius(testView, 12.0f);
+    UIViewAddSubview(window->mainView, testView);
+
+    UIView windowActions = WindowActionsViewCreate();
+    UIViewAddSubview(window->mainView, windowActions);
+    UIViewSetCornerRadius(windowActions, 0.0f);
 }
 
 void didFinishLaunching(UIApplication *application)
 {
-    UIRect windowFrame = UIRectCreate(0, 0, 500, 600);
+    UIRect windowFrame = UIRectCreate(0, 0, 750, 600);
     UIWindow window = UIWindowCreate(windowFrame);
 
     UIWindowController myWindowController = UIWindowControllerCreate();

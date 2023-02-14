@@ -150,7 +150,7 @@ UILayer UILayerGetInFlight(UILayer layer)
                 VALUE_FOR_TYPE(anim, UIFloat, startValue),
                 VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
-                }
+        }
         else if (KEY_EQUAL(anim, kUILayerKeyShadowColor))
         {
         }

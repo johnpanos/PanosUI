@@ -46,7 +46,7 @@ UIView _UIWindowCreateFrameView(UIWindow window)
     return titlebar;
 }
 
-#define INSET_AMOUNT 16
+#define INSET_AMOUNT 16.0f
 UIWindow UIWindowCreate(UIRect frame)
 {
     UIWindow window = calloc(1, sizeof(struct _UIWindow));
@@ -99,10 +99,11 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
     UIGraphicsContextSave(context);
     {
         UILayer layer = UILayerGetInFlight(*view->layer);
-        UILayerRenderInContext(&layer, context);
 
         UIGraphicsContextSave(context);
         {
+            UIGraphicsContextSetTransform(context, layer.frame.origin.x, layer.frame.origin.y);
+            UILayerRenderInContext(&layer, context);
             UIGraphicsContextSetTransform(context, layer.bounds.origin.x, layer.bounds.origin.y);
 
             ArrayForEach(UIView viewToRender, view->subviews)
@@ -177,8 +178,8 @@ void UIWindowUpdate(UIWindow window)
             UIGraphicsContextClipToRect(window->graphicsContext, window->contentFrame, 8.0f);
 
             // Draw background
-            UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
-            UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
+            // UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
+            // UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
 
             UIGraphicsContextSave(window->graphicsContext);
             {
@@ -190,6 +191,10 @@ void UIWindowUpdate(UIWindow window)
                 rootView->needsDisplay = 0;
             }
             UIGraphicsContextRestore(window->graphicsContext);
+
+            UIGraphicsSetStrokeColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
+            UIGraphicsSetStrokeWidth(window->graphicsContext, 4.0f);
+            UIGraphicsContextAddRect(window->graphicsContext, UIRectOutset(window->contentFrame, 2.0f, 2.0f), 8.0f);
         }
         UIGraphicsContextRestore(window->graphicsContext);
 
@@ -213,59 +218,64 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
         0);
     dragger = UIRectOutset(dragger, 10, 10);
 
-    if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.size.width) &&
-        (window->mousePos.y > 0 && window->mousePos.y < 28))
+    // if ((window->mousePos.x > 0 && window->mousePos.x < window->frame.size.width) &&
+    //     (window->mousePos.y > 0 && window->mousePos.y < 28))
+    // {
+    //     _UIPlatformWindowMove(window, event);
+    // }
+    // else if (UIPointInRect(window->mousePos, dragger))
+    // {
+    //     _UIPlatformWindowResize(window, event);
+    // }
+    // else
+    // {
+    UIPoint hitPoint = {
+        .x = window->mousePos.x,
+        .y = window->mousePos.y};
+    UIView hitView = UIViewHitTest(window->mainView, hitPoint);
+    switch (event.type)
     {
-        _UIPlatformWindowMove(window, event);
-    }
-    else if (UIPointInRect(window->mousePos, dragger))
-    {
-        _UIPlatformWindowResize(window, event);
-    }
-    else
-    {
-        UIPoint hitPoint = {
-            .x = window->mousePos.x,
-            .y = window->mousePos.y};
-        UIView hitView = UIViewHitTest(window->mainView, hitPoint);
-        switch (event.type)
+    case UIEventTypeMouseDown:
+        if (event._eventData.mouseButton.button == UIEventMouseButtonTypeLeft)
         {
-        case UIEventTypeMouseDown:
-            if (event._eventData.mouseButton.button == UIEventMouseButtonTypeLeft)
-            {
-                hitView->responder->leftMouseDown(
-                    hitView->responder,
-                    event);
-            }
-            else if (event._eventData.mouseButton.button == UIEventMouseButtonTypeRight)
-            {
-                hitView->responder->rightMouseDown(
-                    hitView->responder,
-                    event);
-            }
-            break;
-        case UIEventTypeMouseUp:
-            if (event._eventData.mouseButton.button == UIEventMouseButtonTypeLeft)
-            {
-                hitView->responder->leftMouseUp(
-                    hitView->responder,
-                    event);
-            }
-            else if (event._eventData.mouseButton.button == UIEventMouseButtonTypeRight)
-            {
-                hitView->responder->rightMouseUp(
-                    hitView->responder,
-                    event);
-            }
-            break;
-        case UIEventTypeMouseMotion:
-            if (hitView != NULL)
-            {
-                hitView->responder->mouseMove(
-                    hitView->responder,
-                    event);
-            }
-            break;
-        };
-    }
+            printf("hitview frame : x(%f) y(%f) w(%f) h(%f)\n",
+                   hitView->frame.origin.x,
+                   hitView->frame.origin.y,
+                   hitView->frame.size.width,
+                   hitView->frame.size.height);
+            hitView->responder->leftMouseDown(
+                hitView->responder,
+                event);
+        }
+        else if (event._eventData.mouseButton.button == UIEventMouseButtonTypeRight)
+        {
+            hitView->responder->rightMouseDown(
+                hitView->responder,
+                event);
+        }
+        break;
+    case UIEventTypeMouseUp:
+        if (event._eventData.mouseButton.button == UIEventMouseButtonTypeLeft)
+        {
+            hitView->responder->leftMouseUp(
+                hitView->responder,
+                event);
+        }
+        else if (event._eventData.mouseButton.button == UIEventMouseButtonTypeRight)
+        {
+            hitView->responder->rightMouseUp(
+                hitView->responder,
+                event);
+        }
+        break;
+    case UIEventTypeMouseMotion:
+        if (hitView != NULL)
+        {
+            hitView->responder->mouseMove(
+                hitView->responder,
+                event);
+        }
+        break;
+    };
+    // }
 }

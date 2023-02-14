@@ -22,6 +22,10 @@ UIView UIViewCreate(UIRect frame, UIRect bounds)
     view->needsDisplay = 1;
     view->needsLayout = 1;
     view->layoutSubviews = &_UIViewDoNothing;
+
+    view->layer->frame = frame;
+    view->layer->bounds = boundsCopy;
+
     return view;
 }
 
@@ -108,7 +112,7 @@ UIView UIViewHitTest(UIView view, UIPoint point)
     printf("\nHit test: x(%f) y(%f)\n", point.x, point.y);
     if (!view)
         return NULL;
-    if (!UIPointInRect(point, view->frame))
+    if (!UIPointInRect(point, view->bounds))
         return NULL;
 
     for (int i = ArrayGetCapacity(view->subviews) - 1; i >= 0; --i)
@@ -116,11 +120,9 @@ UIView UIViewHitTest(UIView view, UIPoint point)
         UIView subview = ArrayGetValueAtIndex(view->subviews, i);
         UIPoint convertedPoint = UIViewConvertPoint(view, subview, point);
         printf("Converted point: x(%f) y(%f)\n", convertedPoint.x, convertedPoint.y);
-        if (!subview->clipToBounds && !UIPointInRect(convertedPoint, subview->frame))
-            continue;
-
         UIView hitView = UIViewHitTest(subview, convertedPoint);
-        if (hitView)
+        printf("hitView: %p\n", hitView);
+        if (hitView != NULL)
             return hitView;
     }
 
