@@ -52,7 +52,7 @@
         <request name="get_blur">
             <description summary="extend surface interface for blur">
                 Instantiate an interface extension for the given wl_surface to request
-                asynchronous page flips for presentation.
+                blurring.
 
                 If the given wl_surface already has a ext_blur_v1 object
                 associated, the blur_mask_exists protocol error is raised.
@@ -65,10 +65,7 @@
     <interface name="ext_blur_mask_v1" version="1">
         <description summary="per-surface blur interface">
             An additional interface to a wl_surface object, which allows the client
-            to hint to the compositor if the content on the surface is suitable for
-            presentation with tearing.
-            The default presentation hint is vsync. See presentation_hint for more
-            details.
+            to hint to the compositor that it would like to blur a section of a wl_surface.
         </description>
 
         <request name="set_mask">

@@ -23,6 +23,7 @@ if host_machine.system() == 'linux'
     src += 'src/linux/egl.c'
     src += 'src/linux/graphics.cpp'
     src += 'src/linux/deps/linux-dmabuf_unstable-v1.c'
+    src += 'src/linux/deps/ext-blur-mask-unstable-v1.c'
     src += 'src/linux/deps/xdg-shell.c'
 
     src += 'src/linux/UILayer_linux.c'
