@@ -15,6 +15,7 @@
 #include "../UIView.h"
 
 #include "deps/linux-dmabuf_unstable-v1.h"
+#include "deps/ext-blur-mask-unstable-v1.h"
 #include "deps/xdg-shell.h"
 #include "platform.h"
 #include "globals.h"
@@ -52,6 +53,11 @@ static void global_registry_handler(void *data, struct wl_registry *registry, ui
     if (strcmp(interface, "wl_shm") == 0)
     {
         UIPlatformGlobalsShared.wl_shm = wl_registry_bind(registry, id, &wl_shm_interface, version);
+    }
+
+    if (strcmp(interface, ext_blur_mask_manager_v1_interface.name))
+    {
+        UIPlatformGlobalsShared.blur_mask_manager = wl_registry_bind(registry, id, &ext_blur_mask_manager_v1_interface, 1);
     }
 }
 

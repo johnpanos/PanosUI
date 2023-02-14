@@ -2,6 +2,8 @@
 #include <wayland-egl.h>
 #include <EGL/egl.h>
 
+#include "deps/ext-blur-mask-unstable-v1.h"
+
 typedef struct _EGLData
 {
     EGLDisplay eglDisplay;
@@ -18,6 +20,7 @@ struct UIPlatformGlobals
     struct wl_shm *wl_shm;
     struct wl_registry *wl_registry;
     struct xdg_wm_base *wm_base;
+    struct ext_blur_mask_manager_v1 *blur_mask_manager;
 
     EGLData eglData;
 };
