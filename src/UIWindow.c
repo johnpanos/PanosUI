@@ -97,15 +97,20 @@ void UIWindowSetTitle(UIWindow window, const char *title)
 void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 {
     UIGraphicsContextSave(context);
-    if (view->parentView != NULL)
     {
-        UIGraphicsContextSetTransform(context, view->parentView->frame.origin.x, view->parentView->frame.origin.y);
-    }
-    UILayer layer = UILayerGetInFlight(*view->layer);
-    UILayerRenderInContext(&layer, context);
-    ArrayForEach(UIView viewToRender, view->subviews)
-    {
-        RENDER_SUBVIEWS(viewToRender, context);
+        UILayer layer = UILayerGetInFlight(*view->layer);
+        UILayerRenderInContext(&layer, context);
+
+        UIGraphicsContextSave(context);
+        {
+            UIGraphicsContextSetTransform(context, layer.bounds.origin.x, layer.bounds.origin.y);
+
+            ArrayForEach(UIView viewToRender, view->subviews)
+            {
+                RENDER_SUBVIEWS(viewToRender, context);
+            }
+        }
+        UIGraphicsContextRestore(context);
     }
     UIGraphicsContextRestore(context);
 }
