@@ -33,17 +33,17 @@ class MyWindowController : public UI::WindowController
         this->my_view->set_corner_radius(0.0f);
 
         UILayerAddAnimation(this->my_view->backing_view->layer,
-                            UI::Animation<int>::create(
+                            UI::Animation<float>::create(
                                 1000,
                                 kUILayerKeyPositionX,
                                 &UIAnimationTimingFunctionEaseInOutCirc,
-                                0, 500));
+                                0.0f, 20.0f));
         UILayerAddAnimation(this->my_view->backing_view->layer,
-                            UI::Animation<int>::create(
+                            UI::Animation<float>::create(
                                 1000,
                                 kUILayerKeyPositionY,
                                 &UIAnimationTimingFunctionEaseInOutCirc,
-                                0, 100));
+                                0.0f, 20.0f));
         this->my_view->set_frame(UIRectCreate(100, 100, 200, 200));
 
         UILayerAddAnimation(this->my_view->backing_view->layer,
@@ -58,12 +58,12 @@ class MyWindowController : public UI::WindowController
         view2 = new UI::View(view2_frame, view2_frame);
         this->my_view->add_subview(view2);
         view2->set_background_color(UIColorCreateRGBA(0, 0, 0, 255));
-        UILayerAddAnimation(this->view2->backing_view->layer,
-                            UI::Animation<float>::create(
-                                1000,
-                                kUILayerKeyCornerRadius,
-                                &UIAnimationTimingFunctionEaseInOutCirc,
-                                0.0f, 2.0f));
+        // UILayerAddAnimation(this->view2->backing_view->layer,
+        //                     UI::Animation<float>::create(
+        //                         1000,
+        //                         kUILayerKeyPositionX,
+        //                         &UIAnimationTimingFunctionEaseInOutCirc,
+        //                         0.0f, 200.0f));
     }
 };
 

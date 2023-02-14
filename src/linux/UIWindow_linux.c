@@ -2,9 +2,9 @@
 #include "globals.h"
 #include <GLES2/gl2.h>
 #include "UIWindow_linux.h"
+#include "platform.h"
 #include "deps/xdg-shell.h"
 #include "deps/ext-blur-mask-unstable-v1.h"
-#include "UILayer_linux.h"
 
 // XDG SURFACE
 static void
@@ -32,14 +32,34 @@ xdg_toplevel_configure_handler(void *data,
     UIRect configuredSize = UIRectCreate(0, 0, (UIFloat)width, (UIFloat)height);
     UIRect requestedSize = window->controller->windowWillResize(window, configuredSize);
 
-    UIPlatformLayer *platformLayer = window->rootLayer->platformLayer;
+    UIPlatformWindow *platformWindow = window->platformWindow;
 
-    struct ext_blur_mask_v1 *blurMask = ext_blur_mask_manager_v1_get_blur(UIPlatformGlobalsShared.blur_mask_manager, platformLayer->surface);
-    ext_blur_mask_v1_set_mask(blurMask);
+    // TODO: Make a dmabuf mask and pass it to ext_blur_mask_v1
+    // struct ext_blur_mask_v1 *blurMask = ext_blur_mask_manager_v1_get_blur(UIPlatformGlobalsShared.blur_mask_manager, platformLayer->surface);
+    // ext_blur_mask_v1_set_mask(blurMask);
 
-    // wl_egl_window_resize(platformLayer->egl_window, requestedSize.width, requestedSize.height, 0, 0);
+    if (platformWindow->eglWindow != NULL)
+    {
+        wl_egl_window_resize(
+            platformWindow->eglWindow,
+            requestedSize.size.width,
+            requestedSize.size.height,
+            0, 0);
+    }
+    else
+    {
+        platformWindow->eglWindow = wl_egl_window_create(
+            platformWindow->wlSurface,
+            requestedSize.size.width,
+            requestedSize.size.height);
+        platformWindow->eglSurface = eglCreateWindowSurface(
+            UIPlatformGlobalsShared.eglData.eglDisplay,
+            UIPlatformGlobalsShared.eglData.eglConfig,
+            platformWindow->eglWindow,
+            NULL);
+    }
 
-    if (platformLayer->egl_surface == EGL_NO_SURFACE)
+    if (platformWindow->eglSurface == EGL_NO_SURFACE)
     {
         fprintf(stderr, "egl surface failed\n");
         exit(1);
@@ -48,8 +68,8 @@ xdg_toplevel_configure_handler(void *data,
     if (
         eglMakeCurrent(
             UIPlatformGlobalsShared.eglData.eglDisplay,
-            platformLayer->egl_surface,
-            platformLayer->egl_surface,
+            platformWindow->eglSurface,
+            platformWindow->eglSurface,
             UIPlatformGlobalsShared.eglData.eglContext) == EGL_FALSE)
     {
 
@@ -60,17 +80,23 @@ xdg_toplevel_configure_handler(void *data,
         printf("before window did resize\n");
         window->controller->windowDidResize(window);
 
-        glClearColor(1.0, 1.0, 1.0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glFlush();
-        if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, window->rootLayer->platformLayer->egl_surface))
-        {
-            fprintf(stderr, "Swapped buffers\n");
+        if (window->graphicsContext != NULL) {
+            UIGraphicsContextDestroy(window->graphicsContext);
         }
-        else
-        {
-            fprintf(stderr, "Swapped buffers failed\n");
-        }
+
+        window->graphicsContext = UIGraphicsContextCreate(platformWindow->eglSurface, window->frame.size.width, window->frame.size.height);
+
+        // glClearColor(1.0, 1.0, 1.0, 0.0);
+        // glClear(GL_COLOR_BUFFER_BIT);
+        // glFlush();
+        // if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, platformWindow->eglSurface))
+        // {
+        //     fprintf(stderr, "Swapped buffers\n");
+        // }
+        // else
+        // {
+        //     fprintf(stderr, "Swapped buffers failed\n");
+        // }
 
         // UIRect contentRect = window->frame;
         // xdg_surface_set_window_geometry(
@@ -101,78 +127,68 @@ static const struct xdg_toplevel_listener xdg_top_level_listener = {
     .close = xdg_toplevel_close_handler,
 };
 
-UILayer *_UIPlatformWindowCreateUILayer(UIRect frame, UIRect bounds)
-{
-    UILayer *layer = calloc(1, sizeof(UILayer));
-    layer->frame = frame;
-    layer->bounds = bounds;
-    layer->animations = ArrayCreate(sizeof(UIAnimation));
-    layer->sublayers = ArrayCreate(sizeof(UILayer *));
-
-    layer->platformLayer = calloc(1, sizeof(UIPlatformLayer));
-    layer->platformLayer->surface = wl_compositor_create_surface(UIPlatformGlobalsShared.compositor);
-
-    layer->platformLayer->egl_window = wl_egl_window_create(
-        layer->platformLayer->surface,
-        frame.size.width,
-        frame.size.height);
-
-    if (layer->platformLayer->egl_window == EGL_NO_SURFACE)
-    {
-        fprintf(stderr, "Can't create egl window\n");
-        exit(1);
-    }
-    else
-    {
-        fprintf(stderr, "Created egl window\n");
-    }
-
-    layer->platformLayer->egl_surface = eglCreateWindowSurface(
-        UIPlatformGlobalsShared.eglData.eglDisplay,
-        UIPlatformGlobalsShared.eglData.eglConfig,
-        layer->platformLayer->egl_window,
-        NULL);
-
-    return layer;
-}
-
 void _UIPlatformWindowCreate(UIWindow window)
 {
-    UIPlatformWindow *platformData = calloc(1, sizeof(UIPlatformWindow));
-    platformData->window = window;
-    window->platformWindow = platformData;
+    UIPlatformWindow *platformWindow = calloc(1, sizeof(UIPlatformWindow));
+    platformWindow->window = window;
+    window->platformWindow = platformWindow;
 
-    window->rootLayer = _UIPlatformWindowCreateUILayer(window->frame, window->frame);
-
-    window->platformWindow->xdg_surface = xdg_wm_base_get_xdg_surface(
+    platformWindow->wlSurface = wl_compositor_create_surface(UIPlatformGlobalsShared.compositor);
+    platformWindow->xdgSurface = xdg_wm_base_get_xdg_surface(
         UIPlatformGlobalsShared.wm_base,
-        window->rootLayer->platformLayer->surface);
-    xdg_surface_add_listener(window->platformWindow->xdg_surface, &xdg_surface_listener, window);
+        platformWindow->wlSurface);
+    xdg_surface_add_listener(platformWindow->xdgSurface, &xdg_surface_listener, window);
 
-    window->platformWindow->toplevel = xdg_surface_get_toplevel(window->platformWindow->xdg_surface);
-    xdg_toplevel_add_listener(window->platformWindow->toplevel, &xdg_top_level_listener, window);
+    platformWindow->xdgToplevel = xdg_surface_get_toplevel(platformWindow->xdgSurface);
+    xdg_toplevel_add_listener(platformWindow->xdgToplevel, &xdg_top_level_listener, window);
 
-    wl_surface_commit(window->rootLayer->platformLayer->surface);
+    wl_surface_commit(platformWindow->wlSurface);
 }
 
 void _UIPlatformWindowDestroy(UIWindow window)
 {
-    xdg_toplevel_destroy(window->platformWindow->toplevel);
-    xdg_surface_destroy(window->platformWindow->xdg_surface);
-    wl_surface_destroy(window->rootLayer->platformLayer->surface);
+    UIPlatformWindow *platformWindow = window->platformWindow;
+    wl_egl_window_destroy(platformWindow->eglWindow);
+    xdg_toplevel_destroy(platformWindow->xdgToplevel);
+    xdg_surface_destroy(platformWindow->xdgSurface);
+    wl_surface_destroy(platformWindow->wlSurface);
 }
 
 void _UIPlatformWindowSetTitle(UIWindow window, const char *title)
 {
-    xdg_toplevel_set_title(window->platformWindow->toplevel, title);
+    xdg_toplevel_set_title(window->platformWindow->xdgToplevel, title);
 }
 
 void _UIPlatformWindowMove(UIWindow window, UIEvent event)
 {
-    xdg_toplevel_move(window->platformWindow->toplevel, UIPlatformGlobalsShared.wl_seat, event.reserved);
+    xdg_toplevel_move(window->platformWindow->xdgToplevel, UIPlatformGlobalsShared.wl_seat, event.reserved);
 }
 
 void _UIPlatformWindowResize(UIWindow window, UIEvent event)
 {
-    xdg_toplevel_resize(window->platformWindow->toplevel, UIPlatformGlobalsShared.wl_seat, event.reserved, XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT);
+    xdg_toplevel_resize(window->platformWindow->xdgToplevel, UIPlatformGlobalsShared.wl_seat, event.reserved, XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT);
+}
+
+void _UIPlatformWindowMakeCurrent(UIWindow window) {
+if (
+        eglMakeCurrent(
+            UIPlatformGlobalsShared.eglData.eglDisplay,
+            window->platformWindow->eglSurface,
+            window->platformWindow->eglSurface,
+            UIPlatformGlobalsShared.eglData.eglContext) == EGL_FALSE)
+    {
+
+        printf("Could not make egl context current: %d\n", eglGetError());
+    }
+}
+
+void _UIPlatformWindowFlush(UIWindow window) {
+        if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, window->platformWindow->eglSurface))
+        {
+            fprintf(stderr, "Swapped buffers\n");
+        }
+        else
+        {
+            fprintf(stderr, "Swapped buffers failed\n");
+        }
 }

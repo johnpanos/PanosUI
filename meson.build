@@ -26,7 +26,6 @@ if host_machine.system() == 'linux'
     src += 'src/linux/deps/ext-blur-mask-unstable-v1.c'
     src += 'src/linux/deps/xdg-shell.c'
 
-    src += 'src/linux/UILayer_linux.c'
     src += 'src/linux/UIWindow_linux.c'
 
     egl = dependency('egl')

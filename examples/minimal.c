@@ -24,31 +24,20 @@ void onViewClick(UIEventResponder self, UIEvent event)
 
 void windowDidLoad(UIWindow window)
 {
-    if (window->mainView != NULL)
-    {
-        return;
-    }
     printf("THE WINDOW LOADED!\n");
 
-    UIRect rect1 = UIRectCreate(50, 50, 128, 128);
-    UIView view1 = UIViewCreate(rect1, rect1);
+    // UIRect rect1 = UIRectCreate(50, 50, 128, 128);
+    // UIView view1 = UIViewCreate(rect1, rect1);
 
-    UIRect rect2 = UIRectCreate(200, 200, 128, 128);
-    UIView view2 = UIViewCreate(rect2, rect2);
+    // UIRect rect2 = UIRectCreate(200, 200, 128, 128);
+    // UIView view2 = UIViewCreate(rect2, rect2);
 
-    UIPoint tap = UIPointCreate(10, 10);
-    UIPoint convertedTap = UIViewConvertPoint(view1, view2, tap);
+    // UIPoint tap = UIPointCreate(10, 10);
+    // UIPoint convertedTap = UIViewConvertPoint(view1, view2, tap);
 
-    printf("Converted tap: x(%f) y(%f)\n", convertedTap.x, convertedTap.y);
-
-    window->mainView = UIViewCreate(window->frame, window->frame);
-    UILayerAddSublayer(window->rootLayer, window->mainView->layer);
-
-    UIViewSetBackgroundColor(window->mainView, UIColorCreateRGBA(0, 0, 0, 255));
-    UIViewSetCornerRadius(window->mainView, 0.0f);
+    // printf("Converted tap: x(%f) y(%f)\n", convertedTap.x, convertedTap.y);
 
     UIRect myRect = UIRectCreate(100, 100, 100, 100);
-
     UIView testView = UIViewCreate(myRect, myRect);
     VIEW = testView;
 
@@ -64,30 +53,35 @@ void windowDidLoad(UIWindow window)
     UIViewSetShadowRadius(testView, 10.0f);
     UIViewAddSubview(window->mainView, testView);
 
-    UIRect r = UIRectCreate(0, 0, 20, 20);
-    UIView secondView = UIViewCreate(r, r);
-    UIViewSetBackgroundColor(secondView, UIColorCreateRGBA(100, 0, 0, 255));
-    UIViewAddSubview(VIEW, secondView);
-
-    int start = 10;
-    int end = 800;
+    UIFloat start = 10.0f;
+    UIFloat end = 200.0f;
 
     UIAnimation radiusAnim;
     radiusAnim.finished = 0;
     radiusAnim.forKey = kUILayerKeyPositionX;
-    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseInOutCubic;
+    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutQuint;
     radiusAnim.startValue = &start;
     radiusAnim.endValue = &end;
     radiusAnim.startTime = UIAnimationGetCurrentTime();
     radiusAnim.endTime = UIAnimationGetCurrentTime() + 2500;
-    radiusAnim._valueSize = sizeof(int);
+    radiusAnim._valueSize = sizeof(UIFloat);
     radiusAnim.duration = 2500;
+    UILayerAddAnimation(VIEW->layer, radiusAnim);
 
+    radiusAnim.forKey = kUILayerKeyPositionY;
     UILayerAddAnimation(VIEW->layer, radiusAnim);
     radiusAnim.forKey = kUILayerKeyBoundsWidth;
     UILayerAddAnimation(VIEW->layer, radiusAnim);
-    radiusAnim.forKey = kUILayerKeyPositionY;
-    UILayerAddAnimation(secondView->layer, radiusAnim);
+
+    start = 0.0f;
+    end = 10.0f;
+    radiusAnim.forKey = kUILayerKeyCornerRadius;
+    UILayerAddAnimation(VIEW->layer, radiusAnim);
+
+    start = 48.0f;
+    end = 8.0f;
+    radiusAnim.forKey = kUILayerKeyShadowRadius;
+    UILayerAddAnimation(VIEW->layer, radiusAnim);
 }
 
 void didFinishLaunching(UIApplication *application)

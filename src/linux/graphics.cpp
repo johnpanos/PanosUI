@@ -26,21 +26,21 @@
 
 typedef struct _UIGraphicsContext
 {
+    int width, height;
     SkCanvas *canvas;
     SkPaint paint;
 
-    EGLSurface eglSurface;
     SkSurface *surface;
 
     SkRTreeFactory bbhFactory;
-    SkPictureRecorder recorder;
+    SkPictureRecorder *recorder;
 
     SkPicture *picture;
-
 } UIGraphicsContext;
 
 extern "C"
 {
+    SkRTreeFactory factory;
     sk_sp<const GrGLInterface> interface = nullptr;
     GrDirectContext *grDirectContext = nullptr;
 
@@ -61,20 +61,15 @@ extern "C"
 
     UIGraphicsContext *UIGraphicsContextGetLayerContext(UIRect bounds)
     {
-        UIGraphicsContext *ctx = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
-
-        ctx->canvas = ctx->recorder.beginRecording(
-            bounds.size.width,
-            bounds.size.height,
-            &ctx->bbhFactory);
+        
     }
 
     void UIGraphicsContextMakeCurrent(UIGraphicsContext *context)
     {
-        if (eglMakeCurrent(UIPlatformGlobalsShared.eglData.eglDisplay, context->eglSurface, context->eglSurface, UIPlatformGlobalsShared.eglData.eglContext) == EGL_FALSE)
-        {
-            printf("Could not make egl context current: %d\n", eglGetError());
-        }
+        context->canvas = context->recorder->beginRecording(
+            context->surface->width(),
+            context->surface->height(),
+            &factory);
     }
 
     void UIGraphicsContextClear(UIGraphicsContext *context)
@@ -84,12 +79,10 @@ extern "C"
 
     void UIGraphicsContextFlush(UIGraphicsContext *context)
     {
-        // context->surface->flushAndSubmit();
-        // if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, context->eglSurface) == EGL_FALSE)
-        // {
-        //     fprintf(stderr, "%d: failed to swap buffers\n", eglGetError());
-        // }
-        context->picture = context->recorder.finishRecordingAsPicture().release();
+        context->picture = context->recorder->finishRecordingAsPicture().release();
+        context->picture->playback(context->surface->getCanvas());
+        // context->surface->getCanvas()->drawPicture(context->picture);
+        context->surface->flushAndSubmit();
     }
 
     void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color)
@@ -104,7 +97,7 @@ extern "C"
         context->paint.setARGB(color.a, color.r, color.g, color.b);
     }
 
-    void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, float width)
+    void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, UIFloat width)
     {
         context->paint.setStrokeWidth(width);
     }
@@ -116,7 +109,6 @@ extern "C"
         // printf("Creating context with w(%d) h(%d)\n", width, height);
 
         UIGraphicsContext *graphicsContext = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
-        graphicsContext->eglSurface = eglSurface;
         graphicsContext->paint = SkPaint();
         graphicsContext->paint.setAntiAlias(true);
 
@@ -142,10 +134,10 @@ extern "C"
                                  )
                                  .release();
         graphicsContext->surface = surface;
-        graphicsContext->canvas = surface->getCanvas();
 
         SkASSERT(graphicsContext->surface != nullptr);
-        SkASSERT(graphicsContext->canvas != nullptr);
+
+        graphicsContext->recorder = new SkPictureRecorder();
 
         return graphicsContext;
     }
@@ -169,26 +161,27 @@ extern "C"
     }
 
     // MARK:
-    void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect, double radius)
+    void UIGraphicsContextClipToRect(UIGraphicsContext *context, UIRect rect, UIFloat radius)
     {
         SkRect skrect = SkRect::MakeXYWH(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         SkRRect skrrect = SkRRect::MakeRectXY(skrect, radius, radius);
         context->canvas->clipRRect(skrrect, true);
     }
 
-    void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, double radius)
+    void UIGraphicsContextAddRect(UIGraphicsContext *context, UIRect rect, UIFloat radius)
     {
         SkRect skrect = SkRect::MakeXYWH(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         context->canvas->drawRoundRect(skrect, radius, radius, context->paint);
     }
 
-    void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIRect offset, float blur)
+    void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIPoint offset, UIFloat blur)
     {
-        context->canvas->translate(offset.origin.x, offset.origin.y);
-        context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, blur, false));
+        printf("blur %f\n", blur);
+        context->canvas->translate(offset.x, offset.y);
+        context->paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, SkFloatToScalar(blur), true));
     }
 
-    void UIGraphicsContextSetTransform(UIGraphicsContext *context, int x, int y)
+    void UIGraphicsContextSetTransform(UIGraphicsContext *context, UIFloat x, UIFloat y)
     {
         context->canvas->translate(x, y);
     }

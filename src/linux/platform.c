@@ -18,8 +18,8 @@
 #include "deps/ext-blur-mask-unstable-v1.h"
 #include "deps/xdg-shell.h"
 #include "platform.h"
+#include "UIWindow_linux.h"
 #include "globals.h"
-#include "UILayer_linux.h"
 
 static void global_registry_handler(void *data, struct wl_registry *registry, uint32_t id,
                                     const char *interface, uint32_t version)
@@ -55,7 +55,7 @@ static void global_registry_handler(void *data, struct wl_registry *registry, ui
         UIPlatformGlobalsShared.wl_shm = wl_registry_bind(registry, id, &wl_shm_interface, version);
     }
 
-    if (strcmp(interface, ext_blur_mask_manager_v1_interface.name))
+    if (strcmp(interface, ext_blur_mask_manager_v1_interface.name) == 0)
     {
         UIPlatformGlobalsShared.blur_mask_manager = wl_registry_bind(registry, id, &ext_blur_mask_manager_v1_interface, 1);
     }

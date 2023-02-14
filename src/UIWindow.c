@@ -61,6 +61,9 @@ UIWindow UIWindowCreate(UIRect frame)
     window->contentFrame = UIRectInset(window->frame, INSET_AMOUNT, INSET_AMOUNT);
     window->controller = UIWindowControllerGetDefault();
 
+    window->mainView = UIViewCreate(frame, frame);
+    window->frameView = _UIWindowCreateFrameView(window);
+
     return window;
 }
 
@@ -69,6 +72,8 @@ void UIWindowShow(UIWindow window)
     window->controller->windowWillLoad(window);
 
     _UIPlatformWindowCreate(window);
+
+    window->controller->windowDidLoad(window);
 }
 
 void UIWindowDestroy(UIWindow window)
@@ -143,15 +148,15 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 
 void UIWindowUpdate(UIWindow window)
 {
+    // printf("updating\n");
     UIView rootView = window->mainView;
 
     _UIWindowLayoutPhase_UIViewLayout(rootView);
 
     int shouldRender = _UIWindowRenderPhase_ShouldRender(rootView);
-
     if (shouldRender)
     {
-        // printf("Should render: %d\n", shouldRender);
+        _UIPlatformWindowMakeCurrent(window);
         UIGraphicsContextMakeCurrent(window->graphicsContext);
         UIGraphicsContextClear(window->graphicsContext);
 
@@ -176,7 +181,7 @@ void UIWindowUpdate(UIWindow window)
                 UIGraphicsContextClipToRect(window->graphicsContext, window->mainView->frame, 0.0f);
                 RENDER_SUBVIEWS(rootView, window->graphicsContext);
 
-                RENDER_SUBVIEWS(window->frameView, window->graphicsContext);
+                // RENDER_SUBVIEWS(window->frameView, window->graphicsContext);
                 rootView->needsDisplay = 0;
             }
             UIGraphicsContextRestore(window->graphicsContext);
@@ -184,6 +189,7 @@ void UIWindowUpdate(UIWindow window)
         UIGraphicsContextRestore(window->graphicsContext);
 
         UIGraphicsContextFlush(window->graphicsContext);
+        _UIPlatformWindowFlush(window);
     }
 }
 

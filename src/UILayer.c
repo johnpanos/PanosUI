@@ -87,7 +87,7 @@ UILayer UILayerGetInFlight(UILayer layer)
 
         uint64_t now = UIAnimationGetCurrentTime();
         int deltaT = now - anim->startTime;
-        float prog = (float)deltaT / (float)anim->duration;
+        float prog = (UIFloat)deltaT / (UIFloat)anim->duration;
         float progress = anim->timingFunction(prog);
 
         if (prog >= 1)
@@ -118,16 +118,16 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsHeight))
         {
-            copied.bounds.size.height = (int)lerp(
-                VALUE_FOR_TYPE(anim, int, startValue),
-                VALUE_FOR_TYPE(anim, int, endValue),
+            copied.bounds.size.height = (UIFloat)lerp(
+                VALUE_FOR_TYPE(anim, UIFloat, startValue),
+                VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsWidth))
         {
-            copied.bounds.size.width = (int)lerp(
-                VALUE_FOR_TYPE(anim, int, startValue),
-                VALUE_FOR_TYPE(anim, int, endValue),
+            copied.bounds.size.width = (UIFloat)lerp(
+                VALUE_FOR_TYPE(anim, UIFloat, startValue),
+                VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyOpacity))
@@ -139,17 +139,18 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionX))
         {
-            copied.frame.origin.x = (int)lerp(
-                VALUE_FOR_TYPE(anim, int, startValue),
-                VALUE_FOR_TYPE(anim, int, endValue),
+            copied.bounds.origin.x = lerp(
+                VALUE_FOR_TYPE(anim, UIFloat, startValue),
+                VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionY))
         {
-            copied.frame.origin.y = (int)lerp(
-                VALUE_FOR_TYPE(anim, int, startValue),
-                VALUE_FOR_TYPE(anim, int, endValue),
+            copied.bounds.origin.y = lerp(
+                VALUE_FOR_TYPE(anim, UIFloat, startValue),
+                VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
+            
         }
         else if (KEY_EQUAL(anim, kUILayerKeyShadowColor))
         {
@@ -160,15 +161,16 @@ UILayer UILayerGetInFlight(UILayer layer)
         else if (KEY_EQUAL(anim, kUILayerKeyShadowRadius))
         {
             copied.shadowRadius = lerp(
-                VALUE_FOR_TYPE(anim, float, startValue),
-                VALUE_FOR_TYPE(anim, float, endValue),
+                VALUE_FOR_TYPE(anim, UIFloat, startValue),
+                VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
+                printf("copied %f\n", copied.bounds.origin.x);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyCornerRadius))
         {
             copied.cornerRadius = lerp(
-                VALUE_FOR_TYPE(anim, float, startValue),
-                VALUE_FOR_TYPE(anim, float, endValue),
+                VALUE_FOR_TYPE(anim, UIFloat, startValue),
+                VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
         }
         else

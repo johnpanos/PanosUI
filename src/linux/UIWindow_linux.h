@@ -5,6 +5,10 @@ typedef struct _UIPlatformWindow
 {
     UIWindow window;
 
-    struct xdg_surface *xdg_surface;
-    struct xdg_toplevel *toplevel;
+    struct wl_surface *wlSurface;
+    struct xdg_surface *xdgSurface;
+    struct xdg_toplevel *xdgToplevel;
+
+    struct wl_egl_window *eglWindow;
+    EGLSurface eglSurface;
 } UIPlatformWindow;

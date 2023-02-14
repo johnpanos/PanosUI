@@ -21,6 +21,7 @@ void _UIPlatformLayerAddAnimation(UILayer *layer);
 void _UIPlatformWindowSetTitle(UIWindow window, const char *title);
 void _UIPlatformWindowMove(UIWindow window, UIEvent event);
 void _UIPlatformWindowResize(UIWindow window, UIEvent event);
-void _UIPlatformWindowRender(UIWindow window);
+void _UIPlatformWindowMakeCurrent(UIWindow window);
+void _UIPlatformWindowFlush(UIWindow window);
 
 #endif
