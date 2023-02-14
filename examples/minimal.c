@@ -53,13 +53,17 @@ void windowDidLoad(UIWindow window)
     UIViewSetShadowRadius(testView, 10.0f);
     UIViewAddSubview(window->mainView, testView);
 
-    UIFloat start = 10.0f;
-    UIFloat end = 200.0f;
+    UIRect newRect = UIRectInset(window->frame, 36.0f, 36.0f);
+
+    UIFloat start, end;
+
+    start = testView->frame.origin.x;
+    end = 36.0f/2.0f;
 
     UIAnimation radiusAnim;
     radiusAnim.finished = 0;
     radiusAnim.forKey = kUILayerKeyPositionX;
-    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutQuint;
+    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
     radiusAnim.startValue = &start;
     radiusAnim.endValue = &end;
     radiusAnim.startTime = UIAnimationGetCurrentTime();
@@ -68,9 +72,20 @@ void windowDidLoad(UIWindow window)
     radiusAnim.duration = 2500;
     UILayerAddAnimation(VIEW->layer, radiusAnim);
 
+    start = testView->frame.origin.y;
+    end = 36.0f/2.0f;
+
     radiusAnim.forKey = kUILayerKeyPositionY;
     UILayerAddAnimation(VIEW->layer, radiusAnim);
+
+    start = testView->frame.size.width;
+    end = newRect.size.width;
     radiusAnim.forKey = kUILayerKeyBoundsWidth;
+    UILayerAddAnimation(VIEW->layer, radiusAnim);
+
+    start = testView->frame.size.height;
+    end = newRect.size.height;
+    radiusAnim.forKey = kUILayerKeyBoundsHeight;
     UILayerAddAnimation(VIEW->layer, radiusAnim);
 
     start = 0.0f;
@@ -86,7 +101,7 @@ void windowDidLoad(UIWindow window)
 
 void didFinishLaunching(UIApplication *application)
 {
-    UIRect windowFrame = UIRectCreate(0, 0, 600, 600);
+    UIRect windowFrame = UIRectCreate(0, 0, 500, 600);
     UIWindow window = UIWindowCreate(windowFrame);
 
     UIWindowController myWindowController = UIWindowControllerCreate();
