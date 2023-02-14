@@ -55,7 +55,7 @@
                 asynchronous page flips for presentation.
 
                 If the given wl_surface already has a ext_blur_v1 object
-                associated, the tearing_control_exists protocol error is raised.
+                associated, the blur_mask_exists protocol error is raised.
             </description>
             <arg name="id" type="new_id" interface="ext_blur_mask_v1" />
             <arg name="surface" type="object" interface="wl_surface" />
