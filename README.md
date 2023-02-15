@@ -1,4 +1,4 @@
-# PanosUI
+![PanosUI](reference/panosui.png)
 
 The main goal of PanosUI is to provide a GUI library by means of a C Library utilizing opaque data types. This is to provide a consistent interface for all platforms that are supported.
 
