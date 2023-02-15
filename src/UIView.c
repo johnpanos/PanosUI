@@ -11,20 +11,18 @@ void _UIViewDoNothing(UIView view)
 UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
     UIView view = calloc(1, sizeof(struct _UIView));
+    view->layer = UILayerCreate(frame, frame);
+    
+    view->responder = UIEventResponderCreate();
+    UIViewSetFrame(view, frame);
     UIRect boundsCopy = bounds;
     boundsCopy.origin.x = 0;
     boundsCopy.origin.y = 0;
-    view->layer = UILayerCreate(frame, boundsCopy);
-    view->responder = UIEventResponderCreate();
-    view->frame = frame;
-    view->bounds = boundsCopy;
+    UIViewSetBounds(view, boundsCopy);
     view->subviews = ArrayCreate(sizeof(UIView));
     view->needsDisplay = 1;
     view->needsLayout = 1;
     view->layoutSubviews = &_UIViewDoNothing;
-
-    view->layer->frame = frame;
-    view->layer->bounds = boundsCopy;
 
     return view;
 }
@@ -161,6 +159,14 @@ float UIViewGetShadowRadius(UIView view)
 };
 
 // MARK: Setters
+void UIViewSetFrame(UIView view, UIRect frame) {
+    view->frame = frame;
+    UILayerSetPosition(view->layer, frame.origin);
+}
+void UIViewSetBounds(UIView view, UIRect bounds) {
+    view->bounds = bounds;
+    UILayerSetBounds(view->layer, bounds);
+}
 void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor)
 {
     view->backgroundColor = backgroundColor;

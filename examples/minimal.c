@@ -33,13 +33,13 @@ void onViewClick(UIEventResponder self, UIEvent event)
 
     UIFloat start, end;
 
-    start = VIEW->frame.origin.x;
-    end = 0.0f;
+    start = 0.0f;
+    end = 200.0f;
 
     UIAnimation radiusAnim;
     radiusAnim.finished = 0;
     radiusAnim.forKey = kUILayerKeyPositionX;
-    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseOutBounce;
+    radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseInOutCubic;
     radiusAnim.startValue = &start;
     radiusAnim.endValue = &end;
     radiusAnim.startTime = UIAnimationGetCurrentTime();

@@ -37,6 +37,9 @@ typedef struct _UILayer
     Array sublayers;
 
     UIRect frame; // Calculated, never set
+
+    UIPoint position;
+    UIPoint anchorPoint; // x and y are 0.0-1.0 inclusive
     UIRect bounds;
 
     UIColor backgroundColor;
@@ -59,11 +62,25 @@ typedef struct _UILayer
 UILayer *UILayerCreate(UIRect frame, UIRect bounds);
 void UILayerDestroy(UILayer layer);
 
+// MARK: Setters
+void UILayerSetBounds(UILayer *layer, UIRect bounds);
+void UILayerSetPosition(UILayer *layer, UIPoint position);
+void UILayerSetAnchorPoint(UILayer *layer, UIPoint anchorPoint);
+
+// MARK: Getters
+UIRect UILayerGetFrame(UILayer *layer);
+UIRect UILayerGetBounds(UILayer *layer);
+UIPoint UILayerGetPosition(UILayer *layer);
+UIPoint UILayerGetAnchorPoint(UILayer *layer);
+
+// MARK: Animations
+void UILayerAddAnimation(UILayer *layer, UIAnimation anim);
 UIAnimation UILayerGetAnimationFor(UILayer *layer, const char *key, size_t valueSize, void *startValue, void *endValue);
 
+// MARK: Sublayers
 void UILayerAddSublayer(UILayer *layer, UILayer *sublayer);
 void UILayerRemoveSublayer(UILayer *layer, UILayer *sublayer);
-void UILayerAddAnimation(UILayer *layer, UIAnimation anim);
 
+// MARK: Rendering
 void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context);
 UILayer UILayerGetInFlight(UILayer layer);

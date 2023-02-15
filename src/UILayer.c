@@ -31,14 +31,20 @@ float lerp(float a, float b, float t)
     return a + (t * (b - a));
 }
 
+void _UILayerUpdateFrame(UILayer *layer);
+
 UILayer *UILayerCreate(UIRect frame, UIRect bounds)
 {
     printf("Creating layer w(%f) h(%f)\n", frame.size.width, frame.size.height);
     UILayer *layer = calloc(1, sizeof(UILayer));
-    layer->frame = frame;
-    layer->bounds = bounds;
     layer->animations = ArrayCreate(sizeof(UIAnimation));
     layer->sublayers = ArrayCreate(sizeof(UILayer *));
+
+    layer->position = UIPointCreate(0.0f, 0.0f);
+    layer->anchorPoint = UIPointCreate(0.5f, 0.5f);
+    layer->bounds = UIRectCreate(0.0f, 0.0f, 0.0f, 0.0f);
+    _UILayerUpdateFrame(layer);
+
     return layer;
 }
 
@@ -116,13 +122,6 @@ UILayer UILayerGetInFlight(UILayer layer)
             float bw = VALUE_FOR_TYPE(anim, float, startValue);
             copied.borderWidth = bw;
         }
-        else if (KEY_EQUAL(anim, kUILayerKeyBoundsHeight))
-        {
-            copied.bounds.size.height = (UIFloat)lerp(
-                VALUE_FOR_TYPE(anim, UIFloat, startValue),
-                VALUE_FOR_TYPE(anim, UIFloat, endValue),
-                progress);
-        }
         else if (KEY_EQUAL(anim, kUILayerKeyBoundsWidth))
         {
             copied.bounds.size.width = (UIFloat)lerp(
@@ -130,6 +129,14 @@ UILayer UILayerGetInFlight(UILayer layer)
                 VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
         }
+        else if (KEY_EQUAL(anim, kUILayerKeyBoundsHeight))
+        {
+            copied.bounds.size.height = (UIFloat)lerp(
+                VALUE_FOR_TYPE(anim, UIFloat, startValue),
+                VALUE_FOR_TYPE(anim, UIFloat, endValue),
+                progress);
+        }
+
         else if (KEY_EQUAL(anim, kUILayerKeyOpacity))
         {
             copied.opacity = lerp(
@@ -139,14 +146,14 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionX))
         {
-            copied.bounds.origin.x = lerp(
+            copied.position.x = lerp(
                 VALUE_FOR_TYPE(anim, UIFloat, startValue),
                 VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyPositionY))
         {
-            copied.bounds.origin.y = lerp(
+            copied.position.y = lerp(
                 VALUE_FOR_TYPE(anim, UIFloat, startValue),
                 VALUE_FOR_TYPE(anim, UIFloat, endValue),
                 progress);
@@ -176,6 +183,8 @@ UILayer UILayerGetInFlight(UILayer layer)
             printf("No animation serializer found for key: %s\n", anim->forKey);
         }
     }
+
+    _UILayerUpdateFrame(&layer);
 
     Array animsToDelete = ArrayCreate(sizeof(UIAnimation *));
     for (int i = 0; i < ArrayGetCapacity(layer.animations); i++)
@@ -229,4 +238,50 @@ void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
         }
     }
     UIGraphicsContextRestore(context);
+}
+
+void _UILayerUpdateFrame(UILayer *layer)
+{
+    UIRect frame = layer->bounds;
+    frame.origin = layer->position;
+    frame.origin = UIPointOffset(
+        frame.origin,
+        -(layer->bounds.size.width * layer->anchorPoint.x),
+        -(layer->bounds.size.height * layer->anchorPoint.y));
+    layer->frame = frame;
+}
+
+// MARK: Setters
+void UILayerSetBounds(UILayer *layer, UIRect bounds)
+{
+    layer->bounds = bounds;
+    _UILayerUpdateFrame(layer);
+}
+void UILayerSetPosition(UILayer *layer, UIPoint position)
+{
+    layer->position = position;
+    _UILayerUpdateFrame(layer);
+}
+void UILayerSetAnchorPoint(UILayer *layer, UIPoint anchorPoint)
+{
+    layer->anchorPoint = anchorPoint;
+    _UILayerUpdateFrame(layer);
+}
+
+// MARK: Getters
+UIRect UILayerGetFrame(UILayer *layer)
+{
+    return layer->frame;
+}
+UIRect UILayerGetBounds(UILayer *layer)
+{
+    return layer->bounds;
+}
+UIPoint UILayerGetPosition(UILayer *layer)
+{
+    return layer->position;
+}
+UIPoint UILayerGetAnchorPoint(UILayer *layer)
+{
+    return layer->anchorPoint;
 }

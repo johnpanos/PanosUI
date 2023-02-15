@@ -46,7 +46,7 @@ class MyWindowController : public UI::WindowController
                                 5000,
                                 kUILayerKeyPositionX,
                                 &UIAnimationTimingFunctionEaseInOutCubic,
-                                -100.0f, 100.0f));
+                                0.0f, 100.0f));
         UILayerAddAnimation(this->my_view->backing_view->layer,
                             UI::Animation<float>::create(
                                 5000,
@@ -71,7 +71,7 @@ class MyWindowController : public UI::WindowController
                                 5000,
                                 kUILayerKeyPositionY,
                                 &UIAnimationTimingFunctionEaseInOutCubic,
-                                0.0f, 200.0f));
+                                200.0f, 0.0f));
         UILayerAddAnimation(this->view2->backing_view->layer,
                             UI::Animation<float>::create(
                                 5000,

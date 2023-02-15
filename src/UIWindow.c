@@ -62,6 +62,7 @@ UIWindow UIWindowCreate(UIRect frame)
     window->controller = UIWindowControllerGetDefault();
 
     window->mainView = UIViewCreate(frame, frame);
+    UIViewSetBackgroundColor(window->mainView, UIColorCreateRGBA(255, 255, 255, 255));
     window->frameView = _UIWindowCreateFrameView(window);
 
     return window;
@@ -102,7 +103,8 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 
         UIGraphicsContextSave(context);
         {
-            UIGraphicsContextSetTransform(context, layer.frame.origin.x, layer.frame.origin.y);
+            UIGraphicsContextSetTransform(context, layer.position.x, layer.position.y);
+            printf("x(%f) y(%f)\n", layer.frame.origin.x, layer.frame.origin.y);
             UILayerRenderInContext(&layer, context);
             UIGraphicsContextSetTransform(context, layer.bounds.origin.x, layer.bounds.origin.y);
 
