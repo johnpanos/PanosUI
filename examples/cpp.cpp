@@ -38,6 +38,9 @@ class MyWindowController : public UI::WindowController
 
         this->window->get_root_view()->add_subview(this->my_view);
 
+        UILayerSetPosition(this->my_view->backing_view->layer, UIPointCreate(100.0f, 100.0f));
+        UILayerSetAnchorPoint(this->my_view->backing_view->layer, UIPointCreate(0.5f, 0.5f));
+
         this->my_view->set_background_color(UIColorCreateRGBA(0, 255, 0, 255));
         // UILayerAddAnimation(this->my_view->backing_view->layer,
         //                     UI::Animation<float>::create(
@@ -48,7 +51,7 @@ class MyWindowController : public UI::WindowController
         UILayerAddAnimation(this->my_view->backing_view->layer,
                             UI::Animation<float>::create(
                                 5000,
-                                kUILayerKeyBoundsHeight,
+                                kUILayerKeyBoundsWidth,
                                 &UIAnimationTimingFunctionEaseOutBounce,
                                 200.0f, 350.0f));
 
