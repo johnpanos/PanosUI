@@ -49,8 +49,8 @@ class MyWindowController : public UI::WindowController
                             UI::Animation<float>::create(
                                 5000,
                                 kUILayerKeyBoundsHeight,
-                                &UIAnimationTimingFunctionEaseInOutCubic,
-                                200.0f, 400.0f));
+                                &UIAnimationTimingFunctionEaseOutBounce,
+                                200.0f, 350.0f));
 
         // UILayerAddAnimation(this->my_view->backing_view->layer,
         //                     UI::Animation<float>::create(

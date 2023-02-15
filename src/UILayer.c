@@ -72,7 +72,7 @@ UIAnimation UILayerGetAnimationFor(UILayer *layer, const char *key, size_t value
     UIAnimation implicitAnim;
     implicitAnim.finished = 0;
     implicitAnim.forKey = key;
-    implicitAnim.timingFunction = &UIAnimationTimingFunctionLinear;
+    implicitAnim.timingFunction = &UIAnimationTimingFunctionEaseInCubic;
     implicitAnim.startValue = startValue;
     implicitAnim.endValue = endValue;
     implicitAnim.startTime = UIAnimationGetCurrentTime();
@@ -163,6 +163,10 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
         else if (KEY_EQUAL(anim, kUILayerKeyShadowOffset))
         {
+            UIPoint startOffset = VALUE_FOR_TYPE(anim, UIPoint, startValue);
+            UIPoint endOffset = VALUE_FOR_TYPE(anim, UIPoint, endValue);
+            copied.shadowOffset.x = lerp(startOffset.x, endOffset.x, progress);
+            copied.shadowOffset.y = lerp(startOffset.y, endOffset.y, progress);
         }
         else if (KEY_EQUAL(anim, kUILayerKeyShadowRadius))
         {
@@ -253,13 +257,21 @@ void _UILayerUpdateFrame(UILayer *layer)
 // MARK: Setters
 void UILayerSetBounds(UILayer *layer, UIRect bounds)
 {
+    UIAnimation anim = UILayerGetAnimationFor(layer, kUILayerKeyBoundsWidth, sizeof(UIFloat), &layer->bounds.size.width, &bounds.size.width);
+    UIAnimation animY = UILayerGetAnimationFor(layer, kUILayerKeyBoundsHeight, sizeof(UIFloat), &layer->bounds.size.height, &bounds.size.height);
     layer->bounds = bounds;
     _UILayerUpdateFrame(layer);
+    UILayerAddAnimation(layer, anim);
+    UILayerAddAnimation(layer, animY);
 }
 void UILayerSetPosition(UILayer *layer, UIPoint position)
 {
+    UIAnimation anim = UILayerGetAnimationFor(layer, kUILayerKeyPositionX, sizeof(UIFloat), &layer->position.x, &position.x);
+    UIAnimation animY = UILayerGetAnimationFor(layer, kUILayerKeyPositionX, sizeof(UIFloat), &layer->position.y, &position.y);
     layer->position = position;
     _UILayerUpdateFrame(layer);
+    UILayerAddAnimation(layer, anim);
+    UILayerAddAnimation(layer, animY);
 }
 void UILayerSetAnchorPoint(UILayer *layer, UIPoint anchorPoint)
 {
