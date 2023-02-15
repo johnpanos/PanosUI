@@ -184,7 +184,7 @@ UILayer UILayerGetInFlight(UILayer layer)
         }
     }
 
-    _UILayerUpdateFrame(&layer);
+    _UILayerUpdateFrame(&copied);
 
     Array animsToDelete = ArrayCreate(sizeof(UIAnimation *));
     for (int i = 0; i < ArrayGetCapacity(layer.animations); i++)
@@ -243,9 +243,8 @@ void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
 void _UILayerUpdateFrame(UILayer *layer)
 {
     UIRect frame = layer->bounds;
-    frame.origin = layer->position;
     frame.origin = UIPointOffset(
-        frame.origin,
+        layer->position,
         -(layer->bounds.size.width * layer->anchorPoint.x),
         -(layer->bounds.size.height * layer->anchorPoint.y));
     layer->frame = frame;

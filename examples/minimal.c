@@ -36,6 +36,8 @@ void onViewClick(UIEventResponder self, UIEvent event)
     start = 0.0f;
     end = 200.0f;
 
+    UILayerSetAnchorPoint(VIEW->layer, UIPointCreate(0.0f, 0.5f));
+
     UIAnimation radiusAnim;
     radiusAnim.finished = 0;
     radiusAnim.forKey = kUILayerKeyPositionX;

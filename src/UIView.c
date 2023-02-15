@@ -161,7 +161,14 @@ float UIViewGetShadowRadius(UIView view)
 // MARK: Setters
 void UIViewSetFrame(UIView view, UIRect frame) {
     view->frame = frame;
-    UILayerSetPosition(view->layer, frame.origin);
+
+    UIRect layerFrame = frame;
+    layerFrame.origin = UIPointOffset(
+        frame.origin,
+        (frame.size.width * view->layer->anchorPoint.x),
+        (frame.size.height * view->layer->anchorPoint.y));
+
+    UILayerSetPosition(view->layer, layerFrame.origin);
 }
 void UIViewSetBounds(UIView view, UIRect bounds) {
     view->bounds = bounds;
