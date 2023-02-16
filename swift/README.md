@@ -4,5 +4,5 @@ A description of this package.
 
 To run:
 ```
-swift run -Xlinker -L/usr/local/lib64
+LD_LIBRARY_PATH=/usr/local/lib64 swift run -Xlinker -L/usr/local/lib64
 ```

@@ -35,6 +35,8 @@ class RedCircleWindowController : UIWindowController {
         )
 
         window.mainView.addSubview(myView)
+
+        // print(UIArray<UIView>(backing: window.mainView.pointee.subviews).first)
     }
 }
 
