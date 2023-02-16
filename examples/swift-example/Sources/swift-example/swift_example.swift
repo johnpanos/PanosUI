@@ -1,11 +1,11 @@
 import PanosUI
 
-struct Application {
+struct UIApplication {
     private static var DELEGATE: UIApplicationDelegate?
     static func main(delegate: UIApplicationDelegate) {
-        Application.DELEGATE = delegate
+        UIApplication.DELEGATE = delegate
         var cDelegate = _UIApplicationDelegate(didFinishLaunching: { app in
-            Application.DELEGATE!.didFinishLaunching()
+            UIApplication.DELEGATE!.didFinishLaunching()
         })
         withUnsafeMutablePointer(to: &cDelegate) { pp in
             UIApplicationMain(pp)    
@@ -60,6 +60,12 @@ extension UIWindow {
         }
     }
 
+    var mainView: UIView {
+        get {
+            return UIView(backing: self.pointee.mainView!)
+        }
+    }
+
     init(backing: UIWindow) {
         self = backing
     }
@@ -101,22 +107,21 @@ class UIWindowController {
         self.backing.pointee._self = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         self.backing.pointee.windowDidLoad = { (this, window) in
             let controller = Unmanaged<UIWindowController>.fromOpaque(this!).takeUnretainedValue()
-            controller.windowDidLoad(window: window)            
+            controller.windowDidLoad(window: window!)            
         }
     }
 
-    func windowDidLoad(window: UIWindow?) {
+    func windowDidLoad(window: UIWindow) {
 
     }
 }
 
 class MyWindowController : UIWindowController {
-    override func windowDidLoad(window: UIWindow?) {
-        let mainView = UIView(backing: window!.pointee.mainView!)
+    override func windowDidLoad(window: UIWindow) {
         var myView = UIView(frame: UIRect(x: 10, y: 10, width: 50, height: 50))
         
         myView.backgroundColor = UIColor(r: 0, g: 0, b: 0, a: 255)
-        mainView.addSubview(subview: myView)
+        window.mainView.addSubview(subview: myView)
 
         var start: Float = 100.0
         var end: Float = 500.0
@@ -154,10 +159,8 @@ struct MyDelegate: UIApplicationDelegate {
 
 @main
 public struct swift_example {
-    public private(set) var text = "Hello, World!"
-
     public static func main() {
-        Application.main(delegate: MyDelegate())
+        UIApplication.main(delegate: MyDelegate())
     }
 }
 
