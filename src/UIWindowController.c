@@ -15,7 +15,7 @@ UIRect defaultWindowWillResize(UIWindow window, UIRect to)
         return window->frame;
     }
 
-    return to;
+    return window->frame;
 }
 
 void defaultWindowDidResize(UIWindow window)

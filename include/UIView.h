@@ -57,6 +57,8 @@ UIColor UIViewGetShadowColor(UIView view);
 float UIViewGetShadowRadius(UIView view);
 
 // MARK: Setters
+void UIViewSetFrame(UIView view, UIRect frame);
+void UIViewSetBounds(UIView view, UIRect bounds);
 void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor);
 void UIViewSetCornerRadius(UIView view, float cornerRadius);
 void UIViewSetBorderColor(UIView view, UIColor borderColor);

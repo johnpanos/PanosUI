@@ -12,7 +12,7 @@ UIView UIViewCreate(UIRect frame, UIRect bounds)
 {
     UIView view = calloc(1, sizeof(struct _UIView));
     view->layer = UILayerCreate(frame, frame);
-    
+
     view->responder = UIEventResponderCreate();
     UIViewSetFrame(view, frame);
     UIRect boundsCopy = bounds;
@@ -159,18 +159,25 @@ float UIViewGetShadowRadius(UIView view)
 };
 
 // MARK: Setters
-void UIViewSetFrame(UIView view, UIRect frame) {
+void UIViewSetFrame(UIView view, UIRect frame)
+{
     view->frame = frame;
 
     UIRect layerFrame = frame;
+    UIRect layerBounds = view->layer->bounds;
+
     layerFrame.origin = UIPointOffset(
         frame.origin,
         (frame.size.width * view->layer->anchorPoint.x),
         (frame.size.height * view->layer->anchorPoint.y));
 
+    layerBounds.size = frame.size;
+
+    UILayerSetBounds(view->layer, layerBounds);
     UILayerSetPosition(view->layer, layerFrame.origin);
 }
-void UIViewSetBounds(UIView view, UIRect bounds) {
+void UIViewSetBounds(UIView view, UIRect bounds)
+{
     view->bounds = bounds;
     UILayerSetBounds(view->layer, bounds);
 }
