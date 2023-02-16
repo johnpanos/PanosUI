@@ -1,0 +1,4 @@
+module PanosUI {
+    umbrella header "panosui_bridge.h"
+    link "panosui"
+}

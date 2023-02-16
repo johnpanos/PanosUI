@@ -5,6 +5,7 @@ deps = []
 src = [
     'src/UIApplication.c',
     'src/UIAnimation.c',
+    'src/UIAnimation_timing.c',
     'src/UIView.c',
     'src/UILayer.c',
     'src/UIWindowController.c',
@@ -70,9 +71,26 @@ panosuilib = shared_library('panosui',
                         cpp_args: ['-O0'],
                         dependencies : deps,
                         install : true)
+install_headers([
+    'include/Array.h',
+    'include/PanosUI.h',
+    'include/UIAnimation.h',
+    'include/UIApplication.h',
+    'include/UIColor.h',
+    'include/UIEvent.h',
+    'include/UIEventResponder.h',
+    'include/UIGeometry.h',
+    'include/UILayer.h',
+    'include/UIView.h',
+    'include/UIWindow.h',
+    'include/UIWindowController.h'
+])
 
 executable('panos-client', 'examples/minimal.c', include_directories : ['include'], link_with : panosuilib)
 executable('layer', 'examples/layer.c', include_directories : ['include'], link_with : panosuilib)
 executable('cpp-example', 'examples/cpp.cpp', include_directories : ['include', 'cpp'], link_with : panosuilib)
 
 subdir('tests')
+
+pkg = import('pkgconfig')
+pkg.generate(panosuilib)

@@ -204,6 +204,7 @@ UILayer UILayerGetInFlight(UILayer layer)
     {
         UIAnimation *anim = ArrayGetValueAtIndex(animsToDelete, i);
         ArrayRemoveValueByRef(layer.animations, anim);
+        UIAnimationDestroy(*anim);
         free(anim);
     }
     ArrayDestroy(animsToDelete);

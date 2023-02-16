@@ -1,4 +1,5 @@
 #pragma once
+#include "UIGeometry.h"
 #include <stdint.h>
 #include <sys/types.h>
 
@@ -6,9 +7,9 @@ typedef struct _UIAnimation
 {
     int finished;
 
-    const char* forKey;
+    const char *forKey;
     int duration;
-    float (*timingFunction)(float t);
+    UIFloat (*timingFunction)(UIFloat t);
 
     void *startValue;
     void *endValue;
@@ -18,11 +19,17 @@ typedef struct _UIAnimation
     uint64_t endTime;
 } UIAnimation;
 
-typedef struct _UITransaction UITransaction;
+typedef struct _UITransaction
+{
+    uint64_t duration;
+    UIFloat (*timingFunction)(UIFloat t);
+
+} UITransaction;
 
 uint64_t UIAnimationGetCurrentTime();
 
 UIAnimation UIAnimationCopy(UIAnimation anim);
+void UIAnimationDestroy(UIAnimation anim);
 
 void UIAnimationTransactionBegin();
 void UIAnimationTransactionSetDuration();
@@ -32,34 +39,34 @@ void UIAnimationTransactionFlush();
 void UIAnimationCoreTick();
 
 // MARK: Easing functions
-float UIAnimationTimingFunctionLinear(float t);
-float UIAnimationTimingFunctionEaseInSine(float t);
-float UIAnimationTimingFunctionEaseOutSine(float t);
-float UIAnimationTimingFunctionEaseInOutSine(float t);
-float UIAnimationTimingFunctionEaseInQuad(float t);
-float UIAnimationTimingFunctionEaseOutQuad(float t);
-float UIAnimationTimingFunctionEaseInOutQuad(float t);
-float UIAnimationTimingFunctionEaseInCubic(float t);
-float UIAnimationTimingFunctionEaseOutCubic(float t);
-float UIAnimationTimingFunctionEaseInOutCubic(float t);
-float UIAnimationTimingFunctionEaseInQuart(float t);
-float UIAnimationTimingFunctionEaseOutQuart(float t);
-float UIAnimationTimingFunctionEaseInOutQuart(float t);
-float UIAnimationTimingFunctionEaseInQuint(float t);
-float UIAnimationTimingFunctionEaseOutQuint(float t);
-float UIAnimationTimingFunctionEaseInOutQuint(float t);
-float UIAnimationTimingFunctionEaseInExpo(float t);
-float UIAnimationTimingFunctionEaseOutExpo(float t);
-float UIAnimationTimingFunctionEaseInOutExpo(float t);
-float UIAnimationTimingFunctionEaseInCirc(float t);
-float UIAnimationTimingFunctionEaseOutCirc(float t);
-float UIAnimationTimingFunctionEaseInOutCirc(float t);
-float UIAnimationTimingFunctionEaseInBack(float t);
-float UIAnimationTimingFunctionEaseOutBack(float t);
-float UIAnimationTimingFunctionEaseInOutBack(float t);
-float UIAnimationTimingFunctionEaseInElastic(float t);
-float UIAnimationTimingFunctionEaseOutElastic(float t);
-float UIAnimationTimingFunctionEaseInOutElastic(float t);
-float UIAnimationTimingFunctionEaseInBounce(float t);
-float UIAnimationTimingFunctionEaseOutBounce(float t);
-float UIAnimationTimingFunctionEaseInOutBounce(float t);
+UIFloat UIAnimationTimingFunctionLinear(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInSine(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutSine(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutSine(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInQuad(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutQuad(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutQuad(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInCubic(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutCubic(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutCubic(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInQuart(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutQuart(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutQuart(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInQuint(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutQuint(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutQuint(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInExpo(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutExpo(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutExpo(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInCirc(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutCirc(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutCirc(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInBack(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutBack(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutBack(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInElastic(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutElastic(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutElastic(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInBounce(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseOutBounce(UIFloat t);
+UIFloat UIAnimationTimingFunctionEaseInOutBounce(UIFloat t);
