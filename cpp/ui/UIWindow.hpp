@@ -12,7 +12,7 @@ extern "C"
 #include "UIView.hpp"
 }
 
-typedef void (*window_callback_t)(UIWindow window);
+typedef void (*window_callback_t)(void*self,UIWindow window);
 
 namespace UI
 {
@@ -28,7 +28,7 @@ namespace UI
         {
             this->backing_window_controller = UIWindowControllerCreate();
             Callback<void(UIWindow window)>::func = std::bind(&WindowController::_window_did_load, this, std::placeholders::_1);
-            this->backing_window_controller->windowDidLoad = static_cast<window_callback_t>(Callback<void(UIWindow window)>::callback);
+            this->backing_window_controller->windowDidLoad = static_cast<window_callback_t>(Callback<void(void *self, UIWindow window)>::callback);
         }
 
         void _window_did_load(UIWindow window)

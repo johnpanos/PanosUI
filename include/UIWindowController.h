@@ -5,11 +5,11 @@
 typedef struct _UIWindow *UIWindow;
 typedef struct _UIWindowController
 {
-    UIRect (*windowWillResize)(UIWindow window, UIRect size);
-    void (*windowDidResize)(UIWindow window);
-
-    void (*windowWillLoad)(UIWindow window);
-    void (*windowDidLoad)(UIWindow window);
+    void *_self;
+    UIRect (*windowWillResize)(void *self, UIWindow window, UIRect size);
+    void (*windowDidResize)(void *self, UIWindow window);
+    void (*windowWillLoad)(void *self, UIWindow window);
+    void (*windowDidLoad)(void *self, UIWindow window);
 
     UIWindow *_window;
 } *UIWindowController;

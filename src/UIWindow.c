@@ -70,11 +70,11 @@ UIWindow UIWindowCreate(UIRect frame)
 
 void UIWindowShow(UIWindow window)
 {
-    window->controller->windowWillLoad(window);
+    window->controller->windowWillLoad(window->controller->_self, window);
 
     _UIPlatformWindowCreate(window);
 
-    window->controller->windowDidLoad(window);
+    window->controller->windowDidLoad(window->controller->_self, window);
 }
 
 void UIWindowDestroy(UIWindow window)

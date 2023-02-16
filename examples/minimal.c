@@ -61,7 +61,7 @@ void onViewClick(UIEventResponder self, UIEvent event)
     // UILayerAddAnimation(VIEW->layer, radiusAnim);
 }
 
-void windowDidLoad(UIWindow window)
+void windowDidLoad(void *self, UIWindow window)
 {
     printf("THE WINDOW LOADED!\n");
 

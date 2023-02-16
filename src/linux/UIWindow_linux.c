@@ -30,7 +30,7 @@ xdg_toplevel_configure_handler(void *data,
     printf("XDG TOPLEVEL\n");
     UIWindow window = (UIWindow)data;
     UIRect configuredSize = UIRectCreate(0, 0, (UIFloat)width, (UIFloat)height);
-    UIRect requestedSize = window->controller->windowWillResize(window, configuredSize);
+    UIRect requestedSize = window->controller->windowWillResize(window->controller->_self, window, configuredSize);
 
     UIPlatformWindow *platformWindow = window->platformWindow;
 
@@ -79,7 +79,7 @@ xdg_toplevel_configure_handler(void *data,
     {
         window->frame = requestedSize;
         printf("before window did resize\n");
-        window->controller->windowDidResize(window);
+        window->controller->windowDidResize(window->controller->_self, window);
 
         if (window->graphicsContext != NULL)
         {

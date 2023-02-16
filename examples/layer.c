@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "PanosUI.h"
 
-void windowDidLoad(UIWindow window)
+void windowDidLoad(void* self,UIWindow window)
 {
     UIView view = window->mainView;
 
