@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug swift-example (examples/swift-example)",
+            "program": "${workspaceFolder:PanosUI}/examples/swift-example/.build/debug/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/examples/swift-example",
+            "preLaunchTask": "swift: Build Debug swift-example (examples/swift-example)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release swift-example (examples/swift-example)",
+            "program": "${workspaceFolder:PanosUI}/examples/swift-example/.build/release/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/examples/swift-example",
+            "preLaunchTask": "swift: Build Release swift-example (examples/swift-example)"
+        }
+    ]
+}

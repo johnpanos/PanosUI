@@ -110,5 +110,6 @@
         "uigeometry.h": "c"
     },
     "mesonbuild.configureOnOpen": true,
-    "print.colourScheme": "Atom One"
+    "print.colourScheme": "Atom One",
+    "lldb.library": "/usr/libexec/swift/5.7.2/lib/liblldb.so"
 }

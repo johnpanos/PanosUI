@@ -1,159 +1,72 @@
 import PanosUI
 
-struct UIApplication {
-    private static var DELEGATE: UIApplicationDelegate?
-    static func main(delegate: UIApplicationDelegate) {
-        UIApplication.DELEGATE = delegate
-        var cDelegate = _UIApplicationDelegate(didFinishLaunching: { app in
-            UIApplication.DELEGATE!.didFinishLaunching()
-        })
-        withUnsafeMutablePointer(to: &cDelegate) { pp in
-            UIApplicationMain(pp)    
-        }
-    }
-}
-
-protocol UIApplicationDelegate {
-    func didFinishLaunching()
-}
-
-extension UIView {
-    var backgroundColor: UIColor {
-        get {
-            return UIViewGetBackgroundColor(self)
-        }
-        set {
-            UIViewSetBackgroundColor(self, newValue)
+class BlackSquareWindowController : UIWindowController {
+    var myView: UIView! {
+        didSet {
+            myView.backgroundColor = UIColor(r: 0, g: 0, b: 0, a: 255)
+            myView.shadowOffset = UIPointCreate(2, 2)
+            myView.shadowRadius = 4.0
+            myView.shadowColor = UIColor(r: 0, g: 0, b: 0, a: 100)
+            myView.cornerRadius = 10.0
         }
     }
 
-    init(backing: PanosUI.UIView) {
-        self = backing
-    }
-
-    init(frame: UIRect) {
-        self = UIViewCreate(frame, frame)
-    }
-
-    func addSubview(subview: UIView) {
-        UIViewAddSubview(self, subview)
-    }
-}
-
-extension UIWindow {
-    var title: String {
-        get {
-            return self.title
-        }
-        set {
-            UIWindowSetTitle(self, newValue)
-        }
-    }
-
-    var controller : UIWindowController {
-        get {
-            return self.controller
-        }
-
-        set {
-            self.pointee.controller = newValue.backing
-        }
-    }
-
-    var mainView: UIView {
-        get {
-            return UIView(backing: self.pointee.mainView!)
-        }
-    }
-
-    init(backing: UIWindow) {
-        self = backing
-    }
-
-    init(frame: UIRect) {
-        self = UIWindowCreate(frame)
-    }
-
-    func show() {
-        UIWindowShow(self)
-    }
-}
-
-extension UIColor {
-    init(r: Int32, g: Int32, b: Int32, a: Int32) {
-        self.init()
-        self.r = r
-        self.g = g
-        self.b = b
-        self.a = a
-    }
-}
-
-extension UIRect {
-    init(x: Float, y: Float, width: Float, height: Float) {
-        self.init()
-        self.origin.x = x
-        self.origin.y = y
-        self.size.width = width
-        self.size.height = height
-    }
-}
-
-class UIWindowController {
-    var backing: PanosUI.UIWindowController
-
-    init() {
-        self.backing = UIWindowControllerCreate()
-        self.backing.pointee._self = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        self.backing.pointee.windowDidLoad = { (this, window) in
-            let controller = Unmanaged<UIWindowController>.fromOpaque(this!).takeUnretainedValue()
-            controller.windowDidLoad(window: window!)            
-        }
-    }
-
-    func windowDidLoad(window: UIWindow) {
-
-    }
-}
-
-class MyWindowController : UIWindowController {
     override func windowDidLoad(window: UIWindow) {
-        var myView = UIView(frame: UIRect(x: 10, y: 10, width: 50, height: 50))
-        
-        myView.backgroundColor = UIColor(r: 0, g: 0, b: 0, a: 255)
-        window.mainView.addSubview(subview: myView)
+        self.myView = UIView(
+            frame: window.mainView.frame.inset(dx: 50, dy: 50)
+        )
 
-        var start: Float = 100.0
-        var end: Float = 500.0
+        window.mainView.addSubview(myView)
+    }
+}
 
-        var myAnim: UIAnimation = UIAnimation()
-        myAnim.finished = 0
-        myAnim.forKey = kUILayerKeyPositionX
-        myAnim.timingFunction = UIAnimationTimingFunctionEaseInOutCubic
-        myAnim.startValue = .init(&start)
-        myAnim.endValue = .init(&end)
-        myAnim.startTime = UIAnimationGetCurrentTime()
-        myAnim.endTime = UIAnimationGetCurrentTime() + 2500
-        myAnim._valueSize = MemoryLayout<Float>.size
-        myAnim.duration = 2500
+class RedCircleWindowController : UIWindowController {
+    var myView: UIView! {
+        didSet {
+            myView.backgroundColor = UIColor(r: 255, g: 0, b: 0, a: 255)
+            myView.shadowOffset = UIPointCreate(2, 2)
+            myView.cornerRadius = 1000.0
+        }
+    }
 
-        UILayerAddAnimation(myView.pointee.layer, myAnim)
+    override func windowDidLoad(window: UIWindow) {
+        self.myView = UIView(
+            frame: window.mainView.frame.inset(dx: 50, dy: 50)
+        )
+
+        window.mainView.addSubview(myView)
     }
 }
 
 struct MyDelegate: UIApplicationDelegate {
-    let controller = MyWindowController()
+    let blackSquare: BlackSquareWindowController = BlackSquareWindowController()
+    var blackSquareWindow: UIWindow! {
+        didSet {
+            blackSquareWindow.controller = blackSquare
+            blackSquareWindow.show()
+            blackSquareWindow.title = "Black Square!"
+        }
+    }
 
-    func didFinishLaunching() {
+    let redCircle: RedCircleWindowController = RedCircleWindowController()
+    var redCircleWindow: UIWindow! {
+        didSet {
+            redCircleWindow.controller = redCircle
+            redCircleWindow.show()
+            redCircleWindow.title = "Red Circle!"
+        }
+    }
+
+    mutating func didFinishLaunching() {
         print("Did finish from Swift!")
 
-        var win = UIWindow(
+        self.blackSquareWindow = UIWindow(
             frame: UIRect(x: 0, y: 0, width: 750, height: 600)
         )
 
-        win.controller = controller
-        win.show()
-        win.title = "Hello Swift!"
+        self.redCircleWindow = UIWindow(
+            frame: UIRect(x: 0, y: 0, width: 600, height: 600)
+        )
     }
 }
 
@@ -163,5 +76,3 @@ public struct swift_example {
         UIApplication.main(delegate: MyDelegate())
     }
 }
-
-

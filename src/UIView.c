@@ -128,35 +128,41 @@ UIView UIViewHitTest(UIView view, UIPoint point)
 }
 
 // MARK: Getters
+UIRect UIViewGetFrame(UIView view) {
+    return view->frame;
+}
+UIRect UIViewGetBounds(UIView view) {
+    return view->bounds;
+}
 UIColor UIViewGetBackgroundColor(UIView view)
 {
     return view->backgroundColor;
-};
-float UIViewGetCornerRadius(UIView view)
+}
+UIFloat UIViewGetCornerRadius(UIView view)
 {
     return view->cornerRadius;
-};
+}
 UIColor UIViewGetBorderColor(UIView view)
 {
     return view->borderColor;
-};
-float UIViewGetBorderWidth(UIView view)
+}
+UIFloat UIViewGetBorderWidth(UIView view)
 {
     return view->borderWidth;
-};
+}
 
 UIPoint UIViewGetShadowOffset(UIView view)
 {
     return view->shadowOffset;
-};
+}
 UIColor UIViewGetShadowColor(UIView view)
 {
     return view->shadowColor;
-};
-float UIViewGetShadowRadius(UIView view)
+}
+UIFloat UIViewGetShadowRadius(UIView view)
 {
     return view->shadowRadius;
-};
+}
 
 // MARK: Setters
 void UIViewSetFrame(UIView view, UIRect frame)
@@ -186,14 +192,14 @@ void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor)
     view->backgroundColor = backgroundColor;
     view->layer->backgroundColor = backgroundColor;
 }
-void UIViewSetCornerRadius(UIView view, float cornerRadius)
+void UIViewSetCornerRadius(UIView view, UIFloat cornerRadius)
 {
     view->cornerRadius = cornerRadius;
 
     UIAnimation anim = UILayerGetAnimationFor(
         view->layer,
         kUILayerKeyCornerRadius,
-        sizeof(float),
+        sizeof(UIFloat),
         &view->layer->cornerRadius,
         &view->cornerRadius);
     UILayerAddAnimation(view->layer, anim);
@@ -205,7 +211,7 @@ void UIViewSetBorderColor(UIView view, UIColor borderColor)
     view->borderColor = borderColor;
     view->layer->borderColor = borderColor;
 }
-void UIViewSetBorderWidth(UIView view, float borderWidth)
+void UIViewSetBorderWidth(UIView view, UIFloat borderWidth)
 {
     view->borderWidth = borderWidth;
     view->layer->borderWidth = borderWidth;
@@ -221,7 +227,7 @@ void UIViewSetShadowColor(UIView view, UIColor shadowColor)
     view->shadowColor = shadowColor;
     view->layer->shadowColor = shadowColor;
 }
-void UIViewSetShadowRadius(UIView view, float shadowRadius)
+void UIViewSetShadowRadius(UIView view, UIFloat shadowRadius)
 {
     view->shadowRadius = shadowRadius;
     view->layer->shadowRadius = shadowRadius;
