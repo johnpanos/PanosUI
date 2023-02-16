@@ -6,7 +6,7 @@ class BlackSquareWindowController : UIWindowController {
             myView.backgroundColor = UIColor(r: 0, g: 0, b: 0, a: 255)
             myView.shadowOffset = UIPointCreate(2, 2)
             myView.shadowRadius = 4.0
-            myView.shadowColor = UIColor(r: 0, g: 0, b: 0, a: 100)
+            myView.shadowColor = UIColor(r: 255, g: 0, b: 0, a: 100)
             myView.cornerRadius = 10.0
         }
     }
@@ -59,14 +59,8 @@ struct MyDelegate: UIApplicationDelegate {
 
     mutating func didFinishLaunching() {
         print("Did finish from Swift!")
-
-        self.blackSquareWindow = UIWindow(
-            frame: UIRect(x: 0, y: 0, width: 750, height: 600)
-        )
-
-        self.redCircleWindow = UIWindow(
-            frame: UIRect(x: 0, y: 0, width: 600, height: 600)
-        )
+        self.blackSquareWindow = UIWindow(frame: UIRect(x: 0, y: 0, width: 750, height: 600))
+        self.redCircleWindow = UIWindow(frame: UIRect(x: 0, y: 0, width: 600, height: 600))
     }
 }
 
