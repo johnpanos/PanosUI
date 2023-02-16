@@ -17,6 +17,42 @@
             "args": [],
             "cwd": "${workspaceFolder:PanosUI}/examples/swift-example",
             "preLaunchTask": "swift: Build Release swift-example (examples/swift-example)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug swift-example (swift-example)",
+            "program": "${workspaceFolder:PanosUI}/swift-example/.build/debug/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/swift-example",
+            "preLaunchTask": "swift: Build Debug swift-example (swift-example)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release swift-example (swift-example)",
+            "program": "${workspaceFolder:PanosUI}/swift-example/.build/release/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/swift-example",
+            "preLaunchTask": "swift: Build Release swift-example (swift-example)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug swift-example (swift)",
+            "program": "${workspaceFolder:PanosUI}/swift/.build/debug/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/swift",
+            "preLaunchTask": "swift: Build Debug swift-example (swift)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release swift-example (swift)",
+            "program": "${workspaceFolder:PanosUI}/swift/.build/release/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/swift",
+            "preLaunchTask": "swift: Build Release swift-example (swift)"
         }
     ]
 }
