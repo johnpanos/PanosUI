@@ -50,6 +50,16 @@ extension UIWindow {
         }
     }
 
+    var controller : UIWindowController {
+        get {
+            return self.controller
+        }
+
+        set {
+            self.pointee.controller = newValue.backing
+        }
+    }
+
     init(backing: UIWindow) {
         self = backing
     }
@@ -136,8 +146,7 @@ struct MyDelegate: UIApplicationDelegate {
             frame: UIRect(x: 0, y: 0, width: 750, height: 600)
         )
 
-        win.pointee.controller = controller.backing
-
+        win.controller = controller
         win.show()
         win.title = "Hello Swift!"
     }
