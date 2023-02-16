@@ -1,5 +1,19 @@
 import PanosUI
 
+protocol EventResponder {
+    var next: UIEventResponder? { get }
+
+    mutating func leftMouseDown(event: UIEvent)
+    mutating func leftMouseUp(event: UIEvent)
+
+    mutating func rightMouseDown(event: UIEvent)
+    mutating func rightMouseUp(event: UIEvent)
+
+    mutating func mouseMove(event: UIEvent)
+
+    mutating func mouseScroll(event: UIEvent)
+}
+
 extension UIView {
     init(backing: PanosUI.UIView) {
         self = backing
@@ -87,3 +101,70 @@ extension UIView {
         }
     }
 }
+
+// extension UIEventResponder : EventResponder {
+//     var next: UIEventResponder? {
+//         get {
+//             return self.next
+//         }
+//         set {
+//             self.pointee.next = newValue
+//         }
+//     }
+
+//     mutating func leftMouseDown(event: UIEvent) {
+//         self.next?.leftMouseDown(event: event)
+//     }
+
+//     mutating func leftMouseUp(event: UIEvent) {
+//         self.next?.leftMouseUp(event: event)
+//     }
+
+//     mutating func rightMouseDown(event: UIEvent) {
+//         self.next?.rightMouseDown(event: event)
+//     }
+
+//     mutating func rightMouseUp(event: UIEvent) {
+//         self.next?.rightMouseUp(event: event)
+//     }
+
+//     mutating func mouseMove(event: UIEvent) {
+//         self.next?.mouseMove(event: event)
+//     }
+
+//     mutating func mouseScroll(event: UIEvent) {
+//         self.next?.mouseScroll(event: event)
+//     }
+// }
+
+// extension UIView : EventResponder {
+//     var next: EventResponder? {
+//         get {
+//             return self.pointee.responder.next
+//         }
+//     }
+
+//     mutating func leftMouseDown(event: UIEvent) {
+        
+//     }
+
+//     mutating func leftMouseUp(event: UIEvent) {
+        
+//     }
+
+//     mutating func rightMouseDown(event: UIEvent) {
+        
+//     }
+
+//     mutating func rightMouseUp(event: UIEvent) {
+        
+//     }
+
+//     mutating func mouseMove(event: UIEvent) {
+        
+//     }
+
+//     mutating func mouseScroll(event: UIEvent) {
+        
+//     }
+// }
