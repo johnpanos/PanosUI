@@ -5,7 +5,8 @@ void _UILabelDoNothing(UIView view)
     view->needsLayout = 0;
 };
 
-UILabel UILabelCreate(UIRect frame) {
+UILabel UILabelCreate(UIRect frame)
+{
     UILabel label = calloc(1, sizeof(struct _UILabel));
     label->base.layer = UILayerCreate(frame, frame);
 
@@ -23,7 +24,7 @@ UILabel UILabelCreate(UIRect frame) {
     return label;
 }
 
-void UILabelSetContents(UILabel label, char *contents)
+void UILabelSetContents(UILabel label, const char *contents)
 {
     label->contents = contents;
 }
@@ -40,7 +41,7 @@ void UILabelSizeToFit(UILabel label)
     // TODO: Math
 }
 
-char *UILabelGetContents(UILabel label)
+const char *UILabelGetContents(UILabel label)
 {
     return label->contents;
 }

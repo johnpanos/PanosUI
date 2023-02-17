@@ -1,8 +1,6 @@
 import PanosUI
 
 protocol EventResponder {
-    var next: UIEventResponder? { get }
-
     mutating func leftMouseDown(event: UIEvent)
     mutating func leftMouseUp(event: UIEvent)
 
@@ -98,7 +96,31 @@ extension UIViewProtocol {
     }
 }
 
-extension PanosUI.UIView : UIViewProtocol, CustomStringConvertible {
+extension PanosUI.UIView : UIViewProtocol, EventResponder, CustomStringConvertible {
+    mutating func leftMouseDown(event: UIEvent) {
+        
+    }
+
+    mutating func leftMouseUp(event: UIEvent) {
+        
+    }
+
+    mutating func rightMouseDown(event: UIEvent) {
+        
+    }
+
+    mutating func rightMouseUp(event: UIEvent) {
+        
+    }
+
+    mutating func mouseMove(event: UIEvent) {
+        
+    }
+
+    mutating func mouseScroll(event: UIEvent) {
+        
+    }
+
     public var description: String { return "UIView: \(self.frame) \(self.bounds)" }
 
     var backing: PanosUI.UIView {
@@ -109,6 +131,9 @@ extension PanosUI.UIView : UIViewProtocol, CustomStringConvertible {
 
     init(backing: PanosUI.UIView) {
         self = backing
+        self.pointee.responder.pointee.leftMouseDown = { _, _ in
+            print("Hello World")
+        }
     }
 
     init(frame: UIRect) {
@@ -129,6 +154,9 @@ class UILabel : UIViewProtocol {
     var contents: String {
         get {
             return String(cString: UILabelGetContents(self.label))
+        }
+        set {
+            UILabelSetContents(self.label, newValue)
         }
     }
 

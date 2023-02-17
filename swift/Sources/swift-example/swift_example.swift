@@ -16,15 +16,13 @@ class BlackSquareWindowController : UIWindowController {
             frame: window.mainView.frame.inset(dx: 50, dy: 50)
         )
 
-        var myLabel = UILabel(frame: window.mainView.frame.inset(dx: 100, dy: 100))
+        var myLabel: UILabel = UILabel(frame: window.mainView.frame.inset(dx: 100, dy: 100))
 
         myLabel.fontSize = 20
         myLabel.backgroundColor = UIColor(r: 255, g: 255, b: 0, a: 255)
         
         window.mainView.addSubview(myView)
         window.mainView.addSubview(myLabel)
-
-        print(myLabel.fontSize)
     }
 }
 

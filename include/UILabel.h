@@ -11,11 +11,11 @@ typedef struct _UILabel
 
 UILabel UILabelCreate(UIRect frame);
 
-void UILabelSetContents(UILabel label, char *contents);
+void UILabelSetContents(UILabel label, const char *contents);
 void UILabelSetFontSize(UILabel label, UIFloat fontSize);
 void UILabelSetFontColor(UILabel label, UIColor fontColor);
 void UILabelSizeToFit(UILabel label);
 
-char *UILabelGetContents(UILabel label);
+const char *UILabelGetContents(UILabel label);
 UIFloat UILabelGetFontSize(UILabel label);
 UIColor UILabelGetFontColor(UILabel label);
