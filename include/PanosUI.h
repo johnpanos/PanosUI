@@ -8,3 +8,6 @@
 #include "UIView.h"
 #include "UIWindow.h"
 #include "UIWindowController.h"
+
+// Controls
+#include "UILabel.h"

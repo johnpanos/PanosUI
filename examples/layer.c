@@ -39,11 +39,11 @@ void windowDidLoad(void* self,UIWindow window)
     end = 64.0f;
     UILayerAddAnimation(view2->layer, radiusAnim);
 
-    UIRect view3Frame = UIRectCreate(10, 10, 300, 300);
-    UIView view3 = UIViewCreate(view3Frame, view3Frame);
-    UIViewSetBackgroundColor(view3, UIColorCreateRGBA(0, 0, 255, 255));
+    UILabel label = UILabelCreate(UIRectCreate(0, 0, 10, 10));
+    UIViewSetBackgroundColor(label, UIColorCreateRGBA(0, 0, 255, 255));
+    UIViewAddSubview(window->mainView, (UIView) label);
 
-    // UIViewAddSubview(window->mainView, view3);
+    printf("w: %f\n", UIViewGetFrame(label).size.width);
 }
 
 void didFinishLaunching(UIApplication *application)

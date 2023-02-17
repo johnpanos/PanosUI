@@ -9,6 +9,8 @@ typedef struct _UILabel
     UIColor fontColor;
 } *UILabel;
 
+UILabel UILabelCreate(UIRect frame);
+
 void UILabelSetContents(UILabel label, char *contents);
 void UILabelSetFontSize(UILabel label, UIFloat fontSize);
 void UILabelSetFontColor(UILabel label, UIColor fontColor);

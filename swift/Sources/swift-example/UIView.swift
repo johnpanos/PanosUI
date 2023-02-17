@@ -14,7 +14,99 @@ protocol EventResponder {
     mutating func mouseScroll(event: UIEvent)
 }
 
-extension UIView {
+protocol UIViewProtocol {
+    var backing: PanosUI.UIView { get }
+}
+
+extension UIViewProtocol {
+    func addSubview(_ subview: UIViewProtocol) {
+        UIViewAddSubview(self.backing, subview.backing)
+    }
+
+    var frame: UIRect {
+        get {
+            return UIViewGetFrame(self.backing)
+        }
+        set {
+            UIViewSetFrame(self.backing, newValue)
+        }
+    }
+    var bounds: UIRect {
+        get {
+            return UIViewGetBounds(self.backing)
+        }
+        set {
+            UIViewSetBounds(self.backing, newValue)
+        }
+    }
+    var backgroundColor: UIColor {
+        get {
+            return UIViewGetBackgroundColor(self.backing)
+        }
+        set {
+            UIViewSetBackgroundColor(self.backing, newValue)
+        }
+    }
+    var cornerRadius: Float {
+        get {
+            return UIViewGetCornerRadius(self.backing)
+        }
+        set {
+            UIViewSetCornerRadius(self.backing, newValue)
+        }
+    }
+    var borderColor: UIColor {
+        get {
+            return UIViewGetBorderColor(self.backing)
+        }
+        set {
+            UIViewSetBorderColor(self.backing, newValue)
+        }
+    }
+    var borderWidth: Float {
+        get {
+            return UIViewGetBorderWidth(self.backing)
+        }
+        set {
+            UIViewSetBorderWidth(self.backing, newValue)
+        }
+    }
+
+    var shadowOffset: UIPoint {
+        get {
+            return UIViewGetShadowOffset(self.backing)
+        }
+        set {
+            UIViewSetShadowOffset(self.backing, newValue)
+        }
+    }
+    var shadowColor: UIColor {
+        get {
+            return UIViewGetShadowColor(self.backing)
+        }
+        set {
+            UIViewSetShadowColor(self.backing, newValue)
+        }
+    }
+    var shadowRadius: Float {
+        get {
+            return UIViewGetShadowRadius(self.backing)
+        }
+        set {
+            UIViewSetShadowRadius(self.backing, newValue)
+        }
+    }
+}
+
+extension PanosUI.UIView : UIViewProtocol, CustomStringConvertible {
+    public var description: String { return "UIView: \(self.frame) \(self.bounds)" }
+
+    var backing: PanosUI.UIView {
+        get {
+            return self
+        }
+    }
+
     init(backing: PanosUI.UIView) {
         self = backing
     }
@@ -22,82 +114,39 @@ extension UIView {
     init(frame: UIRect) {
         self = UIViewCreate(frame, frame)
     }
+}
 
-    func addSubview(_ subview: UIView) {
-        UIViewAddSubview(self, subview)
+class UILabel : UIViewProtocol {
+    var backing: PanosUI.UIView
+
+    var label: PanosUI.UILabel
+
+    init(frame: UIRect) {
+        self.label = UILabelCreate(frame)
+        self.backing = unsafeBitCast(self.label, to: UnsafeMutablePointer<_UIView>.self)
     }
 
-    var frame: UIRect {
+    var contents: String {
         get {
-            return UIViewGetFrame(self)
-        }
-        set {
-            UIViewSetFrame(self, newValue)
-        }
-    }
-    var bounds: UIRect {
-        get {
-            return UIViewGetBounds(self)
-        }
-        set {
-            UIViewSetBounds(self, newValue)
-        }
-    }
-    var backgroundColor: UIColor {
-        get {
-            return UIViewGetBackgroundColor(self)
-        }
-        set {
-            UIViewSetBackgroundColor(self, newValue)
-        }
-    }
-    var cornerRadius: Float {
-        get {
-            return UIViewGetCornerRadius(self)
-        }
-        set {
-            UIViewSetCornerRadius(self, newValue)
-        }
-    }
-    var borderColor: UIColor {
-        get {
-            return UIViewGetBorderColor(self)
-        }
-        set {
-            UIViewSetBorderColor(self, newValue)
-        }
-    }
-    var borderWidth: Float {
-        get {
-            return UIViewGetBorderWidth(self)
-        }
-        set {
-            UIViewSetBorderWidth(self, newValue)
+            return String(cString: UILabelGetContents(self.label))
         }
     }
 
-    var shadowOffset: UIPoint {
+    var fontSize: Float {
         get {
-            return UIViewGetShadowOffset(self)
+            return UILabelGetFontSize(self.label)
         }
         set {
-            UIViewSetShadowOffset(self, newValue)
+            UILabelSetFontSize(self.label, newValue)
         }
     }
-    var shadowColor: UIColor {
+
+    var fontColor: UIColor {
         get {
-            return UIViewGetShadowColor(self)
+            return UILabelGetFontColor(self.label)
         }
         set {
-            UIViewSetShadowColor(self, newValue)
-        }
-    }
-    var shadowRadius: Float {
-        get {
-            return UIViewGetShadowRadius(self)
-        }
-        set {
-            UIViewSetShadowRadius(self, newValue)
+            UILabelSetFontColor(self.label, newValue)
         }
     }
 }
