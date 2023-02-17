@@ -14,6 +14,7 @@ src = [
     'src/UIColor.c',
     'src/UIRect.c',
     'src/UIPoint.c',
+    'src/UILabel.c',
     'src/shared/Array.c'
 ]
 
@@ -83,7 +84,8 @@ install_headers([
     'include/UILayer.h',
     'include/UIView.h',
     'include/UIWindow.h',
-    'include/UIWindowController.h'
+    'include/UIWindowController.h',
+    'include/UILabel.h'
 ])
 
 executable('panos-client', 'examples/minimal.c', include_directories : ['include'], link_with : panosuilib)
