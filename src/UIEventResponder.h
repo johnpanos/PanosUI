@@ -5,6 +5,7 @@
 typedef struct _UIEventResponder *UIEventResponder;
 typedef struct _UIEventResponder
 {
+    void *_self;
     UIEventResponder next;
 
     void (*leftMouseDown)(UIEventResponder self, UIEvent event);

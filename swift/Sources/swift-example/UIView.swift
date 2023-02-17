@@ -1,18 +1,6 @@
 import PanosUI
 
-protocol EventResponder {
-    mutating func leftMouseDown(event: UIEvent)
-    mutating func leftMouseUp(event: UIEvent)
-
-    mutating func rightMouseDown(event: UIEvent)
-    mutating func rightMouseUp(event: UIEvent)
-
-    mutating func mouseMove(event: UIEvent)
-
-    mutating func mouseScroll(event: UIEvent)
-}
-
-protocol UIViewProtocol {
+protocol UIViewProtocol: AnyObject {
     var backing: PanosUI.UIView { get }
 }
 
@@ -96,48 +84,62 @@ extension UIViewProtocol {
     }
 }
 
-extension PanosUI.UIView : UIViewProtocol, EventResponder, CustomStringConvertible {
-    mutating func leftMouseDown(event: UIEvent) {
-        
-    }
+// extension PanosUI.UIView : UIViewProtocol, CustomStringConvertible {
+//     public var description: String { return "UIView: \(self.frame) \(self.bounds)" }
 
-    mutating func leftMouseUp(event: UIEvent) {
-        
-    }
+//     var backing: PanosUI.UIView {
+//         get {
+//             return self
+//         }
+//     }
 
-    mutating func rightMouseDown(event: UIEvent) {
-        
-    }
+//     init(backing: PanosUI.UIView) {
+//         self = backing
+//     }
 
-    mutating func rightMouseUp(event: UIEvent) {
-        
-    }
+//     init(frame: UIRect) {
+//         self = UIViewCreate(frame, frame)
+//     }
+// }
 
-    mutating func mouseMove(event: UIEvent) {
-        
-    }
-
-    mutating func mouseScroll(event: UIEvent) {
-        
-    }
-
-    public var description: String { return "UIView: \(self.frame) \(self.bounds)" }
-
-    var backing: PanosUI.UIView {
-        get {
-            return self
-        }
-    }
+class UIView : UIViewProtocol, UIEventResponderProtocol {
+    var backing: PanosUI.UIView
 
     init(backing: PanosUI.UIView) {
-        self = backing
-        self.pointee.responder.pointee.leftMouseDown = { _, _ in
-            print("Hello World")
-        }
+        self.backing = backing
     }
 
     init(frame: UIRect) {
-        self = UIViewCreate(frame, frame)
+        self.backing = UIViewCreate(frame, frame)
+        self.backing.pointee.responder.pointee._self = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
+        self.backing.pointee.responder.pointee.leftMouseDown = { (this: PanosUI.UIEventResponder?, event: UIEvent) in
+            let view: UIView = Unmanaged<UIView>.fromOpaque(this!.pointee._self!).takeUnretainedValue()
+            view.leftMouseDown(event: event)            
+        }
+    }
+
+    func leftMouseDown(event: UIEvent) {
+        
+    }
+
+    func leftMouseUp(event: UIEvent) {
+        
+    }
+
+    func rightMouseDown(event: UIEvent) {
+        
+    }
+
+    func rightMouseUp(event: UIEvent) {
+        
+    }
+
+    func mouseMove(event: UIEvent) {
+        
+    }
+
+    func mouseScroll(event: UIEvent) {
+        
     }
 }
 

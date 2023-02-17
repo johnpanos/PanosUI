@@ -20,7 +20,7 @@ extension UIWindow {
         }
     }
 
-    var mainView: UIView {
+    var mainView: UIViewProtocol {
         get {
             return UIView(backing: self.pointee.mainView!)
         }

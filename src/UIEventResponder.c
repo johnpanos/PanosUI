@@ -2,11 +2,14 @@
 #include <stdlib.h>
 
 #define SET_HANDLER_IMPL(RESPONDER, HANDLER) RESPONDER->HANDLER = _UIEventResponder##HANDLER##Default
-#define HANDLER_IMPL(HANDLER) void _UIEventResponder##HANDLER##Default(UIEventResponder self, UIEvent event) { \
-    if (self != NULL && self->next != NULL && self->next->HANDLER != NULL) { \
-        self->next->HANDLER(self->next, event); \
-    } \
-}
+#define HANDLER_IMPL(HANDLER)                                                      \
+    void _UIEventResponder##HANDLER##Default(UIEventResponder self, UIEvent event) \
+    {                                                                              \
+        if (self != NULL && self->next != NULL && self->next->HANDLER != NULL)     \
+        {                                                                          \
+            self->next->HANDLER(self->next, event);                                \
+        }                                                                          \
+    }
 
 HANDLER_IMPL(leftMouseDown);
 HANDLER_IMPL(leftMouseUp);
@@ -17,9 +20,10 @@ HANDLER_IMPL(rightMouseUp);
 HANDLER_IMPL(mouseMove);
 HANDLER_IMPL(mouseScroll);
 
-UIEventResponder UIEventResponderCreate() {
+UIEventResponder UIEventResponderCreate()
+{
     UIEventResponder responder = calloc(1, sizeof(struct _UIEventResponder));
-    
+
     SET_HANDLER_IMPL(responder, leftMouseDown);
     SET_HANDLER_IMPL(responder, leftMouseUp);
     SET_HANDLER_IMPL(responder, rightMouseDown);
@@ -30,6 +34,7 @@ UIEventResponder UIEventResponderCreate() {
     return responder;
 }
 
-void UIEventResponderDestroy(UIEventResponder *responder) {
+void UIEventResponderDestroy(UIEventResponder *responder)
+{
     free(responder);
 }
