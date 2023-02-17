@@ -112,5 +112,5 @@
     },
     "mesonbuild.configureOnOpen": true,
     "print.colourScheme": "Atom One",
-    "lldb.library": "/usr/libexec/swift/5.7.2/lib/liblldb.so"
+    "lldb.library": "/usr/libexec/swift/5.7.3/lib/liblldb.so"
 }

@@ -1,25 +1,27 @@
 import PanosUI
 
-protocol UIEventResponderProtocol: AnyObject {
-    func leftMouseDown(event: UIEvent)
-    func leftMouseUp(event: UIEvent)
+class UIResponder {
+    var next: UIResponder?
 
-    func rightMouseDown(event: UIEvent)
-    func rightMouseUp(event: UIEvent)
+    func leftMouseDown(event: UIEvent) {
+        self.next?.leftMouseDown(event: event)
+    }
+    func leftMouseUp(event: UIEvent) {
+        self.next?.leftMouseUp(event: event)
+    }
 
-    func mouseMove(event: UIEvent)
+    func rightMouseDown(event: UIEvent) {
+        self.next?.rightMouseDown(event: event)
+    }
+    func rightMouseUp(event: UIEvent) {
+        self.next?.rightMouseUp(event: event)
+    }
 
-    func mouseScroll(event: UIEvent)
+    func mouseMove(event: UIEvent) {
+        self.next?.mouseMove(event: event)
+    }
+
+    func mouseScroll(event: UIEvent) {
+        self.next?.mouseScroll(event: event)
+    }
 }
-
-// class UIResponder {
-//     var backing: PanosUI.UIEventResponder
-
-//     init() {
-//         self.backing = UIEventResponderCreate()
-//     }
-
-//     func leftMouseDown(event: UIEvent) {
-
-//     }
-// }
