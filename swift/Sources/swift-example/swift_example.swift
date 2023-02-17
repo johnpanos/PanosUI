@@ -38,58 +38,30 @@ class BlackSquareView : UIView {
 }
 
 class BlackSquareWindowController : UIWindowController {
-    var myView: UIView?
+    var myView: UIView!
 
     override func windowDidLoad(window: UIWindow) {
         self.myView = BlackSquareView(
-            frame: window.mainView.frame.inset(dx: 50, dy: 50)
+            frame: window.mainView.frame.inset(dx: 100, dy: 100)
         )
         
-        window.mainView.addSubview(myView!)
-    }
-}
-
-class RedCircleWindowController : UIWindowController {
-    var myView: UIView! {
-        didSet {
-            myView.backgroundColor = UIColor(r: 255, g: 0, b: 0, a: 255)
-            myView.shadowOffset = UIPoint(x: 2, y: 2)
-            myView.cornerRadius = 1000.0
-        }
-    }
-
-    override func windowDidLoad(window: UIWindow) {
-        self.myView = UIView(
-            frame: window.mainView.frame.inset(dx: 50, dy: 50)
-        )
-
         window.mainView.addSubview(myView)
     }
 }
 
 struct MyDelegate: UIApplicationDelegate {
     let blackSquare: BlackSquareWindowController = BlackSquareWindowController()
-    var blackSquareWindow: UIWindow! {
+    var window: UIWindow! {
         didSet {
-            blackSquareWindow.controller = blackSquare
-            blackSquareWindow.show()
-            blackSquareWindow.title = "Black Square!"
-        }
-    }
-
-    let redCircle: RedCircleWindowController = RedCircleWindowController()
-    var redCircleWindow: UIWindow! {
-        didSet {
-            redCircleWindow.controller = redCircle
-            redCircleWindow.show()
-            redCircleWindow.title = "Red Circle!"
+            window.controller = blackSquare
+            window.show()
+            window.title = "Black Square!"
         }
     }
 
     mutating func didFinishLaunching() {
         print("Did finish from Swift!")
-        self.blackSquareWindow = UIWindow(frame: UIRect(x: 0, y: 0, width: 750, height: 600))
-        // self.redCircleWindow = UIWindow(frame: UIRect(x: 0, y: 0, width: 600, height: 600))
+        self.window = UIWindow(frame: UIRect(x: 0, y: 0, width: 750, height: 600))
     }
 }
 

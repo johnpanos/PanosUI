@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "PanosUI.h"
 
-void windowDidLoad(void* self,UIWindow window)
+void windowDidLoad(void *self, UIWindow window)
 {
     UIView view = window->mainView;
 
@@ -41,7 +41,7 @@ void windowDidLoad(void* self,UIWindow window)
 
     UILabel label = UILabelCreate(UIRectCreate(0, 0, 10, 10));
     UIViewSetBackgroundColor(label, UIColorCreateRGBA(0, 0, 255, 255));
-    UIViewAddSubview(window->mainView, (UIView) label);
+    UIViewAddSubview(window->mainView, (UIView)label);
 
     printf("w: %f\n", UIViewGetFrame(label).size.width);
 }
