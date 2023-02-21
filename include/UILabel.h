@@ -3,10 +3,10 @@
 
 typedef struct _UILabel
 {
-    struct _UIView base;
-    char *contents;
-    UIFloat fontSize;
-    UIColor fontColor;
+	struct _UIView base;
+	char *contents;
+	UIFloat fontSize;
+	UIColor fontColor;
 } *UILabel;
 
 UILabel UILabelCreate(UIRect frame);

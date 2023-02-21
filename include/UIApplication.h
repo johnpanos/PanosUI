@@ -3,12 +3,12 @@
 
 typedef struct _UIApplication
 {
-    int running;
+	int running;
 } UIApplication;
 
 typedef struct _UIApplicationDelegate
 {
-    void (*didFinishLaunching)(UIApplication *application);
+	void (*didFinishLaunching)(UIApplication *application);
 } UIApplicationDelegate;
 
 void UIApplicationMain(UIApplicationDelegate *delegate);

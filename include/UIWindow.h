@@ -1,27 +1,27 @@
 #pragma once
 
 #include "UIEvent.h"
-#include "UIGeometry.h"
 #include "UIEventResponder.h"
+#include "UIGeometry.h"
 
 typedef struct _UIView *UIView;
 typedef struct _UILayer UILayer;
 typedef struct _UIWindowController *UIWindowController;
 typedef struct _UIWindow
 {
-    const char *title;
-    UIRect frame;
-    UIRect contentFrame;
+	const char *title;
+	UIRect frame;
+	UIRect contentFrame;
 
-    UIEventResponder responder;
+	UIEventResponder responder;
 
-    UILayer *rootLayer;
-    UIView mainView;
+	UILayer *rootLayer;
+	UIView mainView;
 
-    UIWindowController controller;
-    UIPoint mousePos;
+	UIWindowController controller;
+	UIPoint mousePos;
 
-    UIView frameView;
+	UIView frameView;
 } *UIWindow;
 
 UIWindow UIWindowCreate(UIRect rect);

@@ -6,18 +6,18 @@ typedef float UIFloat;
 
 typedef struct _UIPoint
 {
-    UIFloat x, y;
+	UIFloat x, y;
 } UIPoint;
 
 typedef struct _UISize
 {
-    UIFloat width, height;
+	UIFloat width, height;
 } UISize;
 
 typedef struct _UIRect
 {
-    UIPoint origin;
-    UISize size;
+	UIPoint origin;
+	UISize size;
 } UIRect;
 
 // MARK: UIRect

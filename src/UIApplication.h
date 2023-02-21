@@ -9,15 +9,15 @@
 typedef struct _UIApplicationDelegate UIApplicationDelegate;
 typedef struct _UIApplication
 {
-    int running;
-    UIApplicationDelegate *delegate;
+	int running;
+	UIApplicationDelegate *delegate;
 
-    Array windows;
+	Array windows;
 } UIApplication;
 
 typedef struct _UIApplicationDelegate
 {
-    void (*didFinishLaunching)(UIApplication *application);
+	void (*didFinishLaunching)(UIApplication *application);
 } UIApplicationDelegate;
 
 void UIApplicationMain(UIApplicationDelegate *delegate);

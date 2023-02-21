@@ -3,38 +3,38 @@
 
 #include "UIGeometry.h"
 
-#include "UILayer.h"
+#include "Array.h"
 #include "UIColor.h"
 #include "UIEventResponder.h"
-#include "Array.h"
+#include "UILayer.h"
 
 typedef struct _UIView *UIView;
 typedef struct _UIView
 {
-    UILayer *layer;
-    UIEventResponder responder;
+	UILayer *layer;
+	UIEventResponder responder;
 
-    UIRect frame;
-    UIRect bounds;
+	UIRect frame;
+	UIRect bounds;
 
-    UIView parentView;
-    Array subviews;
+	UIView parentView;
+	Array subviews;
 
-    int needsDisplay;
-    int needsLayout;
+	int needsDisplay;
+	int needsLayout;
 
-    void (*layoutSubviews)(UIView view);
+	void (*layoutSubviews)(UIView view);
 
-    UIColor backgroundColor;
-    float cornerRadius;
-    UIColor borderColor;
-    float borderWidth;
+	UIColor backgroundColor;
+	float cornerRadius;
+	UIColor borderColor;
+	float borderWidth;
 
-    UIPoint shadowOffset;
-    UIColor shadowColor;
-    float shadowRadius;
+	UIPoint shadowOffset;
+	UIColor shadowColor;
+	float shadowRadius;
 
-    int clipToBounds;
+	int clipToBounds;
 } *UIView;
 
 UIView UIViewCreate(UIRect frame, UIRect bounds);

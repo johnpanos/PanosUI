@@ -5,24 +5,24 @@
 
 typedef struct _UIAnimation
 {
-    int finished;
+	int finished;
 
-    const char *forKey;
-    int duration;
-    UIFloat (*timingFunction)(UIFloat t);
+	const char *forKey;
+	int duration;
+	UIFloat (*timingFunction)(UIFloat t);
 
-    void *startValue;
-    void *endValue;
-    size_t _valueSize;
+	void *startValue;
+	void *endValue;
+	size_t _valueSize;
 
-    uint64_t startTime;
-    uint64_t endTime;
+	uint64_t startTime;
+	uint64_t endTime;
 } UIAnimation;
 
 typedef struct _UITransaction
 {
-    uint64_t duration;
-    UIFloat (*timingFunction)(UIFloat t);
+	uint64_t duration;
+	UIFloat (*timingFunction)(UIFloat t);
 
 } UITransaction;
 

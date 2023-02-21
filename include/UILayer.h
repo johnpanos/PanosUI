@@ -3,8 +3,8 @@
 #include "Array.h"
 #include "UIGeometry.h"
 
-#include "UIColor.h"
 #include "UIAnimation.h"
+#include "UIColor.h"
 
 typedef struct _UIGraphicsContext UIGraphicsContext;
 
@@ -32,30 +32,30 @@ typedef struct _UIGraphicsContext UIGraphicsContext;
 typedef struct _UILayer UILayer;
 typedef struct _UILayer
 {
-    Array animations;
+	Array animations;
 
-    UILayer *parent;
-    Array sublayers;
+	UILayer *parent;
+	Array sublayers;
 
-    UIRect frame; // Calculated, never set
+	UIRect frame; // Calculated, never set
 
-    UIPoint position;
-    UIPoint anchorPoint; // x and y are 0.0-1.0 inclusive
-    UIRect bounds;
+	UIPoint position;
+	UIPoint anchorPoint; // x and y are 0.0-1.0 inclusive
+	UIRect bounds;
 
-    UIColor backgroundColor;
+	UIColor backgroundColor;
 
-    UIFloat borderWidth;
-    UIColor borderColor;
+	UIFloat borderWidth;
+	UIColor borderColor;
 
-    UIPoint shadowOffset;
-    UIColor shadowColor;
-    UIFloat shadowRadius;
+	UIPoint shadowOffset;
+	UIColor shadowColor;
+	UIFloat shadowRadius;
 
-    UIFloat opacity;
+	UIFloat opacity;
 
-    UIFloat cornerRadius;
-    bool clipToBounds;
+	UIFloat cornerRadius;
+	bool clipToBounds;
 } UILayer;
 
 UILayer *UILayerCreate(UIRect frame, UIRect bounds);

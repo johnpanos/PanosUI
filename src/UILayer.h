@@ -1,11 +1,11 @@
 #pragma once
 
-#include "shared/Array.h"
 #include "UIGeometry.h"
+#include "shared/Array.h"
 
+#include "UIAnimation.h"
 #include "UIColor.h"
 #include "UIGraphicsContext.h"
-#include "UIAnimation.h"
 
 // MARK: Layer Key Constants
 extern const char *kUILayerKeyPositionX;
@@ -31,32 +31,32 @@ typedef struct _UIPlatformLayer UIPlatformLayer;
 typedef struct _UILayer UILayer;
 typedef struct _UILayer
 {
-    Array animations;
+	Array animations;
 
-    UILayer *parent;
-    Array sublayers;
+	UILayer *parent;
+	Array sublayers;
 
-    UIRect frame; // Calculated, never set
+	UIRect frame; // Calculated, never set
 
-    UIPoint position;
-    UIPoint anchorPoint; // x and y are 0.0-1.0 inclusive
-    UIRect bounds;
+	UIPoint position;
+	UIPoint anchorPoint; // x and y are 0.0-1.0 inclusive
+	UIRect bounds;
 
-    UIColor backgroundColor;
+	UIColor backgroundColor;
 
-    UIFloat borderWidth;
-    UIColor borderColor;
+	UIFloat borderWidth;
+	UIColor borderColor;
 
-    UIPoint shadowOffset;
-    UIColor shadowColor;
-    UIFloat shadowRadius;
+	UIPoint shadowOffset;
+	UIColor shadowColor;
+	UIFloat shadowRadius;
 
-    UIFloat opacity;
+	UIFloat opacity;
 
-    UIFloat cornerRadius;
-    bool clipToBounds;
+	UIFloat cornerRadius;
+	bool clipToBounds;
 
-    UIPlatformLayer *platformLayer;
+	UIPlatformLayer *platformLayer;
 } UILayer;
 
 UILayer *UILayerCreate(UIRect frame, UIRect bounds);

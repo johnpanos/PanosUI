@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 typedef struct _Array *Array;
-typedef void* ArrayValue;
+typedef void *ArrayValue;
 typedef int ArrayIndex;
 typedef size_t ArrayCapacity;
 typedef size_t ArrayValueSize;

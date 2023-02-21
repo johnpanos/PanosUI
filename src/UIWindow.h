@@ -1,33 +1,33 @@
 #pragma once
 
 #include "UIApplication.h"
-#include "UIView.h"
-#include "UIGeometry.h"
 #include "UIEvent.h"
 #include "UIEventResponder.h"
-#include "UIWindowController.h"
+#include "UIGeometry.h"
 #include "UIGraphicsContext.h"
+#include "UIView.h"
+#include "UIWindowController.h"
 
 typedef struct _UIPlatformWindow UIPlatformWindow;
 typedef struct _UIWindow
 {
-    const char *title;
-    UIRect frame;
-    UIRect contentFrame;
+	const char *title;
+	UIRect frame;
+	UIRect contentFrame;
 
-    UIEventResponder responder;
+	UIEventResponder responder;
 
-    UILayer *rootLayer;
-    UIView mainView;
+	UILayer *rootLayer;
+	UIView mainView;
 
-    UIWindowController controller;
-    UIPoint mousePos;
+	UIWindowController controller;
+	UIPoint mousePos;
 
-    UIView frameView;
+	UIView frameView;
 
-    UIGraphicsContext *graphicsContext;
+	UIGraphicsContext *graphicsContext;
 
-    UIPlatformWindow *platformWindow;
+	UIPlatformWindow *platformWindow;
 } *UIWindow;
 
 UIWindow UIWindowCreate(UIRect frame);
