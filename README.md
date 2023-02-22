@@ -34,3 +34,8 @@ tests/
 |-- Source files that will links panosui.lib to test
     the functionality 
 ```
+
+# Build Skia
+```
+bin/gn gen out/Clang --args='cc="clang" cxx="clang++" is_official_build=true extra_cflags_cc=["-march=native"] skia_use_libwebp_encode=false skia_use_libwebp_decode=false'
+```
