@@ -44,6 +44,7 @@ if host_machine.system() == 'linux'
     deps += dependency('fontconfig')
     deps += dependency('libpng')
     deps += dependency('libjpeg')
+    deps += dependency('libwebp')
     deps += dependency('glx')
 endif
 
@@ -60,7 +61,7 @@ if host_machine.system() == 'windows'
 endif
 
 
-skia = declare_dependency(link_args : ['-L/home/john/Developer/skia/out/Debug', '-lskia'],
+skia = declare_dependency(link_args : ['-L/home/john/Developer/skia/out/Clang', '-lskia'],
                                include_directories : ['/home/john/Developer/skia'])
 
 deps += skia

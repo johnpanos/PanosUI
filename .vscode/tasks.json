@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Meson: Build all targets",
+			"label": "PanosUI: Build Debug",
 			"type": "meson",
 			"mode": "build",
 			"group": "build",
@@ -13,7 +13,7 @@
 				"panel": "shared",
 				"showReuseMessage": false,
 				"clear": true,
-				"revealProblems": "onProblem",
+				"revealProblems": "never",
 				"close": true
 			},
 			"problemMatcher": [
@@ -21,7 +21,23 @@
 			],
 		},
 		{
-			"label": "Swift: Build swift-example",
+			"label": "PanosUI: Build Release",
+			"type": "shell",
+			"group": "build",
+			"command": "./build-release.sh",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true,
+				"revealProblems": "never"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "PanosUI: Build swift-example",
 			"type": "shell",
 			"group": "build",
 			"command": "swift",
@@ -42,9 +58,10 @@
 				"close": true
 			},
 			"dependsOn": [
-				"Meson: Build all targets"
+				"PanosUI: Build Debug"
 			],
 			"problemMatcher": []
 		}
+		
 	]
 }

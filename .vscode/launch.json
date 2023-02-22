@@ -3,11 +3,22 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug layer",
+            "name": "Debug layer (debug)",
             "program": "${workspaceFolder}/builddir/layer",
             "args": [],
             "cwd": "${workspaceFolder}/builddir",
-            "preLaunchTask": "Meson: Build all targets",
+            "preLaunchTask": "PanosUI: Build Debug",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug layer (release)",
+            "program": "${workspaceFolder}/buildrelease/layer",
+            "args": [],
+            "cwd": "${workspaceFolder}/buildrelease",
+            "preLaunchTask": "PanosUI: Build Release",
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart"
         },
@@ -24,7 +35,7 @@
                 "-L${workspaceFolder:PanosUI}/builddir"
             ],
             "cwd": "${workspaceFolder:PanosUI}/swift",
-            "preLaunchTask": "Swift: Build swift-example",
+            "preLaunchTask": "PanosUI: Build swift-example",
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart"
         },
