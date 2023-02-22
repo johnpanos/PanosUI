@@ -180,8 +180,8 @@ void UIWindowUpdate(UIWindow window)
 			UIGraphicsContextClipToRect(window->graphicsContext, window->contentFrame, 8.0f);
 
 			// Draw background
-			// UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
-			// UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
+			UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
+			UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
 
 			UIGraphicsContextSave(window->graphicsContext);
 			{

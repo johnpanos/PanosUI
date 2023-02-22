@@ -23,8 +23,18 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 										   struct wl_array *states)
 {
 	printf("XDG TOPLEVEL\n");
+
 	UIWindow window = (UIWindow)data;
 	UIRect configuredSize = UIRectCreate(0, 0, (UIFloat)width, (UIFloat)height);
+
+	printf("frame: x(%f) y(%f) w(%f) h(%f)\n", window->frame.origin.x, window->frame.origin.y, window->frame.size.width,
+		   window->frame.size.height);
+	printf("confi: x(%f) y(%f) w(%f) h(%f)\n", configuredSize.origin.x, configuredSize.origin.y,
+		   configuredSize.size.width, configuredSize.size.height);
+
+	bool sizeChanged = window->frame.size.width != configuredSize.size.width ||
+					   window->frame.size.height != configuredSize.size.height;
+
 	UIRect requestedSize = window->controller->windowWillResize(window->controller->_self, window, configuredSize);
 
 	UIPlatformWindow *platformWindow = window->platformWindow;
@@ -62,7 +72,11 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 	{
 		window->frame = requestedSize;
 		printf("before window did resize\n");
-		window->controller->windowDidResize(window->controller->_self, window);
+
+		if (sizeChanged)
+		{
+			window->controller->windowDidResize(window->controller->_self, window);
+		}
 
 		if (window->graphicsContext != NULL)
 		{
@@ -75,13 +89,13 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 		window->mainView->needsLayout = 1;
 
 		UIRect contentRect = window->contentFrame;
-		printf("contentRect: x(%f) y(%f) w(%f) h(%f)\n", window->frame.origin.x, window->frame.origin.y,
-			   window->frame.size.width, window->frame.size.height);
-		printf("contentRect: x(%f) y(%f) w(%f) h(%f)\n", contentRect.origin.x, contentRect.origin.y,
-			   contentRect.size.width, contentRect.size.height);
-		xdg_surface_set_window_geometry(window->platformWindow->xdgSurface, (int32_t)contentRect.origin.x,
-										(int32_t)contentRect.origin.y, (int32_t)contentRect.size.width,
-										(int32_t)contentRect.size.height);
+		// printf("frame: x(%f) y(%f) w(%f) h(%f)\n", window->frame.origin.x, window->frame.origin.y,
+		//    window->frame.size.width, window->frame.size.height);
+		// printf("contentRect: x(%f) y(%f) w(%f) h(%f)\n", contentRect.origin.x, contentRect.origin.y,
+		//    contentRect.size.width, contentRect.size.height);
+		// xdg_surface_set_window_geometry(window->platformWindow->xdgSurface, (int32_t)contentRect.origin.x,
+		// (int32_t)contentRect.origin.y, (int32_t)contentRect.size.width,
+		// (int32_t)contentRect.size.height);
 
 		struct wl_region *inputRegion = wl_compositor_create_region(UIPlatformGlobalsShared.compositor);
 		wl_region_add(inputRegion, (int32_t)contentRect.origin.x, (int32_t)contentRect.origin.y,

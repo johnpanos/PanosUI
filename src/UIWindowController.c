@@ -1,5 +1,6 @@
 #include "UIWindowController.h"
 #include "UIWindow.h"
+#include "include/UIGeometry.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,6 +15,10 @@ UIRect defaultWindowWillResize(void *self, UIWindow window, UIRect to)
 	{
 		return window->frame;
 	}
+	else
+	{
+		window->frame = to;
+	}
 
 	return window->frame;
 }
@@ -22,6 +27,9 @@ void defaultWindowDidResize(void *self, UIWindow window)
 {
 	printf("Window did resize: w(%f) h(%f)\n", window->frame.size.width, window->frame.size.height);
 	window->contentFrame = UIRectInset(window->frame, 16.0f, 16.0f);
+
+	UIRect mainViewRect = {.origin = UIPointCreate(0, 0), .size = window->contentFrame.size};
+	window->mainView->frame = mainViewRect;
 }
 
 struct _UIWindowController UIWindowControllerDefault = {.windowWillLoad = &doNothing,
