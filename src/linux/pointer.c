@@ -17,7 +17,7 @@ struct UIPlatformSeatData
 	struct wl_pointer *wl_pointer;
 	struct wl_surface *cursor_surface;
 
-	UIWindow window;
+	UIWindow *window;
 };
 
 struct wl_pointer_listener pointer_listener;
@@ -71,11 +71,11 @@ static void wl_pointer_enter(void *data, struct wl_pointer *wl_pointer, uint32_t
 	setup_cursor_image(seatData, serial);
 
 	Array windows = UIApplicationShared()->windows;
-	UIWindow windowForEvent = NULL;
+	UIWindow *windowForEvent = NULL;
 
 	for (int i = 0; i < ArrayGetCapacity(windows); i++)
 	{
-		UIWindow window = ArrayGetValueAtIndex(windows, i);
+		UIWindow *window = ArrayGetValueAtIndex(windows, i);
 		if (window->platformWindow->wlSurface == surface)
 		{
 			windowForEvent = window;

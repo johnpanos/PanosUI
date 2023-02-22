@@ -8,7 +8,7 @@ void doNothing()
 {
 }
 
-UIRect defaultWindowWillResize(void *self, UIWindow window, UIRect to)
+UIRect defaultWindowWillResize(void *self, UIWindow *window, UIRect to)
 {
 	printf("Window will resize: w(%f) h(%f)\n", to.size.width, to.size.height);
 	if (to.size.width == 0 && to.size.height == 0)
@@ -23,7 +23,7 @@ UIRect defaultWindowWillResize(void *self, UIWindow window, UIRect to)
 	return window->frame;
 }
 
-void defaultWindowDidResize(void *self, UIWindow window)
+void defaultWindowDidResize(void *self, UIWindow *window)
 {
 	printf("Window did resize: w(%f) h(%f)\n", window->frame.size.width, window->frame.size.height);
 	window->contentFrame = UIRectInset(window->frame, 16.0f, 16.0f);

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-UIView _UIWindowCreateFrameView(UIWindow window)
+UIView _UIWindowCreateFrameView(UIWindow *window)
 {
 	UIRect titlebarFrame = UIRectCreate(8, 8, UIRectGetWidth(window->frame), 28);
 	UIView titlebar = UIViewCreate(titlebarFrame, titlebarFrame);
@@ -48,9 +48,9 @@ UIView _UIWindowCreateFrameView(UIWindow window)
 }
 
 #define INSET_AMOUNT 16.0f
-UIWindow UIWindowCreate(UIRect frame)
+UIWindow *UIWindowCreate(UIRect frame)
 {
-	UIWindow window = calloc(1, sizeof(struct _UIWindow));
+	UIWindow *window = calloc(1, sizeof(struct _UIWindow));
 
 	window->responder = UIEventResponderCreate();
 
@@ -69,14 +69,14 @@ UIWindow UIWindowCreate(UIRect frame)
 	return window;
 }
 
-UIWindow UIWindowCreateWithFlags(UIRect frame, unsigned int flags)
+UIWindow *UIWindowCreateWithFlags(UIRect frame, unsigned int flags)
 {
-	UIWindow window = UIWindowCreate(frame);
+	UIWindow *window = UIWindowCreate(frame);
 	window->windowFlags = flags;
 	return window;
 }
 
-void UIWindowShow(UIWindow window)
+void UIWindowShow(UIWindow *window)
 {
 	window->controller->windowWillLoad(window->controller->_self, window);
 
@@ -85,7 +85,7 @@ void UIWindowShow(UIWindow window)
 	window->controller->windowDidLoad(window->controller->_self, window);
 }
 
-void UIWindowDestroy(UIWindow window)
+void UIWindowDestroy(UIWindow *window)
 {
 	_UIPlatformWindowDestroy(window);
 
@@ -94,7 +94,7 @@ void UIWindowDestroy(UIWindow window)
 	free(window);
 }
 
-void UIWindowSetTitle(UIWindow window, const char *title)
+void UIWindowSetTitle(UIWindow *window, const char *title)
 {
 	window->title = title;
 	if (window->platformWindow != NULL)
@@ -161,7 +161,7 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 	return 0;
 }
 
-void UIWindowUpdate(UIWindow window)
+void UIWindowUpdate(UIWindow *window)
 {
 	// printf("updating\n");
 	UIView rootView = window->mainView;
@@ -213,7 +213,7 @@ void UIWindowUpdate(UIWindow window)
 	}
 }
 
-void UIWindowSendEvent(UIWindow window, UIEvent event)
+void UIWindowSendEvent(UIWindow *window, UIEvent event)
 {
 	if (event.type == UIEventTypeMouseMotion)
 	{

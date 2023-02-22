@@ -40,15 +40,15 @@ typedef struct _UIWindow
 	UIGraphicsContext *graphicsContext;
 
 	UIPlatformWindow *platformWindow;
-} *UIWindow;
+} UIWindow;
 
-UIWindow UIWindowCreate(UIRect frame);
-UIWindow UIWindowCreateWithFlags(UIRect frame, unsigned int flags);
+UIWindow *UIWindowCreate(UIRect frame);
+UIWindow *UIWindowCreateWithFlags(UIRect frame, unsigned int flags);
 
-void UIWindowDestroy(UIWindow window);
+void UIWindowDestroy(UIWindow *window);
 
-void UIWindowShow(UIWindow window);
-void UIWindowUpdate(UIWindow window);
-void UIWindowSetTitle(UIWindow window, const char *title);
-void UIWindowSendEvent(UIWindow window, UIEvent event);
-void UIWindowDoDrag(UIWindow window, UIEvent event);
+void UIWindowShow(UIWindow *window);
+void UIWindowUpdate(UIWindow *window);
+void UIWindowSetTitle(UIWindow *window, const char *title);
+void UIWindowSendEvent(UIWindow *window, UIEvent event);
+void UIWindowDoDrag(UIWindow *window, UIEvent event);

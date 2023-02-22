@@ -1,9 +1,10 @@
 #include "PanosUI.h"
+#include "UIWindow.h"
 #include <stdio.h>
 
-void windowDidLoad(void *self, UIWindow window)
+void windowDidLoad(void *self, UIWindow *window)
 {
-	UIView view = window->mainView;
+	UIView view = UIWindowGetMainView(window);
 
 	UIRect frameRect = UIRectCreate(0, 0, 200, 200);
 	UIView view2 = UIViewCreate(frameRect, frameRect);
@@ -41,7 +42,7 @@ void windowDidLoad(void *self, UIWindow window)
 
 	UILabel label = UILabelCreate(UIRectCreate(0, 0, 10, 10));
 	UIViewSetBackgroundColor((UIView)label, UIColorCreateRGBA(0, 0, 255, 255));
-	UIViewAddSubview(window->mainView, (UIView)label);
+	UIViewAddSubview(view, (UIView)label);
 
 	printf("w: %f\n", UIViewGetFrame((UIView)label).size.width);
 }
@@ -49,13 +50,13 @@ void windowDidLoad(void *self, UIWindow window)
 void didFinishLaunching(UIApplication *application)
 {
 	UIRect windowFrame = UIRectCreate(0, 0, 750, 600);
-	UIWindow window =
+	UIWindow *window =
 		UIWindowCreateWithFlags(windowFrame, UIWindowTypeHasClose | UIWindowTypeHasHide | UIWindowTypeHasResize);
 
 	UIWindowController myWindowController = UIWindowControllerCreate();
 	myWindowController->windowDidLoad = &windowDidLoad;
 
-	window->controller = myWindowController;
+	UIWindowSetController(window, myWindowController);
 
 	UIWindowShow(window);
 	UIWindowSetTitle(window, "C Example");

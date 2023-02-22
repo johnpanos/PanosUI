@@ -24,7 +24,7 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 {
 	printf("XDG TOPLEVEL\n");
 
-	UIWindow window = (UIWindow)data;
+	UIWindow *window = (UIWindow)data;
 	UIRect configuredSize = UIRectCreate(0, 0, (UIFloat)width, (UIFloat)height);
 
 	printf("frame: x(%f) y(%f) w(%f) h(%f)\n", window->frame.origin.x, window->frame.origin.y, window->frame.size.width,
@@ -107,7 +107,7 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 
 static void xdg_toplevel_close_handler(void *data, struct xdg_toplevel *xdg_toplevel)
 {
-	UIWindow window = (UIWindow)data;
+	UIWindow *window = (UIWindow)data;
 	UIWindowDestroy(window);
 }
 
@@ -116,7 +116,7 @@ static const struct xdg_toplevel_listener xdg_top_level_listener = {
 	.close = xdg_toplevel_close_handler,
 };
 
-void _UIPlatformWindowCreate(UIWindow window)
+void _UIPlatformWindowCreate(UIWindow *window)
 {
 	UIPlatformWindow *platformWindow = calloc(1, sizeof(UIPlatformWindow));
 	platformWindow->window = window;
@@ -133,7 +133,7 @@ void _UIPlatformWindowCreate(UIWindow window)
 	wl_surface_commit(platformWindow->wlSurface);
 }
 
-void _UIPlatformWindowDestroy(UIWindow window)
+void _UIPlatformWindowDestroy(UIWindow *window)
 {
 	UIPlatformWindow *platformWindow = window->platformWindow;
 	wl_egl_window_destroy(platformWindow->eglWindow);
@@ -142,23 +142,23 @@ void _UIPlatformWindowDestroy(UIWindow window)
 	wl_surface_destroy(platformWindow->wlSurface);
 }
 
-void _UIPlatformWindowSetTitle(UIWindow window, const char *title)
+void _UIPlatformWindowSetTitle(UIWindow *window, const char *title)
 {
 	xdg_toplevel_set_title(window->platformWindow->xdgToplevel, title);
 }
 
-void _UIPlatformWindowMove(UIWindow window, UIEvent event)
+void _UIPlatformWindowMove(UIWindow *window, UIEvent event)
 {
 	xdg_toplevel_move(window->platformWindow->xdgToplevel, UIPlatformGlobalsShared.wl_seat, event.reserved);
 }
 
-void _UIPlatformWindowResize(UIWindow window, UIEvent event)
+void _UIPlatformWindowResize(UIWindow *window, UIEvent event)
 {
 	xdg_toplevel_resize(window->platformWindow->xdgToplevel, UIPlatformGlobalsShared.wl_seat, event.reserved,
 						XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT);
 }
 
-void _UIPlatformWindowMakeCurrent(UIWindow window)
+void _UIPlatformWindowMakeCurrent(UIWindow *window)
 {
 	if (eglMakeCurrent(UIPlatformGlobalsShared.eglData.eglDisplay, window->platformWindow->eglSurface,
 					   window->platformWindow->eglSurface, UIPlatformGlobalsShared.eglData.eglContext) == EGL_FALSE)
@@ -168,7 +168,7 @@ void _UIPlatformWindowMakeCurrent(UIWindow window)
 	}
 }
 
-void _UIPlatformWindowFlush(UIWindow window)
+void _UIPlatformWindowFlush(UIWindow *window)
 {
 	if (eglSwapBuffers(UIPlatformGlobalsShared.eglData.eglDisplay, window->platformWindow->eglSurface))
 	{

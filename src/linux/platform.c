@@ -115,7 +115,7 @@ void _UIPlatformEventLoop(UIApplication *application)
 
 	for (int i = 0; i < ArrayGetCapacity(application->windows); i++)
 	{
-		UIWindow window = ArrayGetValueAtIndex(application->windows, i);
+		UIWindow *window = ArrayGetValueAtIndex(application->windows, i);
 		UIWindowUpdate(window);
 	}
 }

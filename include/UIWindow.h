@@ -1,7 +1,5 @@
 #pragma once
 
-#include "UIEvent.h"
-#include "UIEventResponder.h"
 #include "UIGeometry.h"
 #include "UILayer.h"
 #include "UIView.h"
@@ -17,25 +15,7 @@ enum UIWindowType
 	UIWindowTypeShell = 1 << 5
 };
 
-typedef struct _UIWindowController *UIWindowController;
-typedef struct _UIWindow
-{
-	unsigned int windowFlags;
-
-	const char *title;
-	UIRect frame;
-	UIRect contentFrame;
-
-	UIEventResponder responder;
-
-	UILayer *rootLayer;
-	UIView mainView;
-
-	UIWindowController controller;
-	UIPoint mousePos;
-
-	UIView frameView;
-} *UIWindow;
+typedef struct _UIWindow UIWindow;
 
 /**
  * @brief Create a window with the passed in rect size
@@ -43,7 +23,7 @@ typedef struct _UIWindow
  * @param rect Size to make the window
  * @return UIWindow The instantiated window object
  */
-UIWindow UIWindowCreate(UIRect rect);
+UIWindow *UIWindowCreate(UIRect rect);
 /**
  * @brief
  *
@@ -51,31 +31,41 @@ UIWindow UIWindowCreate(UIRect rect);
  * @param flags
  * @return UIWindow
  */
-UIWindow UIWindowCreateWithFlags(UIRect frame, unsigned int flags);
+UIWindow *UIWindowCreateWithFlags(UIRect frame, unsigned int flags);
 /**
  * @brief Frees the memory that the window is using
  *
  * @param window The window to free
  */
-void UIWindowDestroy(UIWindow window);
+void UIWindowDestroy(UIWindow *window);
 
 /**
  * @brief Creates the platform window and brings it to front
  *
  * @param window The window
  */
-void UIWindowShow(UIWindow window);
+void UIWindowShow(UIWindow *window);
+/**
+ * @brief
+ *
+ * @param window
+ * @param controller
+ */
+void UIWindowSetController(UIWindow *window, UIWindowController controller);
 /**
  * @brief Sets the window title
  *
  * @param window The window
  * @param title The text that the title will be set to
  */
-void UIWindowSetTitle(UIWindow window, const char *title);
+void UIWindowSetTitle(UIWindow *window, const char *title);
+
+UIView UIWindowGetMainView(UIWindow *window);
+
 /**
  * @brief Sends an event that will be passed down the event responder chain
  *
  * @param window The window the event will be sent to
  * @param event The current event
  */
-void UIWindowSendEvent(UIWindow window, UIEvent event);
+void UIWindowSendEvent(UIWindow *window, UIEvent event);
