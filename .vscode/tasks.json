@@ -8,7 +8,15 @@
 				"$meson-gcc"
 			],
 			"group": "build",
-			"label": "Meson: Build all targets"
+			"label": "Meson: Build all targets",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "dedicated",
+				"showReuseMessage": false,
+				"clear": true
+			}
 		}
 	]
 }

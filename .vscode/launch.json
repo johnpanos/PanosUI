@@ -10,7 +10,9 @@
             "preLaunchTask": {
                 "task": "build",
                 "type": "meson"
-            }
+            },
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "lldb",
