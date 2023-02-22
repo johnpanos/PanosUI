@@ -110,6 +110,7 @@
         "uigeometry.h": "c",
         "uilabel.h": "c"
     },
+    "mesonbuild.buildFolder": "builddir",
     "mesonbuild.configureOnOpen": true,
     "mesonbuild.setupOptions": [
         "--native-file",
