@@ -32,7 +32,7 @@ UIAnimation UIAnimationCopy(UIAnimation anim);
 void UIAnimationDestroy(UIAnimation anim);
 
 void UIAnimationTransactionBegin();
-void UIAnimationTransactionSetDuration();
+void UIAnimationTransactionSetDuration(uint64_t duration);
 void UIAnimationTransactionEnd();
 void UIAnimationTransactionFlush();
 

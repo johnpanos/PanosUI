@@ -1,5 +1,4 @@
-#ifndef _UIAPPLICATION_H
-#define _UIAPPLICATION_H
+#pragma once
 
 #include "UIWindow.h"
 #include "include/Array.h"
@@ -26,5 +25,3 @@ void UIApplicationRun();
 UIApplication *UIApplicationShared();
 
 void UIApplicationSendEvent(UIEvent event);
-
-#endif

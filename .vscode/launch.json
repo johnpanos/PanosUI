@@ -3,6 +3,18 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "Debug layer",
+            "program": "${workspaceFolder}/builddir/layer",
+            "args": [],
+            "cwd": "${workspaceFolder}/builddir",
+            "preLaunchTask": {
+                "task": "build",
+                "type": "meson"
+            }
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Debug swift-example (examples/swift-example)",
             "program": "${workspaceFolder:PanosUI}/examples/swift-example/.build/debug/swift-example",
             "args": [],

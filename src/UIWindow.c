@@ -1,4 +1,5 @@
 #include "UIWindow.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 UIView _UIWindowCreateFrameView(UIWindow window)
@@ -259,6 +260,12 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
 		{
 			hitView->responder->mouseMove(hitView->responder, event);
 		}
+		break;
+	case UIEventTypeMouseDrag:
+	case UIEventTypeMouseEntered:
+	case UIEventTypeMouseScroll:
+	case UIEventTypeKeyboardDown:
+	case UIEventTypeKeyboardUp:
 		break;
 	};
 	// }

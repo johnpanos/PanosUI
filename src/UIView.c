@@ -1,5 +1,6 @@
 #include "UIView.h"
 #include "shared/Array.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

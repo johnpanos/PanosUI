@@ -4,22 +4,22 @@
 #include <string.h>
 #include <time.h>
 
-float UIAnimationTimingFunctionLinear(float p)
+UIFloat UIAnimationTimingFunctionLinear(UIFloat p)
 {
 	return p;
 }
 
-float UIAnimationTimingFunctionEaseInQuad(float p)
+UIFloat UIAnimationTimingFunctionEaseInQuad(UIFloat p)
 {
 	return p * p;
 }
 
-float UIAnimationTimingFunctionEaseOutQuad(float p)
+UIFloat UIAnimationTimingFunctionEaseOutQuad(UIFloat p)
 {
 	return -(p * (p - 2));
 }
 
-float UIAnimationTimingFunctionEaseInOutQuad(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutQuad(UIFloat p)
 {
 	if (p < 0.5)
 	{
@@ -31,18 +31,18 @@ float UIAnimationTimingFunctionEaseInOutQuad(float p)
 	}
 }
 
-float UIAnimationTimingFunctionEaseInCubic(float p)
+UIFloat UIAnimationTimingFunctionEaseInCubic(UIFloat p)
 {
 	return p * p * p;
 }
 
-float UIAnimationTimingFunctionEaseOutCubic(float p)
+UIFloat UIAnimationTimingFunctionEaseOutCubic(UIFloat p)
 {
-	float f = (p - 1);
+	UIFloat f = (p - 1);
 	return f * f * f + 1;
 }
 
-float UIAnimationTimingFunctionEaseInOutCubic(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutCubic(UIFloat p)
 {
 	if (p < 0.5)
 	{
@@ -50,23 +50,23 @@ float UIAnimationTimingFunctionEaseInOutCubic(float p)
 	}
 	else
 	{
-		float f = ((2 * p) - 2);
+		UIFloat f = ((2 * p) - 2);
 		return 0.5 * f * f * f + 1;
 	}
 }
 
-float UIAnimationTimingFunctionEaseInQuart(float p)
+UIFloat UIAnimationTimingFunctionEaseInQuart(UIFloat p)
 {
 	return p * p * p * p;
 }
 
-float UIAnimationTimingFunctionEaseOutQuart(float p)
+UIFloat UIAnimationTimingFunctionEaseOutQuart(UIFloat p)
 {
-	float f = (p - 1);
+	UIFloat f = (p - 1);
 	return f * f * f * (1 - p) + 1;
 }
 
-float UIAnimationTimingFunctionEaseInOutQuart(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutQuart(UIFloat p)
 {
 	if (p < 0.5)
 	{
@@ -74,23 +74,23 @@ float UIAnimationTimingFunctionEaseInOutQuart(float p)
 	}
 	else
 	{
-		float f = (p - 1);
+		UIFloat f = (p - 1);
 		return -8 * f * f * f * f + 1;
 	}
 }
 
-float UIAnimationTimingFunctionEaseInQuint(float p)
+UIFloat UIAnimationTimingFunctionEaseInQuint(UIFloat p)
 {
 	return p * p * p * p * p;
 }
 
-float UIAnimationTimingFunctionEaseOutQuint(float p)
+UIFloat UIAnimationTimingFunctionEaseOutQuint(UIFloat p)
 {
-	float f = (p - 1);
+	UIFloat f = (p - 1);
 	return f * f * f * f * f + 1;
 }
 
-float UIAnimationTimingFunctionEaseInOutQuint(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutQuint(UIFloat p)
 {
 	if (p < 0.5)
 	{
@@ -98,37 +98,37 @@ float UIAnimationTimingFunctionEaseInOutQuint(float p)
 	}
 	else
 	{
-		float f = ((2 * p) - 2);
+		UIFloat f = ((2 * p) - 2);
 		return 0.5 * f * f * f * f * f + 1;
 	}
 }
 
-float UIAnimationTimingFunctionEaseInSine(float p)
+UIFloat UIAnimationTimingFunctionEaseInSine(UIFloat p)
 {
 	return sin((p - 1) * M_PI_2) + 1;
 }
 
-float UIAnimationTimingFunctionEaseOutSine(float p)
+UIFloat UIAnimationTimingFunctionEaseOutSine(UIFloat p)
 {
 	return sin(p * M_PI_2);
 }
 
-float UIAnimationTimingFunctionEaseInOutSine(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutSine(UIFloat p)
 {
 	return 0.5 * (1 - cos(p * M_PI));
 }
 
-float UIAnimationTimingFunctionEaseInCirc(float p)
+UIFloat UIAnimationTimingFunctionEaseInCirc(UIFloat p)
 {
 	return 1 - sqrt(1 - (p * p));
 }
 
-float UIAnimationTimingFunctionEaseOutCirc(float p)
+UIFloat UIAnimationTimingFunctionEaseOutCirc(UIFloat p)
 {
 	return sqrt((2 - p) * p);
 }
 
-float UIAnimationTimingFunctionEaseInOutCirc(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutCirc(UIFloat p)
 {
 	if (p < 0.5)
 	{
@@ -140,17 +140,17 @@ float UIAnimationTimingFunctionEaseInOutCirc(float p)
 	}
 }
 
-float UIAnimationTimingFunctionEaseInExpo(float p)
+UIFloat UIAnimationTimingFunctionEaseInExpo(UIFloat p)
 {
 	return (p == 0.0) ? p : pow(2, 10 * (p - 1));
 }
 
-float UIAnimationTimingFunctionEaseOutExpo(float p)
+UIFloat UIAnimationTimingFunctionEaseOutExpo(UIFloat p)
 {
 	return (p == 1.0) ? p : 1 - pow(2, -10 * p);
 }
 
-float UIAnimationTimingFunctionEaseInOutExpo(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutExpo(UIFloat p)
 {
 	if (p == 0.0 || p == 1.0)
 		return p;
@@ -165,17 +165,17 @@ float UIAnimationTimingFunctionEaseInOutExpo(float p)
 	}
 }
 
-float UIAnimationTimingFunctionEaseInElastic(float p)
+UIFloat UIAnimationTimingFunctionEaseInElastic(UIFloat p)
 {
 	return sin(13 * M_PI_2 * p) * pow(2, 10 * (p - 1));
 }
 
-float UIAnimationTimingFunctionEaseOutElastic(float p)
+UIFloat UIAnimationTimingFunctionEaseOutElastic(UIFloat p)
 {
 	return sin(-13 * M_PI_2 * (p + 1)) * pow(2, -10 * p) + 1;
 }
 
-float UIAnimationTimingFunctionEaseInOutElastic(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutElastic(UIFloat p)
 {
 	if (p < 0.5)
 	{
@@ -187,37 +187,37 @@ float UIAnimationTimingFunctionEaseInOutElastic(float p)
 	}
 }
 
-float UIAnimationTimingFunctionEaseInBack(float p)
+UIFloat UIAnimationTimingFunctionEaseInBack(UIFloat p)
 {
 	return p * p * p - p * sin(p * M_PI);
 }
 
-float UIAnimationTimingFunctionEaseOutBack(float p)
+UIFloat UIAnimationTimingFunctionEaseOutBack(UIFloat p)
 {
-	float f = (1 - p);
+	UIFloat f = (1 - p);
 	return 1 - (f * f * f - f * sin(f * M_PI));
 }
 
-float UIAnimationTimingFunctionEaseInOutBack(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutBack(UIFloat p)
 {
 	if (p < 0.5)
 	{
-		float f = 2 * p;
+		UIFloat f = 2 * p;
 		return 0.5 * (f * f * f - f * sin(f * M_PI));
 	}
 	else
 	{
-		float f = (1 - (2 * p - 1));
+		UIFloat f = (1 - (2 * p - 1));
 		return 0.5 * (1 - (f * f * f - f * sin(f * M_PI))) + 0.5;
 	}
 }
 
-float UIAnimationTimingFunctionEaseInBounce(float p)
+UIFloat UIAnimationTimingFunctionEaseInBounce(UIFloat p)
 {
 	return 1 - UIAnimationTimingFunctionEaseOutBounce(1 - p);
 }
 
-float UIAnimationTimingFunctionEaseOutBounce(float p)
+UIFloat UIAnimationTimingFunctionEaseOutBounce(UIFloat p)
 {
 	if (p < 4 / 11.0)
 	{
@@ -237,7 +237,7 @@ float UIAnimationTimingFunctionEaseOutBounce(float p)
 	}
 }
 
-float UIAnimationTimingFunctionEaseInOutBounce(float p)
+UIFloat UIAnimationTimingFunctionEaseInOutBounce(UIFloat p)
 {
 	if (p < 0.5)
 	{

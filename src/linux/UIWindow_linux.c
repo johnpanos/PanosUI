@@ -3,6 +3,7 @@
 #include "deps/xdg-shell.h"
 #include "globals.h"
 #include "platform.h"
+#include <EGL/eglplatform.h>
 #include <GLES2/gl2.h>
 #include <stdio.h>
 
@@ -40,9 +41,9 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 	{
 		platformWindow->eglWindow =
 			wl_egl_window_create(platformWindow->wlSurface, requestedSize.size.width, requestedSize.size.height);
-		platformWindow->eglSurface =
-			eglCreateWindowSurface(UIPlatformGlobalsShared.eglData.eglDisplay,
-								   UIPlatformGlobalsShared.eglData.eglConfig, platformWindow->eglWindow, NULL);
+		platformWindow->eglSurface = eglCreateWindowSurface(UIPlatformGlobalsShared.eglData.eglDisplay,
+															UIPlatformGlobalsShared.eglData.eglConfig,
+															(EGLNativeWindowType)platformWindow->eglWindow, NULL);
 	}
 
 	if (platformWindow->eglSurface == EGL_NO_SURFACE)

@@ -111,6 +111,14 @@
         "uilabel.h": "c"
     },
     "mesonbuild.configureOnOpen": true,
-    "print.colourScheme": "Atom One",
+    "mesonbuild.setupOptions": [
+        "--native-file",
+        "linux-x64-clang.ini"
+    ],
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "clangd.arguments": [
+        "--compile-commands-dir=./builddir"
+    ],
     "lldb.library": "/usr/libexec/swift/5.7.3/lib/liblldb.so"
 }

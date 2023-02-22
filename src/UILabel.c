@@ -11,11 +11,11 @@ UILabel UILabelCreate(UIRect frame)
 	label->base.layer = UILayerCreate(frame, frame);
 
 	label->base.responder = UIEventResponderCreate();
-	UIViewSetFrame(label, frame);
+	UIViewSetFrame((UIView)label, frame);
 	UIRect boundsCopy = frame;
 	boundsCopy.origin.x = 0;
 	boundsCopy.origin.y = 0;
-	UIViewSetBounds(label, boundsCopy);
+	UIViewSetBounds((UIView)label, boundsCopy);
 	label->base.subviews = ArrayCreate(sizeof(UIView));
 	label->base.needsDisplay = 1;
 	label->base.needsLayout = 1;

@@ -56,10 +56,6 @@ extern "C"
 		return grDirectContext;
 	}
 
-	UIGraphicsContext *UIGraphicsContextGetLayerContext(UIRect bounds)
-	{
-	}
-
 	void UIGraphicsContextMakeCurrent(UIGraphicsContext *context)
 	{
 		context->canvas =
@@ -98,10 +94,6 @@ extern "C"
 
 	UIGraphicsContext *UIGraphicsContextCreate(EGLSurface eglSurface, int width, int height)
 	{
-		const char *version = (const char *)glGetString(GL_VERSION);
-
-		// printf("Creating context with w(%d) h(%d)\n", width, height);
-
 		UIGraphicsContext *graphicsContext = (UIGraphicsContext *)calloc(1, sizeof(UIGraphicsContext));
 		graphicsContext->paint = SkPaint();
 		graphicsContext->paint.setAntiAlias(true);

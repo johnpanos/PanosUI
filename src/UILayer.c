@@ -1,3 +1,13 @@
+/**
+ * @file UILayer.c
+ * @author John Panos
+ * @brief UILayer
+ * @version 1.0
+ * @date 2023-02-21
+ *
+ *
+ */
+
 #include "UILayer.h"
 #include "UIAnimation.h"
 #include "platform.h"
@@ -67,6 +77,16 @@ void UILayerAddAnimation(UILayer *layer, UIAnimation anim)
 	ArrayAddValue(layer->animations, copiedAnim);
 }
 
+/**
+ * @brief Returns the implicit animation for the current key
+ *
+ * @param layer The layer the animation will be applied on
+ * @param key The property to apply the animation to
+ * @param valueSize The size of the backing property
+ * @param startValue The generic start value
+ * @param endValue The generic end value
+ * @return UIAnimation
+ */
 UIAnimation UILayerGetAnimationFor(UILayer *layer, const char *key, size_t valueSize, void *startValue, void *endValue)
 {
 	UIAnimation implicitAnim;

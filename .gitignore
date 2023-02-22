@@ -1,3 +1,4 @@
 build-clang
 builddir
+docs/_build
 .DS_Store

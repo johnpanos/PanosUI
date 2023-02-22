@@ -3,9 +3,9 @@
 #include "UIEvent.h"
 #include "UIEventResponder.h"
 #include "UIGeometry.h"
+#include "UILayer.h"
+#include "UIView.h"
 
-typedef struct _UIView *UIView;
-typedef struct _UILayer UILayer;
 typedef struct _UIWindowController *UIWindowController;
 typedef struct _UIWindow
 {

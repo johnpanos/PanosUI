@@ -4,7 +4,7 @@
 typedef struct _UILabel
 {
 	struct _UIView base;
-	char *contents;
+	const char *contents;
 	UIFloat fontSize;
 	UIColor fontColor;
 } *UILabel;
