@@ -12,9 +12,7 @@
 				"focus": false,
 				"panel": "shared",
 				"showReuseMessage": false,
-				"clear": true,
-				"revealProblems": "never",
-				"close": true
+				"revealProblems": "never"
 			},
 			"problemMatcher": [
 				"$meson-gcc"
@@ -46,7 +44,7 @@
 				"--package-path",
 				"${workspaceFolder}/swift",
 				"-Xlinker",
-                "-L${workspaceFolder:PanosUI}/builddir"
+				"-L${workspaceFolder:PanosUI}/builddir"
 			],
 			"presentation": {
 				"echo": true,
@@ -54,14 +52,12 @@
 				"focus": false,
 				"panel": "shared",
 				"showReuseMessage": false,
-				"clear": false,
-				"close": true
+				"clear": false
 			},
 			"dependsOn": [
 				"PanosUI: Build Debug"
 			],
 			"problemMatcher": []
 		}
-		
 	]
 }

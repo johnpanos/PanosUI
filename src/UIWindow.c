@@ -69,6 +69,13 @@ UIWindow UIWindowCreate(UIRect frame)
 	return window;
 }
 
+UIWindow UIWindowCreateWithFlags(UIRect frame, unsigned int flags)
+{
+	UIWindow window = UIWindowCreate(frame);
+	window->windowFlags = flags;
+	return window;
+}
+
 void UIWindowShow(UIWindow window)
 {
 	window->controller->windowWillLoad(window->controller->_self, window);

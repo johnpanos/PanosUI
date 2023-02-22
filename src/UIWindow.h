@@ -8,9 +8,21 @@
 #include "UIView.h"
 #include "UIWindowController.h"
 
+enum UIWindowType
+{
+	UIWindowTypeBorderless = 1 << 0,
+	UIWindowTypeTitlebar = 1 << 1,
+	UIWindowTypeHasClose = 1 << 2,
+	UIWindowTypeHasHide = 1 << 3,
+	UIWindowTypeHasResize = 1 << 4,
+	UIWindowTypeShell = 1 << 5
+};
+
 typedef struct _UIPlatformWindow UIPlatformWindow;
 typedef struct _UIWindow
 {
+	unsigned int windowFlags;
+
 	const char *title;
 	UIRect frame;
 	UIRect contentFrame;
@@ -31,6 +43,8 @@ typedef struct _UIWindow
 } *UIWindow;
 
 UIWindow UIWindowCreate(UIRect frame);
+UIWindow UIWindowCreateWithFlags(UIRect frame, unsigned int flags);
+
 void UIWindowDestroy(UIWindow window);
 
 void UIWindowShow(UIWindow window);

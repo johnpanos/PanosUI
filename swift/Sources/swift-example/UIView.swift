@@ -1,7 +1,7 @@
 import PanosUI
 
 protocol UIViewProtocol: AnyObject {
-    var backing: PanosUI.UIView { get }
+    var backing: PanosUI.UIView? { get }
 }
 
 extension UIViewProtocol {
@@ -84,26 +84,14 @@ extension UIViewProtocol {
     }
 }
 
-// extension PanosUI.UIView : UIViewProtocol, CustomStringConvertible {
-//     public var description: String { return "UIView: \(self.frame) \(self.bounds)" }
-
-//     var backing: PanosUI.UIView {
-//         get {
-//             return self
-//         }
-//     }
-
-//     init(backing: PanosUI.UIView) {
-//         self = backing
-//     }
-
-//     init(frame: UIRect) {
-//         self = UIViewCreate(frame, frame)
-//     }
-// }
+extension PanosUI.UIView {
+    func toSwift() -> UIView {
+        return UIView(backing: self)
+    }
+}
 
 class UIView : UIResponder, UIViewProtocol {
-    var backing: PanosUI.UIView
+    var backing: PanosUI.UIView?
 
     init(backing: PanosUI.UIView) {
         self.backing = backing
@@ -113,10 +101,17 @@ class UIView : UIResponder, UIViewProtocol {
     init(frame: UIRect) {
         self.backing = UIViewCreate(frame, frame)
         super.init()
-        self.backing.pointee.responder.pointee._self = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        self.backing.pointee.responder.pointee.leftMouseDown = { (this: PanosUI.UIEventResponder?, event: UIEvent) in
+        self.backing!.pointee.responder.pointee._self = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
+        self.backing!.pointee.responder.pointee.leftMouseDown = { (this: PanosUI.UIEventResponder?, event: UIEvent) in
             let view: UIView = Unmanaged<UIView>.fromOpaque(this!.pointee._self!).takeUnretainedValue()
             view.leftMouseDown(event: event)
+        }
+    }
+
+    deinit {
+        if (self.backing != nil) {
+            print("destroying view")
+            UIViewDestroy(self.backing)
         }
     }
 
@@ -126,7 +121,7 @@ class UIView : UIResponder, UIViewProtocol {
 }
 
 class UILabel : UIViewProtocol {
-    var backing: PanosUI.UIView
+    var backing: PanosUI.UIView?
 
     var label: PanosUI.UILabel
 

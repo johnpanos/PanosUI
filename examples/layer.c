@@ -49,7 +49,8 @@ void windowDidLoad(void *self, UIWindow window)
 void didFinishLaunching(UIApplication *application)
 {
 	UIRect windowFrame = UIRectCreate(0, 0, 750, 600);
-	UIWindow window = UIWindowCreate(windowFrame);
+	UIWindow window =
+		UIWindowCreateWithFlags(windowFrame, UIWindowTypeHasClose | UIWindowTypeHasHide | UIWindowTypeHasResize);
 
 	UIWindowController myWindowController = UIWindowControllerCreate();
 	myWindowController->windowDidLoad = &windowDidLoad;

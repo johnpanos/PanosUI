@@ -24,4 +24,5 @@ Table of Contents
     :maxdepth: 2
 
     self
+    first_app/index
     window/index

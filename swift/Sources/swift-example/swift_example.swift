@@ -29,29 +29,28 @@ class BlackSquareView : UIView {
         myAnim._valueSize = MemoryLayout<Float>.size
         myAnim.duration = 2500
 
-        UILayerAddAnimation(self.backing.pointee.layer, myAnim)
+        UILayerAddAnimation(self.backing!.pointee.layer, myAnim)
 
         start = oldHeight
         myAnim.forKey = kUILayerKeyBoundsHeight
-        UILayerAddAnimation(self.backing.pointee.layer, myAnim)
+        UILayerAddAnimation(self.backing!.pointee.layer, myAnim)
 
         start = self.cornerRadius
         myAnim.forKey = kUILayerKeyCornerRadius
-        UILayerAddAnimation(self.backing.pointee.layer, myAnim)
+        UILayerAddAnimation(self.backing!.pointee.layer, myAnim)
 
         self.cornerRadius = 200.0
     }
 }
 
 class BlackSquareWindowController : UIWindowController {
-    var myView: UIView!
-
-    override func windowDidLoad(window: UIWindow) {
-        self.myView = BlackSquareView(
-            frame: window.mainView.frame.inset(dx: 100, dy: 100)
+    var myView: UIView = BlackSquareView(
+            frame: UIRectCreate(0, 0, 0, 0)
         )
-        
-        window.mainView.addSubview(myView)
+
+    override func windowDidLoad(window: PanosUI.UIWindow) {      
+        self.myView.frame = window.mainView.frame.inset(dx: 100, dy: 100)  
+        window.mainView.addSubview(self.myView)
     }
 }
 

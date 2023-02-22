@@ -1,5 +1,6 @@
-#ifndef _UIVIEW_H
-#define _UIVIEW_H
+#pragma once
+
+#include <stdbool.h>
 
 #include "UIGeometry.h"
 
@@ -20,27 +21,51 @@ typedef struct _UIView
 	UIView parentView;
 	Array subviews;
 
-	int needsDisplay;
-	int needsLayout;
+	bool needsDisplay;
+	bool needsLayout;
 
 	void (*layoutSubviews)(UIView view);
 
 	UIColor backgroundColor;
-	float cornerRadius;
+	UIFloat cornerRadius;
 	UIColor borderColor;
-	float borderWidth;
+	UIFloat borderWidth;
 
 	UIPoint shadowOffset;
 	UIColor shadowColor;
-	float shadowRadius;
+	UIFloat shadowRadius;
 
-	int clipToBounds;
+	bool clipToBounds;
 } *UIView;
 
+/**
+ * @brief Creates a view
+ *
+ * @param frame The size of the view in the parent coordinate space
+ * @param bounds The size and position of the view in its own coordinate space
+ * @return UIView
+ */
 UIView UIViewCreate(UIRect frame, UIRect bounds);
+/**
+ * @brief Frees the memory the view is taking up
+ *
+ * @param view The view to free
+ */
 void UIViewDestroy(UIView view);
 
+/**
+ * @brief Adds the subview as a child to the superview
+ *
+ * @param superview The parent view
+ * @param subview The to-be added child view
+ */
 void UIViewAddSubview(UIView superview, UIView subview);
+/**
+ * @brief Removes the subview from superview. The subview must be a child of the superview.
+ *
+ * @param superview The parent view
+ * @param subview The to-be removed child view
+ */
 void UIViewRemoveSubview(UIView superview, UIView subview);
 
 UIPoint UIViewConvertPoint(UIView from, UIView to, UIPoint point);
@@ -69,5 +94,3 @@ void UIViewSetBorderWidth(UIView view, UIFloat borderWidth);
 void UIViewSetShadowOffset(UIView view, UIPoint shadowOffset);
 void UIViewSetShadowColor(UIView view, UIColor shadowColor);
 void UIViewSetShadowRadius(UIView view, UIFloat shadowRadius);
-
-#endif
