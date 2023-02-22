@@ -3,7 +3,7 @@ import PanosUI
 class BlackSquareView : UIView {
     override init(frame: UIRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor(r: 255, g: 0, b: 0, a: 255)
+        self.backgroundColor = UIColor(r: 0, g: 0, b: 0, a: 255)
         self.shadowOffset = UIPoint(x: 0, y: 0)
         self.shadowRadius = 12
         self.shadowColor = UIColor(r: 255, g: 0, b: 0, a: 200)
@@ -11,7 +11,11 @@ class BlackSquareView : UIView {
     }
 
     override func leftMouseDown(event: UIEvent) {
-        var start: Float = self.frame.size.width
+        let oldWidth = self.frame.size.width
+        let oldHeight = self.frame.size.height
+        self.frame = UIRect(x: self.frame.origin.x, y: self.frame.origin.y, width: 200.0, height: 200.0)
+
+        var start: Float = oldWidth
         var end: Float = 200.0
 
         var myAnim: UIAnimation = UIAnimation()
@@ -27,13 +31,15 @@ class BlackSquareView : UIView {
 
         UILayerAddAnimation(self.backing.pointee.layer, myAnim)
 
-        start = self.frame.size.height
+        start = oldHeight
         myAnim.forKey = kUILayerKeyBoundsHeight
         UILayerAddAnimation(self.backing.pointee.layer, myAnim)
 
         start = self.cornerRadius
         myAnim.forKey = kUILayerKeyCornerRadius
         UILayerAddAnimation(self.backing.pointee.layer, myAnim)
+
+        self.cornerRadius = 200.0
     }
 }
 
