@@ -2,21 +2,49 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Meson: Build all targets",
 			"type": "meson",
 			"mode": "build",
-			"problemMatcher": [
-				"$meson-gcc"
-			],
 			"group": "build",
-			"label": "Meson: Build all targets",
 			"presentation": {
 				"echo": true,
 				"reveal": "always",
 				"focus": false,
-				"panel": "dedicated",
+				"panel": "shared",
 				"showReuseMessage": false,
-				"clear": true
-			}
+				"clear": true,
+				"revealProblems": "onProblem",
+				"close": true
+			},
+			"problemMatcher": [
+				"$meson-gcc"
+			],
+		},
+		{
+			"label": "Swift: Build swift-example",
+			"type": "shell",
+			"group": "build",
+			"command": "swift",
+			"args": [
+				"build",
+				"--package-path",
+				"${workspaceFolder}/swift",
+				"-Xlinker",
+                "-L${workspaceFolder:PanosUI}/builddir"
+			],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": false,
+				"close": true
+			},
+			"dependsOn": [
+				"Meson: Build all targets"
+			],
+			"problemMatcher": []
 		}
 	]
 }

@@ -121,5 +121,6 @@
     "clangd.arguments": [
         "--compile-commands-dir=./builddir"
     ],
-    "lldb.library": "/usr/libexec/swift/5.7.3/lib/liblldb.so"
+    "lldb.library": "/usr/libexec/swift/5.7.3/lib/liblldb.so",
+    "debug.console.closeOnEnd": true
 }

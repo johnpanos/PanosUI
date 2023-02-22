@@ -7,66 +7,40 @@
             "program": "${workspaceFolder}/builddir/layer",
             "args": [],
             "cwd": "${workspaceFolder}/builddir",
-            "preLaunchTask": {
-                "task": "build",
-                "type": "meson"
-            },
+            "preLaunchTask": "Meson: Build all targets",
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug swift-example (examples/swift-example)",
-            "program": "${workspaceFolder:PanosUI}/examples/swift-example/.build/debug/swift-example",
-            "args": [],
-            "cwd": "${workspaceFolder:PanosUI}/examples/swift-example",
-            "preLaunchTask": "swift: Build Debug swift-example (examples/swift-example)"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Release swift-example (examples/swift-example)",
-            "program": "${workspaceFolder:PanosUI}/examples/swift-example/.build/release/swift-example",
-            "args": [],
-            "cwd": "${workspaceFolder:PanosUI}/examples/swift-example",
-            "preLaunchTask": "swift: Build Release swift-example (examples/swift-example)"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug swift-example (swift-example)",
-            "program": "${workspaceFolder:PanosUI}/swift-example/.build/debug/swift-example",
-            "args": [],
-            "cwd": "${workspaceFolder:PanosUI}/swift-example",
-            "preLaunchTask": "swift: Build Debug swift-example (swift-example)"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Release swift-example (swift-example)",
-            "program": "${workspaceFolder:PanosUI}/swift-example/.build/release/swift-example",
-            "args": [],
-            "cwd": "${workspaceFolder:PanosUI}/swift-example",
-            "preLaunchTask": "swift: Build Release swift-example (swift-example)"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug swift-example (swift)",
+            "name": "Debug swift-example",
             "program": "${workspaceFolder:PanosUI}/swift/.build/debug/swift-example",
-            "args": [],
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder:PanosUI}/builddir"
+            },
+            "args": [
+                "-Xlinker",
+                "-L${workspaceFolder:PanosUI}/builddir"
+            ],
             "cwd": "${workspaceFolder:PanosUI}/swift",
-            "preLaunchTask": "swift: Build Debug swift-example (swift)"
+            "preLaunchTask": "Swift: Build swift-example",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Release swift-example (swift)",
+            "name": "Release swift-example",
             "program": "${workspaceFolder:PanosUI}/swift/.build/release/swift-example",
-            "args": [],
-            "cwd": "${workspaceFolder:PanosUI}/swift",
-            "preLaunchTask": "swift: Build Release swift-example (swift)"
-        }
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder:PanosUI}/builddir"
+            },
+            "args": [
+                "-Xlinker",
+                "-L${workspaceFolder:PanosUI}/builddir"
+            ],
+            "cwd": "${workspaceFolder:PanosUI}/swift"
+        },
     ]
 }
