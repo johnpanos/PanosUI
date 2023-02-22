@@ -61,14 +61,15 @@ if host_machine.system() == 'windows'
 endif
 
 
-skia = declare_dependency(link_args : ['-L/home/john/Developer/skia/out/Clang', '-lskia'],
-                               include_directories : ['/home/john/Developer/skia'])
+dir_base = meson.current_source_dir()
+skia = declare_dependency(link_args : ['-L' + dir_base + '/thirdparty/skia/out/Clang', '-lskia'],
+                               include_directories : ['thirdparty/skia'])
 
 deps += skia
 
 panosuilib = shared_library('panosui',
                         src,
-                        include_directories : ['src', '../', '/home/john/Developer/skia/'],
+                        include_directories : ['src', '../', 'thirdparty/skia'],
                         c_args: ['-O0'],
                         cpp_args: ['-O0'],
                         dependencies : deps,
