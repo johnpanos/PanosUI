@@ -10,8 +10,8 @@ void UIGraphicsContextMakeCurrent(UIGraphicsContext *context);
 void UIGraphicsContextClear(UIGraphicsContext *context);
 void UIGraphicsContextFlush(UIGraphicsContext *context);
 
-void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color);
-void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color);
+void UIGraphicsSetFillColor(UIGraphicsContext *context, const UIColor *color);
+void UIGraphicsSetStrokeColor(UIGraphicsContext *context, const UIColor *color);
 void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, UIFloat width);
 
 // MARK: Context
@@ -29,6 +29,6 @@ void UIGraphicsContextAddOval(UIGraphicsContext *context, UIPoint p, UIFloat wid
 
 // MARK: Shadow
 void UIGraphicsContextSetShadow(UIGraphicsContext *context, UIPoint offset, UIFloat blur);
-void UIGraphicsContextSetShadowColor(UIGraphicsContext *context, UIColor color);
+void UIGraphicsContextSetShadowColor(UIGraphicsContext *context, const UIColor *color);
 
 void UIGraphicsContextSetTransform(UIGraphicsContext *context, UIFloat x, UIFloat y);

@@ -2,4 +2,4 @@
 
 #include "include/UIWindowController.h"
 
-UIWindowController UIWindowControllerGetDefault();
+UIWindowController *UIWindowControllerGetDefault();

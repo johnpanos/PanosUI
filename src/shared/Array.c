@@ -18,7 +18,11 @@ Array ArrayCreate(ArrayValueSize valueSize)
 
 void ArrayDestroy(Array array)
 {
-	free(array->values);
+	if (array->values != NULL)
+	{
+		free(array->values);
+	}
+
 	free(array);
 }
 

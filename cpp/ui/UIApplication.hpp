@@ -5,42 +5,42 @@
 extern "C"
 {
 #include "UIApplication.h"
-#include "UIWindow.h"
 #include "UIView.h"
+#include "UIWindow.h"
 }
 
 namespace UI
 {
-    class ApplicationDelegate
-    {
-    public:
-        virtual ~ApplicationDelegate(){};
+class ApplicationDelegate
+{
+  public:
+	virtual ~ApplicationDelegate(){};
 
-        virtual void did_finish_launching()
-        {
-        }
-    };
-
-    class Application
-    {
-    private:
-        static void did_finish_launching_wrapper(UIApplication *application)
-        {
-            Application::applicationDelegate->did_finish_launching();
-        }
-
-    public:
-        inline static ApplicationDelegate *applicationDelegate;
-        static void main(ApplicationDelegate *applicationDelegate)
-        {
-            UIApplicationDelegate delegate;
-            delegate.didFinishLaunching = &Application::did_finish_launching_wrapper;
-
-            Application::applicationDelegate = applicationDelegate;
-
-            UIApplicationMain(&delegate);
-        };
-    };
+	virtual void did_finish_launching()
+	{
+	}
 };
+
+class Application
+{
+  private:
+	static void did_finish_launching_wrapper(UIApplication *application)
+	{
+		Application::applicationDelegate->did_finish_launching();
+	}
+
+  public:
+	inline static ApplicationDelegate *applicationDelegate;
+	static void main(ApplicationDelegate *applicationDelegate)
+	{
+		UIApplicationDelegate delegate;
+		delegate.didFinishLaunching = &Application::did_finish_launching_wrapper;
+
+		Application::applicationDelegate = applicationDelegate;
+
+		UIApplicationMain(&delegate);
+	};
+};
+}; // namespace UI
 
 #endif

@@ -1,11 +1,12 @@
 #include "UIWindow.h"
+#include "include/UIWindowController.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-UIView _UIWindowCreateFrameView(UIWindow window)
+UIView *_UIWindowCreateFrameView(UIWindow *window)
 {
 	UIRect titlebarFrame = UIRectCreate(8, 8, UIRectGetWidth(window->frame), 28);
-	UIView titlebar = UIViewCreate(titlebarFrame, titlebarFrame);
+	UIView *titlebar = UIViewCreate(titlebarFrame, titlebarFrame);
 	UIViewSetBackgroundColor(titlebar, UIColorCreateRGBA(255, 255, 255, 255));
 	UIViewSetCornerRadius(titlebar, 0.0f);
 
@@ -13,8 +14,8 @@ UIView _UIWindowCreateFrameView(UIWindow window)
 	UIViewSetBorderWidth(titlebar, 0.0f);
 
 	UIRect redFrame = UIRectCreate(8, 8, 16, 16);
-	UIColor red = UIColorCreateRGBA(120, 27, 112, 255);
-	UIView redLight = UIViewCreate(redFrame, redFrame);
+	UIColor *red = UIColorCreateRGBA(120, 27, 112, 255);
+	UIView *redLight = UIViewCreate(redFrame, redFrame);
 	UIViewSetCornerRadius(redLight, 12);
 	UIViewSetBackgroundColor(redLight, red);
 	UIViewSetBorderColor(redLight, UIColorCreateRGBA(0, 0, 0, 21));
@@ -22,8 +23,8 @@ UIView _UIWindowCreateFrameView(UIWindow window)
 
 	UIRect yellowFrame = redFrame;
 	yellowFrame.origin = UIPointOffset(yellowFrame.origin, 24, 0);
-	UIColor yellow = UIColorCreateRGBA(120, 27, 112, 100);
-	UIView yellowLight = UIViewCreate(yellowFrame, yellowFrame);
+	UIColor *yellow = UIColorCreateRGBA(120, 27, 112, 100);
+	UIView *yellowLight = UIViewCreate(yellowFrame, yellowFrame);
 	UIViewSetCornerRadius(yellowLight, 12);
 	UIViewSetBackgroundColor(yellowLight, yellow);
 	UIViewSetBorderColor(yellowLight, UIColorCreateRGBA(0, 0, 0, 21));
@@ -31,8 +32,8 @@ UIView _UIWindowCreateFrameView(UIWindow window)
 
 	UIRect greenFrame = yellowFrame;
 	greenFrame.origin = UIPointOffset(greenFrame.origin, 24, 0);
-	UIColor green = UIColorCreateRGBA(120, 27, 112, 100);
-	UIView greenLight = UIViewCreate(greenFrame, greenFrame);
+	UIColor *green = UIColorCreateRGBA(120, 27, 112, 100);
+	UIView *greenLight = UIViewCreate(greenFrame, greenFrame);
 	UIViewSetCornerRadius(greenLight, 12);
 	UIViewSetBackgroundColor(greenLight, green);
 	UIViewSetBorderColor(greenLight, UIColorCreateRGBA(0, 0, 0, 21));
@@ -48,9 +49,9 @@ UIView _UIWindowCreateFrameView(UIWindow window)
 }
 
 #define INSET_AMOUNT 16.0f
-UIWindow UIWindowCreate(UIRect frame)
+UIWindow *UIWindowCreate(UIRect frame)
 {
-	UIWindow window = calloc(1, sizeof(struct _UIWindow));
+	UIWindow *window = calloc(1, sizeof(struct _UIWindow));
 
 	window->responder = UIEventResponderCreate();
 
@@ -69,14 +70,14 @@ UIWindow UIWindowCreate(UIRect frame)
 	return window;
 }
 
-UIWindow UIWindowCreateWithFlags(UIRect frame, unsigned int flags)
+UIWindow *UIWindowCreateWithFlags(UIRect frame, unsigned int flags)
 {
-	UIWindow window = UIWindowCreate(frame);
+	UIWindow *window = UIWindowCreate(frame);
 	window->windowFlags = flags;
 	return window;
 }
 
-void UIWindowShow(UIWindow window)
+void UIWindowShow(UIWindow *window)
 {
 	window->controller->windowWillLoad(window->controller->_self, window);
 
@@ -85,7 +86,7 @@ void UIWindowShow(UIWindow window)
 	window->controller->windowDidLoad(window->controller->_self, window);
 }
 
-void UIWindowDestroy(UIWindow window)
+void UIWindowDestroy(UIWindow *window)
 {
 	_UIPlatformWindowDestroy(window);
 
@@ -94,7 +95,7 @@ void UIWindowDestroy(UIWindow window)
 	free(window);
 }
 
-void UIWindowSetTitle(UIWindow window, const char *title)
+void UIWindowSetTitle(UIWindow *window, const char *title)
 {
 	window->title = title;
 	if (window->platformWindow != NULL)
@@ -103,11 +104,20 @@ void UIWindowSetTitle(UIWindow window, const char *title)
 	}
 }
 
-void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
+UIView *UIWindowGetMainView(UIWindow *window) {
+	return window->mainView;
+}
+
+void UIWindowSetController(UIWindow *window, UIWindowController *controller)
+{
+	window->controller = controller;
+}
+
+void RENDER_SUBVIEWS(UIView *view, UIGraphicsContext *context)
 {
 	UIGraphicsContextSave(context);
 	{
-		UILayer layer = UILayerGetInFlight(*view->layer);
+		UILayer layer = UILayerGetInFlight(view->layer);
 
 		UIGraphicsContextSave(context);
 		{
@@ -115,7 +125,7 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 			UILayerRenderInContext(&layer, context);
 			UIGraphicsContextSetTransform(context, layer.bounds.origin.x, layer.bounds.origin.y);
 
-			ArrayForEach(UIView viewToRender, view->subviews)
+			ArrayForEach(UIView * viewToRender, view->subviews)
 			{
 				RENDER_SUBVIEWS(viewToRender, context);
 			}
@@ -125,20 +135,20 @@ void RENDER_SUBVIEWS(UIView view, UIGraphicsContext *context)
 	UIGraphicsContextRestore(context);
 }
 
-void _UIWindowLayoutPhase_UIViewLayout(UIView viewToLayout)
+void _UIWindowLayoutPhase_UIViewLayout(UIView *viewToLayout)
 {
 	if (viewToLayout->needsLayout)
 	{
 		viewToLayout->layoutSubviews(viewToLayout);
 	}
 
-	ArrayForEach(UIView child, viewToLayout->subviews)
+	ArrayForEach(UIView * child, viewToLayout->subviews)
 	{
 		_UIWindowLayoutPhase_UIViewLayout(child);
 	}
 }
 
-int _UIWindowRenderPhase_ShouldRender(UIView view)
+int _UIWindowRenderPhase_ShouldRender(UIView *view)
 {
 	if (ArrayGetCapacity(view->layer->animations) > 0 || view->needsDisplay)
 	{
@@ -148,7 +158,7 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 
 	else
 	{
-		ArrayForEach(UIView child, view->subviews)
+		ArrayForEach(UIView * child, view->subviews)
 		{
 			if (_UIWindowRenderPhase_ShouldRender(child) || child->needsDisplay)
 			{
@@ -161,10 +171,10 @@ int _UIWindowRenderPhase_ShouldRender(UIView view)
 	return 0;
 }
 
-void UIWindowUpdate(UIWindow window)
+void UIWindowUpdate(UIWindow *window)
 {
 	// printf("updating\n");
-	UIView rootView = window->mainView;
+	UIView *rootView = window->mainView;
 
 	_UIWindowLayoutPhase_UIViewLayout(rootView);
 
@@ -213,7 +223,7 @@ void UIWindowUpdate(UIWindow window)
 	}
 }
 
-void UIWindowSendEvent(UIWindow window, UIEvent event)
+void UIWindowSendEvent(UIWindow *window, UIEvent event)
 {
 	if (event.type == UIEventTypeMouseMotion)
 	{
@@ -236,7 +246,7 @@ void UIWindowSendEvent(UIWindow window, UIEvent event)
 	// else
 	// {
 	UIPoint hitPoint = {.x = window->mousePos.x, .y = window->mousePos.y};
-	UIView hitView = UIViewHitTest(window->mainView, hitPoint);
+	UIView *hitView = UIViewHitTest(window->mainView, hitPoint);
 	switch (event.type)
 	{
 	case UIEventTypeMouseDown:

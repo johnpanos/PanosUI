@@ -75,16 +75,16 @@ extern "C"
 		context->surface->flushAndSubmit();
 	}
 
-	void UIGraphicsSetFillColor(UIGraphicsContext *context, UIColor color)
+	void UIGraphicsSetFillColor(UIGraphicsContext *context, const UIColor *color)
 	{
 		context->paint.setStroke(false);
-		context->paint.setARGB(color.a, color.r, color.g, color.b);
+		context->paint.setARGB(color->a, color->r, color->g, color->b);
 	}
 
-	void UIGraphicsSetStrokeColor(UIGraphicsContext *context, UIColor color)
+	void UIGraphicsSetStrokeColor(UIGraphicsContext *context, const UIColor *color)
 	{
 		context->paint.setStroke(true);
-		context->paint.setARGB(color.a, color.r, color.g, color.b);
+		context->paint.setARGB(color->a, color->r, color->g, color->b);
 	}
 
 	void UIGraphicsSetStrokeWidth(UIGraphicsContext *context, UIFloat width)

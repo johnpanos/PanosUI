@@ -3,7 +3,7 @@
 
 #define SET_HANDLER_IMPL(RESPONDER, HANDLER) RESPONDER->HANDLER = _UIEventResponder##HANDLER##Default
 #define HANDLER_IMPL(HANDLER)                                                                                          \
-	void _UIEventResponder##HANDLER##Default(UIEventResponder self, UIEvent event)                                     \
+	void _UIEventResponder##HANDLER##Default(UIEventResponder *self, UIEvent event)                                    \
 	{                                                                                                                  \
 		if (self != NULL && self->next != NULL && self->next->HANDLER != NULL)                                         \
 		{                                                                                                              \
@@ -20,9 +20,9 @@ HANDLER_IMPL(rightMouseUp);
 HANDLER_IMPL(mouseMove);
 HANDLER_IMPL(mouseScroll);
 
-UIEventResponder UIEventResponderCreate()
+UIEventResponder *UIEventResponderCreate()
 {
-	UIEventResponder responder = calloc(1, sizeof(struct _UIEventResponder));
+	UIEventResponder *responder = calloc(1, sizeof(struct _UIEventResponder));
 
 	SET_HANDLER_IMPL(responder, leftMouseDown);
 	SET_HANDLER_IMPL(responder, leftMouseUp);

@@ -6,7 +6,7 @@
 
 typedef struct _UIPlatformWindow
 {
-	UIWindow window;
+	UIWindow *window;
 
 	struct wl_surface *wlSurface;
 	struct xdg_surface *xdgSurface;

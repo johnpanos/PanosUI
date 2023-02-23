@@ -1,23 +1,16 @@
 #pragma once
 
-#include "UIEvent.h"
-
-typedef struct _UIEventResponder *UIEventResponder;
-typedef struct _UIEventResponder
+enum UIEventResponderCallback
 {
-	void *_self;
-	UIEventResponder next;
+	UIEventResponderLeftMouseDown = 0,
+	UIEventResponderLeftMouseUp,
+	UIEventResponderRightMouseDown,
+	UIEventResponderRightMouseUp,
+	UIEventResponderMouseMove,
+	UIEventResponderMouseScroll
+};
 
-	void (*leftMouseDown)(UIEventResponder self, UIEvent event);
-	void (*leftMouseUp)(UIEventResponder self, UIEvent event);
+typedef struct _UIEventResponder UIEventResponder;
 
-	void (*rightMouseDown)(UIEventResponder self, UIEvent event);
-	void (*rightMouseUp)(UIEventResponder self, UIEvent event);
-
-	void (*mouseMove)(UIEventResponder self, UIEvent event);
-
-	void (*mouseScroll)(UIEventResponder self, UIEvent event);
-} *UIEventResponder;
-
-UIEventResponder UIEventResponderCreate();
+UIEventResponder *UIEventResponderCreate();
 void UIEventResponderDestroy(UIEventResponder *responder);

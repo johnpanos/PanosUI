@@ -1,98 +1,48 @@
-#include <stdio.h>
-#include <iostream>
 #include "ui/UIApplication.hpp"
+#include "ui/UIView.hpp"
 #include "ui/UIWindow.hpp"
-#include "ui/UIAnimation.hpp"
+#include <memory>
 
-class MyView : public UI::View
+class BlackSquareView : public UI::View
 {
-    using UI::View::View;
-
-    virtual void leftMouseDown(UIEvent event)
-    {
-        std::cout << "On click from C++!\n";
-    }
+  public:
+	BlackSquareView(UIRect frame) : UI::View(frame, frame)
+	{
+		this->set_background_color(UIColorCreateRGBA(0, 0, 0, 255));
+		this->set_shadow_offset(UIPointCreate(0, 0));
+		this->set_shadow_radius(12);
+		this->set_shadow_color(UIColorCreateRGBA(255, 0, 0, 200));
+		this->set_corner_radius(24);
+	}
 };
 
 class MyWindowController : public UI::WindowController
 {
-    MyView *my_view;
-    UI::View *view2;
+	std::shared_ptr<UI::View> my_view = std::make_unique<BlackSquareView>(UIRectCreate(0, 0, 0, 0));
 
-    UI::View *detail_view;
-
-    virtual void window_did_load()
-    {
-        std::cout << "Window did load from C++\n";
-        this->window->root_view = new UI::View(this->window->backing_window->mainView);
-
-        UIRect my_view_frame = UIRectCreate(100, 100, 200, 200);
-        this->my_view = new MyView(my_view_frame, my_view_frame);
-
-        this->window->get_root_view()->add_subview(this->my_view);
-
-        UILayerSetPosition(this->my_view->backing_view->layer, UIPointCreate(100.0f, 100.0f));
-        UILayerSetAnchorPoint(this->my_view->backing_view->layer, UIPointCreate(0.5f, 0.5f));
-
-        this->my_view->set_background_color(UIColorCreateRGBA(0, 255, 0, 255));
-        UILayerAddAnimation(this->my_view->backing_view->layer,
-                            UI::Animation<float>::create(
-                                5000,
-                                kUILayerKeyBoundsWidth,
-                                &UIAnimationTimingFunctionEaseOutBounce,
-                                200.0f, 350.0f));
-
-        // UILayerAddAnimation(this->my_view->backing_view->layer,
-        //                     UI::Animation<float>::create(
-        //                         5000,
-        //                         kUILayerKeyCornerRadius,
-        //                         &UIAnimationTimingFunctionEaseInOutCubic,
-        //                         0.0f, 100.0f));
-        this->my_view->set_corner_radius(100.0f);
-
-        // UIRect view2_frame = UIRectCreate(0, 0, 50, 50);
-        // view2 = new UI::View(view2_frame, view2_frame);
-        // this->my_view->add_subview(view2);
-        // view2->set_background_color(UIColorCreateRGBA(0, 0, 0, 255));
-        // UILayerAddAnimation(this->view2->backing_view->layer,
-        //                     UI::Animation<float>::create(
-        //                         5000,
-        //                         kUILayerKeyPositionY,
-        //                         &UIAnimationTimingFunctionEaseInOutCubic,
-        //                         200.0f, 0.0f));
-        // UILayerAddAnimation(this->view2->backing_view->layer,
-        //                     UI::Animation<float>::create(
-        //                         5000,
-        //                         kUILayerKeyCornerRadius,
-        //                         &UIAnimationTimingFunctionEaseInOutCubic,
-        //                         100.0f, 0.0f));
-        // UILayerAddAnimation(this->view2->backing_view->layer,
-        //                     UI::Animation<float>::create(
-        //                         5000,
-        //                         kUILayerKeyBoundsWidth,
-        //                         &UIAnimationTimingFunctionEaseInOutCubic,
-        //                         0.0f, 200.0f));
-
-        // this->window->get_root_view()->add_subview(this->detail_view);
-    }
+	virtual void window_did_load()
+	{
+		this->my_view->set_frame(UIRectInset(this->window->get_main_view()->get_frame(), 100, 100));
+		this->window->get_main_view()->add_subview(this->my_view.get());
+	}
 };
 
 class MyDelegate : public UI::ApplicationDelegate
 {
-    virtual void did_finish_launching()
-    {
-        MyWindowController *window_controller = new MyWindowController();
+	MyWindowController *window_controller = new MyWindowController();
+	std::unique_ptr<UI::Window> window;
 
-        UI::Window *window = new UI::Window(
-            UIRectCreate(0, 0, 750, 600));
+	virtual void did_finish_launching()
+	{
+		this->window = std::make_unique<UI::Window>(UIRectCreate(0, 0, 750, 600));
 
-        window->set_controller(window_controller);
-        window->show();
-        window->set_title("C++ Window");
-    }
+		window->set_controller(window_controller);
+		window->show();
+		window->set_title("C++ Window");
+	}
 };
 
 int main()
 {
-    UI::Application::main(new MyDelegate());
+	UI::Application::main(new MyDelegate());
 }

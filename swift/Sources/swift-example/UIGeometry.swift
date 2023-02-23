@@ -1,12 +1,12 @@
 import PanosUI
 
 extension UIRect {
-    init(x: Float, y: Float, width: Float, height: Float) {
+    init(x: Float, y: Float, w: Float, h: Float) {
         self.init()
         self.origin.x = x
         self.origin.y = y
-        self.size.width = width
-        self.size.height = height
+        self.size.width = w
+        self.size.height = h
     }
 
     var mixX: Float {

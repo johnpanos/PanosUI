@@ -1,11 +1,18 @@
 import PanosUI
 
-extension UIColor {
+class UIColor {
+    internal var backing: OpaquePointer?
+
+    internal init(backing: OpaquePointer) {
+        self.backing = backing
+    }
+
     init(r: Int32, g: Int32, b: Int32, a: Int32) {
-        self.init()
-        self.r = r
-        self.g = g
-        self.b = b
-        self.a = a
+        self.backing = UIColorCreateRGBA(r, g, b, a)
+    }
+
+    deinit {
+        print("Destroying UIColor")
+        UIColorDestroy(self.backing)
     }
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "UIWindow.h"
 
 typedef enum _UIEventType
 {
@@ -37,12 +38,11 @@ enum UIEventMouseScrollDirection
 	UIEventMouseScrollDirectionBoth = 2
 };
 
-typedef struct _UIWindow *UIWindow;
 typedef struct _UIEvent
 {
 	UIEventType type;
 	int time;
-	UIWindow window;
+	UIWindow *window;
 
 	union {
 		struct
