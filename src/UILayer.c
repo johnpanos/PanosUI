@@ -103,9 +103,9 @@ UIAnimation UILayerGetAnimationFor(UILayer *layer, const char *key, size_t value
 	return UIAnimationCopy(implicitAnim);
 }
 
-UILayer UILayerGetInFlight(UILayer layer)
+UILayer UILayerGetInFlight(UILayer *layer)
 {
-	UILayer copied = layer;
+	UILayer copied = *layer;
 
 	for (int i = 0; i < ArrayGetCapacity(copied.animations); i++)
 	{
@@ -129,12 +129,12 @@ UILayer UILayerGetInFlight(UILayer layer)
 
 		if (KEY_EQUAL(anim, kUILayerKeyBackgroundColor))
 		{
-			UIColor bg = VALUE_FOR_TYPE(anim, UIColor, startValue);
+			UIColor *bg = VALUE_FOR_TYPE(anim, UIColor *, startValue);
 			copied.backgroundColor = bg;
 		}
 		else if (KEY_EQUAL(anim, kUILayerKeyBorderColor))
 		{
-			UIColor bc = VALUE_FOR_TYPE(anim, UIColor, startValue);
+			UIColor *bc = VALUE_FOR_TYPE(anim, UIColor *, startValue);
 			copied.borderColor = bc;
 		}
 		else if (KEY_EQUAL(anim, kUILayerKeyBorderWidth))
@@ -197,9 +197,9 @@ UILayer UILayerGetInFlight(UILayer layer)
 	_UILayerUpdateFrame(&copied);
 
 	Array animsToDelete = ArrayCreate(sizeof(UIAnimation *));
-	for (int i = 0; i < ArrayGetCapacity(layer.animations); i++)
+	for (int i = 0; i < ArrayGetCapacity(layer->animations); i++)
 	{
-		UIAnimation *anim = ArrayGetValueAtIndex(layer.animations, i);
+		UIAnimation *anim = ArrayGetValueAtIndex(layer->animations, i);
 		if (anim->finished)
 		{
 			ArrayAddValue(animsToDelete, anim);
@@ -209,7 +209,7 @@ UILayer UILayerGetInFlight(UILayer layer)
 	for (int i = 0; i < ArrayGetCapacity(animsToDelete); i++)
 	{
 		UIAnimation *anim = ArrayGetValueAtIndex(animsToDelete, i);
-		ArrayRemoveValueByRef(layer.animations, anim);
+		ArrayRemoveValueByRef(layer->animations, anim);
 		UIAnimationDestroy(*anim);
 		free(anim);
 	}
@@ -218,7 +218,7 @@ UILayer UILayerGetInFlight(UILayer layer)
 	return copied;
 }
 
-void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
+void UILayerRenderInContext(const UILayer *layer, UIGraphicsContext *context)
 {
 	UIGraphicsContextSave(context);
 	{
@@ -227,7 +227,7 @@ void UILayerRenderInContext(UILayer *layer, UIGraphicsContext *context)
 			UIGraphicsContextClipToRect(context, layer->bounds, layer->cornerRadius);
 		}
 
-		if (layer->shadowColor.a > 0)
+		if (layer->shadowColor->a > 0)
 		{
 			UIGraphicsContextSave(context);
 			{

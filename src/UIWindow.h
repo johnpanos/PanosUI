@@ -23,7 +23,7 @@ typedef struct _UIWindow
 	UILayer *rootLayer;
 	UIView *mainView;
 
-	UIWindowController controller;
+	UIWindowController *controller;
 	UIPoint mousePos;
 
 	UIView *frameView;

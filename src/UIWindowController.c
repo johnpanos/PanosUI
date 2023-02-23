@@ -37,14 +37,14 @@ struct _UIWindowController UIWindowControllerDefault = {.windowWillLoad = &doNot
 														.windowWillResize = &defaultWindowWillResize,
 														.windowDidResize = &defaultWindowDidResize};
 
-UIWindowController UIWindowControllerGetDefault()
+UIWindowController *UIWindowControllerGetDefault()
 {
 	return &UIWindowControllerDefault;
 }
 
-UIWindowController UIWindowControllerCreate()
+UIWindowController *UIWindowControllerCreate()
 {
-	UIWindowController windowController = calloc(1, sizeof(struct _UIWindowController));
+	UIWindowController *windowController = calloc(1, sizeof(struct _UIWindowController));
 
 	windowController->windowWillLoad = &doNothing;
 	windowController->windowDidLoad = &doNothing;

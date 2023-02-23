@@ -42,4 +42,4 @@ typedef struct _UILayer
 
 // MARK: Rendering
 void UILayerRenderInContext(const UILayer *layer, UIGraphicsContext *context);
-UILayer UILayerGetInFlight(const UILayer *layer);
+UILayer UILayerGetInFlight(UILayer *layer);

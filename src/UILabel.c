@@ -7,7 +7,7 @@ void _UILabelDoNothing(UIView *view)
 
 UILabel *UILabelCreate(UIRect frame)
 {
-	UILabel label = calloc(1, sizeof(struct _UILabel));
+	UILabel *label = calloc(1, sizeof(struct _UILabel));
 	label->base.layer = UILayerCreate(frame, frame);
 
 	label->base.responder = UIEventResponderCreate();
@@ -24,32 +24,32 @@ UILabel *UILabelCreate(UIRect frame)
 	return label;
 }
 
-void UILabelSetContents(UILabel label, const char *contents)
+void UILabelSetContents(UILabel *label, const char *contents)
 {
 	label->contents = contents;
 }
-void UILabelSetFontSize(UILabel label, UIFloat fontSize)
+void UILabelSetFontSize(UILabel *label, UIFloat fontSize)
 {
 	label->fontSize = fontSize;
 }
-void UILabelSetFontColor(UILabel label, UIColor fontColor)
+void UILabelSetFontColor(UILabel *label, UIColor fontColor)
 {
 	label->fontColor = fontColor;
 }
-void UILabelSizeToFit(UILabel label)
+void UILabelSizeToFit(UILabel *label)
 {
 	// TODO: Math
 }
 
-const char *UILabelGetContents(UILabel label)
+const char *UILabelGetContents(UILabel *label)
 {
 	return label->contents;
 }
-UIFloat UILabelGetFontSize(UILabel label)
+UIFloat UILabelGetFontSize(UILabel *label)
 {
 	return label->fontSize;
 }
-UIColor UILabelGetFontColor(UILabel label)
+UIColor UILabelGetFontColor(UILabel *label)
 {
 	return label->fontColor;
 }

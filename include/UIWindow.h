@@ -15,6 +15,7 @@ enum UIWindowType
 	UIWindowTypeShell = 1 << 5
 };
 
+typedef struct _UIEvent UIEvent;
 typedef struct _UIWindow UIWindow;
 
 /**

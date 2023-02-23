@@ -107,7 +107,7 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 
 static void xdg_toplevel_close_handler(void *data, struct xdg_toplevel *xdg_toplevel)
 {
-	UIWindow *window = (UIWindow)data;
+	UIWindow *window = (UIWindow *)data;
 	UIWindowDestroy(window);
 }
 

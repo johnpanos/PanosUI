@@ -1,7 +1,5 @@
 #pragma once
 
-#include "UIEvent.h"
-
 enum UIEventResponderCallback
 {
 	UIEventResponderLeftMouseDown = 0,

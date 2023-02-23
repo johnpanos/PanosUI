@@ -96,3 +96,7 @@
 // {
 //     UI::Application::main(new MyDelegate());
 // }
+
+int main()
+{
+}
