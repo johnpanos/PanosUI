@@ -14,6 +14,17 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "Debug cpp-example (debug)",
+            "program": "${workspaceFolder}/builddir/cpp-example",
+            "args": [],
+            "cwd": "${workspaceFolder}/builddir",
+            "preLaunchTask": "PanosUI: Build Debug",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Debug layer (release)",
             "program": "${workspaceFolder}/buildrelease/layer",
             "args": [],

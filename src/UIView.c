@@ -23,7 +23,7 @@ UIView *UIViewCreate(UIRect frame, UIRect bounds)
 	boundsCopy.origin.x = 0;
 	boundsCopy.origin.y = 0;
 	UIViewSetBounds(view, boundsCopy);
-	view->subviews = ArrayCreate(sizeof(UIView));
+	view->subviews = ArrayCreate(sizeof(UIView *));
 	view->needsDisplay = 1;
 	view->needsLayout = 1;
 	view->layoutSubviews = &_UIViewDoNothing;
@@ -103,10 +103,12 @@ UIView *UIViewHitTest(UIView *view, UIPoint point)
 }
 
 // layer
-UILayer *UIViewGetLayer(UIView *view) {
+UILayer *UIViewGetLayer(UIView *view)
+{
 	return view->layer;
 }
-void UIViewSetLayer(UIView *view, UILayer *layer) {
+void UIViewSetLayer(UIView *view, UILayer *layer)
+{
 	view->layer = layer;
 }
 

@@ -136,8 +136,15 @@ void _UIPlatformWindowCreate(UIWindow *window)
 void _UIPlatformWindowDestroy(UIWindow *window)
 {
 	UIPlatformWindow *platformWindow = window->platformWindow;
-	wl_egl_window_destroy(platformWindow->eglWindow);
-	xdg_toplevel_destroy(platformWindow->xdgToplevel);
+	if (platformWindow->eglWindow != NULL)
+	{
+		wl_egl_window_destroy(platformWindow->eglWindow);
+	}
+
+	if (platformWindow->xdgToplevel != NULL)
+	{
+		xdg_toplevel_destroy(platformWindow->xdgToplevel);
+	}
 	xdg_surface_destroy(platformWindow->xdgSurface);
 	wl_surface_destroy(platformWindow->wlSurface);
 }

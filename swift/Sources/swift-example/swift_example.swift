@@ -11,9 +11,9 @@ class BlackSquareView : UIView {
     }
 }
 
-class BlackSquareWindowController : UIWindowController {
+class MyWindowController : UIWindowController {
     var myView: UIView = BlackSquareView(
-            frame: UIRectCreate(0, 0, 0, 0)
+            frame: UIRect(x: 0, y: 0, w: 0, h: 0)
         )
 
     override func windowDidLoad(window: UIWindow) {      
@@ -23,21 +23,17 @@ class BlackSquareWindowController : UIWindowController {
 }
 
 struct MyDelegate: UIApplicationDelegate {
-    let blackSquare: BlackSquareWindowController = BlackSquareWindowController()
+    let windowController: MyWindowController = MyWindowController()
     var window: UIWindow! {
         didSet {
-            window.controller = blackSquare
+            window.controller = windowController
             window.show()
-            window.title = "Black Square!"
+            window.title = "Swift Window"
         }
     }
 
     mutating func didFinishLaunching() {
-        self.window = UIWindow(frame: UIRect(x: 0, y: 0, width: 750, height: 600))
-        var window2 = UIWindow(frame: UIRect(x: 0, y: 0, width: 250, height: 250))
-        window2.show()
-        window2.title = "idk"
-        window2.mainView.backgroundColor = UIColor(r: 255, g: 0, b: 0, a: 255)
+        self.window = UIWindow(frame: UIRect(x: 0, y: 0, w: 750, h: 600))
     }
 }
 
