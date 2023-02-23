@@ -36,8 +36,7 @@
             ],
             "cwd": "${workspaceFolder:PanosUI}/swift",
             "preLaunchTask": "PanosUI: Build swift-example",
-            "console": "internalConsole",
-            "internalConsoleOptions": "openOnSessionStart"
+            "console": "integratedTerminal"
         },
         {
             "type": "lldb",

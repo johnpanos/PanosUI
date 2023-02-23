@@ -10,3 +10,7 @@ UIColor *UIColorCreateRGBA(int r, int g, int b, int a)
 	color->a = a;
 	return color;
 }
+
+void UIColorDestroy(UIColor *color) {
+	free(color);
+}

@@ -13,6 +13,9 @@ UIView *UIViewCreate(UIRect frame, UIRect bounds)
 {
 	UIView *view = calloc(1, sizeof(struct _UIView));
 	view->layer = UILayerCreate(frame, frame);
+	view->backgroundColor = UIColorCreateRGBA(255, 255, 255, 255);
+	view->borderColor = UIColorCreateRGBA(255, 255, 255, 0);
+	view->shadowColor = UIColorCreateRGBA(255, 255, 255, 0);
 
 	view->responder = UIEventResponderCreate();
 	UIViewSetFrame(view, frame);

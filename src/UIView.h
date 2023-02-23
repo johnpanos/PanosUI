@@ -9,7 +9,7 @@
 #include "UILayer.h"
 #include "shared/Array.h"
 
-typedef struct _UIView
+struct _UIView
 {
 	UILayer *layer;
 	UIEventResponder *responder;
@@ -34,4 +34,4 @@ typedef struct _UIView
 	UIPoint shadowOffset;
 	UIColor *shadowColor;
 	UIFloat shadowRadius;
-} UIView;
+};
