@@ -104,6 +104,10 @@ void UIWindowSetTitle(UIWindow *window, const char *title)
 	}
 }
 
+UIView *UIWindowGetMainView(UIWindow *window) {
+	return window->mainView;
+}
+
 void UIWindowSetController(UIWindow *window, UIWindowController *controller)
 {
 	window->controller = controller;

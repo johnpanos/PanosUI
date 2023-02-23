@@ -44,26 +44,65 @@ void UIViewRemoveSubview(UIView *superview, UIView *subview);
 UIPoint UIViewConvertPoint(UIView *from, UIView *to, UIPoint point);
 UIView *UIViewHitTest(UIView *view, UIPoint point);
 
-// MARK: Getters
+// layer
+UILayer *UIViewGetLayer(UIView *view);
+void UIViewSetLayer(UIView *view, UILayer *layer);
+
+// responder
+UIEventResponder *UIViewGetResponder(UIView *view);
+void UIViewSetResponder(UIView *view, UIEventResponder *responder);
+
+// frame
 UIRect UIViewGetFrame(UIView *view);
-UIRect UIViewGetBounds(UIView *view);
-UIColor *UIViewGetBackgroundColor(UIView *view);
-UIFloat UIViewGetCornerRadius(UIView *view);
-UIColor *UIViewGetBorderColor(UIView *view);
-UIFloat UIViewGetBorderWidth(UIView *view);
-
-UIPoint UIViewGetShadowOffset(UIView *view);
-UIColor *UIViewGetShadowColor(UIView *view);
-UIFloat UIViewGetShadowRadius(UIView *view);
-
-// MARK: Setters
 void UIViewSetFrame(UIView *view, UIRect frame);
+
+// bounds
+UIRect UIViewGetBounds(UIView *view);
 void UIViewSetBounds(UIView *view, UIRect bounds);
+
+// parentView
+UIView *UIViewGetParentView(UIView *view);
+void UIViewSetParentView(UIView *view, UIView *parent);
+
+// needsDisplay
+bool UIViewGetNeedsDisplay(UIView *view);
+void UIViewSetNeedsDisplay(UIView *view);
+
+// needsLayout
+bool UIViewGetNeedsLayout(UIView *view);
+void UIViewSetNeedsLayout(UIView *view);
+
+// clipTobounds
+bool UIViewGetClipToBounds(UIView *view);
+void UIViewSetClipToBounds(UIView *view, bool clipToBounds);
+
+// layoutSubviews
+void UIViewSetLayoutSubviews(UIView *view, void (*layoutSubviews)(UIView *view));
+
+// backgroundColor
+UIColor *UIViewGetBackgroundColor(UIView *view);
 void UIViewSetBackgroundColor(UIView *view, UIColor *backgroundColor);
+
+// cornerRadius
+UIFloat UIViewGetCornerRadius(UIView *view);
 void UIViewSetCornerRadius(UIView *view, UIFloat cornerRadius);
+
+// borderColor
+UIColor *UIViewGetBorderColor(UIView *view);
 void UIViewSetBorderColor(UIView *view, UIColor *borderColor);
+
+// borderWidth
+UIFloat UIViewGetBorderWidth(UIView *view);
 void UIViewSetBorderWidth(UIView *view, UIFloat borderWidth);
 
+// shadowOffset
+UIPoint UIViewGetShadowOffset(UIView *view);
 void UIViewSetShadowOffset(UIView *view, UIPoint shadowOffset);
+
+// shadowColor
+UIColor *UIViewGetShadowColor(UIView *view);
 void UIViewSetShadowColor(UIView *view, UIColor *shadowColor);
+
+// shadowRadius
+UIFloat UIViewGetShadowRadius(UIView *view);
 void UIViewSetShadowRadius(UIView *view, UIFloat shadowRadius);

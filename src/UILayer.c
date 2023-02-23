@@ -10,6 +10,7 @@
 
 #include "UILayer.h"
 #include "UIAnimation.h"
+#include "include/UIColor.h"
 #include "platform.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,6 +50,8 @@ UILayer *UILayerCreate(UIRect frame, UIRect bounds)
 	UILayer *layer = calloc(1, sizeof(UILayer));
 	layer->animations = ArrayCreate(sizeof(UIAnimation));
 	layer->sublayers = ArrayCreate(sizeof(UILayer *));
+	layer->shadowColor = UIColorCreateRGBA(0, 0, 0, 0);
+	layer->backgroundColor = UIColorCreateRGBA(0, 0, 0, 0);
 
 	layer->position = UIPointCreate(0.0f, 0.0f);
 	layer->anchorPoint = UIPointCreate(0.5f, 0.5f);

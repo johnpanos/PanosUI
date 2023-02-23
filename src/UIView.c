@@ -99,6 +99,14 @@ UIView *UIViewHitTest(UIView *view, UIPoint point)
 	return view;
 }
 
+// layer
+UILayer *UIViewGetLayer(UIView *view) {
+	return view->layer;
+}
+void UIViewSetLayer(UIView *view, UILayer *layer) {
+	view->layer = layer;
+}
+
 // MARK: Getters
 UIRect UIViewGetFrame(UIView *view)
 {
