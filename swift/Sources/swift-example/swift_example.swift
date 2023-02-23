@@ -31,17 +31,13 @@ struct MyDelegate: UIApplicationDelegate {
             window.title = "Black Square!"
         }
     }
-    var window2: UIWindow! {
-        didSet {
-            window2.show()
-            window2.title = "idk"
-            window2.mainView.backgroundColor = UIColor(r: 255, g: 0, b: 0, a: 255)
-        }
-    }
 
     mutating func didFinishLaunching() {
         self.window = UIWindow(frame: UIRect(x: 0, y: 0, width: 750, height: 600))
-        self.window2 = UIWindow(frame: UIRect(x: 0, y: 0, width: 250, height: 250))
+        var window2 = UIWindow(frame: UIRect(x: 0, y: 0, width: 250, height: 250))
+        window2.show()
+        window2.title = "idk"
+        window2.mainView.backgroundColor = UIColor(r: 255, g: 0, b: 0, a: 255)
     }
 }
 

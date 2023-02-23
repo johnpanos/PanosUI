@@ -51,6 +51,7 @@ class UIWindow {
 
     deinit {
         print("WINDOW DESTROY")
+        UIWindowDestroy(self.backing)
     }
 
     func show() {
