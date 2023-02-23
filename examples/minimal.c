@@ -1,10 +1,11 @@
 #include "PanosUI.h"
+#include "UIWindow.h"
 #include <stdio.h>
 
-UIView WindowActionButtonCreate(UIFloat x, UIColor bg)
+UIView *WindowActionButtonCreate(UIFloat x, UIColor *bg)
 {
 	UIRect f = UIRectCreate(x, 0, 14, 14);
-	UIView button = UIViewCreate(f, f);
+	UIView *button = UIViewCreate(f, f);
 
 	UIViewSetCornerRadius(button, 5.0f);
 	UIViewSetBackgroundColor(button, bg);
@@ -12,10 +13,10 @@ UIView WindowActionButtonCreate(UIFloat x, UIColor bg)
 	return button;
 }
 
-UIView WindowActionsViewCreate()
+UIView *WindowActionsViewCreate()
 {
 	UIRect rootFrame = UIRectCreate(16.0f, 16.0f, 58, 14);
-	UIView root = UIViewCreate(rootFrame, rootFrame);
+	UIView *root = UIViewCreate(rootFrame, rootFrame);
 
 	UIViewAddSubview(root, WindowActionButtonCreate(0.0f, UIColorCreateRGBA(107, 122, 255, 255)));
 	UIViewAddSubview(root, WindowActionButtonCreate(22.0f, UIColorCreateRGBA(149, 160, 178, 204)));
@@ -24,9 +25,9 @@ UIView WindowActionsViewCreate()
 	return root;
 }
 
-UIView VIEW;
+UIView *VIEW;
 
-void onViewClick(UIEventResponder self, UIEvent event)
+void onViewClick(UIEventResponder *self, UIEvent event)
 {
 	printf("On Click\n");
 	UIFloat start, end;
@@ -63,7 +64,7 @@ void windowDidLoad(void *self, UIWindow *window)
 {
 	printf("THE WINDOW LOADED!\n");
 
-	UIViewSetBackgroundColor(window->mainView, UIColorCreateRGBA(255, 255, 255, 204));
+	UIViewSetBackgroundColor(UIWindowGetMainView(window), UIColorCreateRGBA(255, 255, 255, 204));
 
 	// UIRect rect1 = UIRectCreate(50, 50, 128, 128);
 	// UIView view1 = UIViewCreate(rect1, rect1);
@@ -77,7 +78,7 @@ void windowDidLoad(void *self, UIWindow *window)
 	// printf("Converted tap: x(%f) y(%f)\n", convertedTap.x, convertedTap.y);
 
 	UIRect myRect = UIRectCreate(224, 0, window->mainView->frame.size.width - 224, window->mainView->frame.size.height);
-	UIView testView = UIViewCreate(myRect, myRect);
+	UIView *testView = UIViewCreate(myRect, myRect);
 	VIEW = testView;
 
 	testView->responder->leftMouseDown = &onViewClick;
@@ -90,7 +91,7 @@ void windowDidLoad(void *self, UIWindow *window)
 	UIViewSetShadowRadius(testView, 12.0f);
 	UIViewAddSubview(window->mainView, testView);
 
-	UIView windowActions = WindowActionsViewCreate();
+	UIView *windowActions = WindowActionsViewCreate();
 	UIViewAddSubview(window->mainView, windowActions);
 	UIViewSetCornerRadius(windowActions, 0.0f);
 }
@@ -100,7 +101,7 @@ void didFinishLaunching(UIApplication *application)
 	UIRect windowFrame = UIRectCreate(0, 0, 750, 600);
 	UIWindow *window = UIWindowCreate(windowFrame);
 
-	UIWindowController myWindowController = UIWindowControllerCreate();
+	UIWindowController *myWindowController = UIWindowControllerCreate();
 	myWindowController->windowDidLoad = &windowDidLoad;
 
 	window->controller = myWindowController;

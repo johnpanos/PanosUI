@@ -4,10 +4,10 @@
 
 void windowDidLoad(void *self, UIWindow *window)
 {
-	UIView view = UIWindowGetMainView(window);
+	UIView *view = UIWindowGetMainView(window);
 
 	UIRect frameRect = UIRectCreate(0, 0, 200, 200);
-	UIView view2 = UIViewCreate(frameRect, frameRect);
+	UIView *view2 = UIViewCreate(frameRect, frameRect);
 
 	UIViewSetBackgroundColor(view2, UIColorCreateRGBA(0, 0, 0, 255));
 	UILayerSetAnchorPoint(view2->layer, UIPointCreate(0.25f, 0.25f));
@@ -40,11 +40,11 @@ void windowDidLoad(void *self, UIWindow *window)
 	end = 64.0f;
 	UILayerAddAnimation(view2->layer, radiusAnim);
 
-	UILabel label = UILabelCreate(UIRectCreate(0, 0, 10, 10));
-	UIViewSetBackgroundColor((UIView)label, UIColorCreateRGBA(0, 0, 255, 255));
-	UIViewAddSubview(view, (UIView)label);
+	UILabel *label = UILabelCreate(UIRectCreate(0, 0, 10, 10));
+	UIViewSetBackgroundColor((UIView *)label, UIColorCreateRGBA(0, 0, 255, 255));
+	UIViewAddSubview(view, (UIView *)label);
 
-	printf("w: %f\n", UIViewGetFrame((UIView)label).size.width);
+	printf("w: %f\n", UIViewGetFrame((UIView *)label).size.width);
 }
 
 void didFinishLaunching(UIApplication *application)

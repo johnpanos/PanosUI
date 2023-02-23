@@ -1,22 +1,22 @@
 #include "UILabel.h"
 
-void _UILabelDoNothing(UIView view)
+void _UILabelDoNothing(UIView *view)
 {
 	view->needsLayout = 0;
 };
 
-UILabel UILabelCreate(UIRect frame)
+UILabel *UILabelCreate(UIRect frame)
 {
 	UILabel label = calloc(1, sizeof(struct _UILabel));
 	label->base.layer = UILayerCreate(frame, frame);
 
 	label->base.responder = UIEventResponderCreate();
-	UIViewSetFrame((UIView)label, frame);
+	UIViewSetFrame((UIView *)label, frame);
 	UIRect boundsCopy = frame;
 	boundsCopy.origin.x = 0;
 	boundsCopy.origin.y = 0;
-	UIViewSetBounds((UIView)label, boundsCopy);
-	label->base.subviews = ArrayCreate(sizeof(UIView));
+	UIViewSetBounds((UIView *)label, boundsCopy);
+	label->base.subviews = ArrayCreate(sizeof(UIView *));
 	label->base.needsDisplay = 1;
 	label->base.needsLayout = 1;
 	label->base.layoutSubviews = &_UILabelDoNothing;

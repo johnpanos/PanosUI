@@ -4,14 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-void _UIViewDoNothing(UIView view)
+void _UIViewDoNothing(UIView *view)
 {
 	view->needsLayout = 0;
 };
 
-UIView UIViewCreate(UIRect frame, UIRect bounds)
+UIView *UIViewCreate(UIRect frame, UIRect bounds)
 {
-	UIView view = calloc(1, sizeof(struct _UIView));
+	UIView *view = calloc(1, sizeof(struct _UIView));
 	view->layer = UILayerCreate(frame, frame);
 
 	view->responder = UIEventResponderCreate();
@@ -28,11 +28,11 @@ UIView UIViewCreate(UIRect frame, UIRect bounds)
 	return view;
 }
 
-void UIViewDestroy(UIView view)
+void UIViewDestroy(UIView *view)
 {
 	for (int i = 0; i < ArrayGetCapacity(view->subviews); i++)
 	{
-		UIView child = ArrayGetValueAtIndex(view->subviews, i);
+		UIView *child = ArrayGetValueAtIndex(view->subviews, i);
 		child->parentView = NULL;
 	}
 	if (view->subviews != NULL)
@@ -43,52 +43,23 @@ void UIViewDestroy(UIView view)
 	free(view);
 }
 
-void UIViewAddSubview(UIView superview, UIView subview)
+void UIViewAddSubview(UIView *superview, UIView *subview)
 {
 	ArrayAddValue(superview->subviews, subview);
 	subview->parentView = superview;
 	UILayerAddSublayer(superview->layer, subview->layer);
 }
 
-void UIViewRemoveSubview(UIView superview, UIView subview)
+void UIViewRemoveSubview(UIView *superview, UIView *subview)
 {
 	ArrayRemoveValueByRef(superview->subviews, subview);
 	subview->parentView = NULL;
 	UILayerRemoveSublayer(superview->layer, subview->layer);
 }
 
-void UIViewDrawInContext(UIView view, UIGraphicsContext *context)
+void UIViewSetNeedsDisplay(UIView *view)
 {
-	if (view->clipToBounds)
-	{
-		UIGraphicsContextClipToRect(context, view->frame, view->cornerRadius);
-	}
-
-	if (view->shadowColor.a > 0)
-	{
-		UIGraphicsContextSave(context);
-		{
-			UIGraphicsContextSetShadow(context, view->shadowOffset, view->shadowRadius);
-			UIGraphicsSetFillColor(context, view->shadowColor);
-			UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-		}
-		UIGraphicsContextRestore(context);
-	}
-
-	UIGraphicsSetFillColor(context, view->backgroundColor);
-	UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-
-	if (view->borderWidth > 0)
-	{
-		UIGraphicsSetStrokeColor(context, view->borderColor);
-		UIGraphicsSetStrokeWidth(context, view->borderWidth);
-		UIGraphicsContextAddRect(context, view->frame, view->cornerRadius);
-	}
-}
-
-void UIViewSetNeedsDisplay(UIView view)
-{
-	UIView current = view;
+	UIView *current = view;
 	do
 	{
 		current->needsDisplay = 1;
@@ -96,7 +67,7 @@ void UIViewSetNeedsDisplay(UIView view)
 	} while (current != NULL);
 }
 
-UIPoint UIViewConvertPoint(UIView from, UIView to, UIPoint point)
+UIPoint UIViewConvertPoint(UIView *from, UIView *to, UIPoint point)
 {
 	UIPoint p = point;
 
@@ -106,7 +77,7 @@ UIPoint UIViewConvertPoint(UIView from, UIView to, UIPoint point)
 	return p;
 }
 
-UIView UIViewHitTest(UIView view, UIPoint point)
+UIView *UIViewHitTest(UIView *view, UIPoint point)
 {
 	printf("\nHit test: x(%f) y(%f)\n", point.x, point.y);
 	if (!view)
@@ -116,10 +87,10 @@ UIView UIViewHitTest(UIView view, UIPoint point)
 
 	for (int i = ArrayGetCapacity(view->subviews) - 1; i >= 0; --i)
 	{
-		UIView subview = ArrayGetValueAtIndex(view->subviews, i);
+		UIView *subview = ArrayGetValueAtIndex(view->subviews, i);
 		UIPoint convertedPoint = UIViewConvertPoint(view, subview, point);
 		printf("Converted point: x(%f) y(%f)\n", convertedPoint.x, convertedPoint.y);
-		UIView hitView = UIViewHitTest(subview, convertedPoint);
+		UIView *hitView = UIViewHitTest(subview, convertedPoint);
 		printf("hitView: %p\n", hitView);
 		if (hitView != NULL)
 			return hitView;
@@ -129,46 +100,46 @@ UIView UIViewHitTest(UIView view, UIPoint point)
 }
 
 // MARK: Getters
-UIRect UIViewGetFrame(UIView view)
+UIRect UIViewGetFrame(UIView *view)
 {
 	return view->frame;
 }
-UIRect UIViewGetBounds(UIView view)
+UIRect UIViewGetBounds(UIView *view)
 {
 	return view->bounds;
 }
-UIColor UIViewGetBackgroundColor(UIView view)
+UIColor *UIViewGetBackgroundColor(UIView *view)
 {
 	return view->backgroundColor;
 }
-UIFloat UIViewGetCornerRadius(UIView view)
+UIFloat UIViewGetCornerRadius(UIView *view)
 {
 	return view->cornerRadius;
 }
-UIColor UIViewGetBorderColor(UIView view)
+UIColor *UIViewGetBorderColor(UIView *view)
 {
 	return view->borderColor;
 }
-UIFloat UIViewGetBorderWidth(UIView view)
+UIFloat UIViewGetBorderWidth(UIView *view)
 {
 	return view->borderWidth;
 }
 
-UIPoint UIViewGetShadowOffset(UIView view)
+UIPoint UIViewGetShadowOffset(UIView *view)
 {
 	return view->shadowOffset;
 }
-UIColor UIViewGetShadowColor(UIView view)
+UIColor *UIViewGetShadowColor(UIView *view)
 {
 	return view->shadowColor;
 }
-UIFloat UIViewGetShadowRadius(UIView view)
+UIFloat UIViewGetShadowRadius(UIView *view)
 {
 	return view->shadowRadius;
 }
 
 // MARK: Setters
-void UIViewSetFrame(UIView view, UIRect frame)
+void UIViewSetFrame(UIView *view, UIRect frame)
 {
 	view->frame = frame;
 
@@ -183,17 +154,17 @@ void UIViewSetFrame(UIView view, UIRect frame)
 	UILayerSetBounds(view->layer, layerBounds);
 	UILayerSetPosition(view->layer, layerFrame.origin);
 }
-void UIViewSetBounds(UIView view, UIRect bounds)
+void UIViewSetBounds(UIView *view, UIRect bounds)
 {
 	view->bounds = bounds;
 	UILayerSetBounds(view->layer, bounds);
 }
-void UIViewSetBackgroundColor(UIView view, UIColor backgroundColor)
+void UIViewSetBackgroundColor(UIView *view, UIColor *backgroundColor)
 {
 	view->backgroundColor = backgroundColor;
 	view->layer->backgroundColor = backgroundColor;
 }
-void UIViewSetCornerRadius(UIView view, UIFloat cornerRadius)
+void UIViewSetCornerRadius(UIView *view, UIFloat cornerRadius)
 {
 	view->cornerRadius = cornerRadius;
 
@@ -203,28 +174,28 @@ void UIViewSetCornerRadius(UIView view, UIFloat cornerRadius)
 
 	view->layer->cornerRadius = cornerRadius;
 }
-void UIViewSetBorderColor(UIView view, UIColor borderColor)
+void UIViewSetBorderColor(UIView *view, UIColor *borderColor)
 {
 	view->borderColor = borderColor;
 	view->layer->borderColor = borderColor;
 }
-void UIViewSetBorderWidth(UIView view, UIFloat borderWidth)
+void UIViewSetBorderWidth(UIView *view, UIFloat borderWidth)
 {
 	view->borderWidth = borderWidth;
 	view->layer->borderWidth = borderWidth;
 }
 
-void UIViewSetShadowOffset(UIView view, UIPoint shadowOffset)
+void UIViewSetShadowOffset(UIView *view, UIPoint shadowOffset)
 {
 	view->shadowOffset = shadowOffset;
 	view->layer->shadowOffset = shadowOffset;
 }
-void UIViewSetShadowColor(UIView view, UIColor shadowColor)
+void UIViewSetShadowColor(UIView *view, UIColor *shadowColor)
 {
 	view->shadowColor = shadowColor;
 	view->layer->shadowColor = shadowColor;
 }
-void UIViewSetShadowRadius(UIView view, UIFloat shadowRadius)
+void UIViewSetShadowRadius(UIView *view, UIFloat shadowRadius)
 {
 	view->shadowRadius = shadowRadius;
 	view->layer->shadowRadius = shadowRadius;

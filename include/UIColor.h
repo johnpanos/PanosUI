@@ -1,8 +1,5 @@
 #pragma once
 
-typedef struct _UIColor
-{
-	int r, g, b, a;
-} UIColor;
+typedef struct _UIColor UIColor;
 
-UIColor UIColorCreateRGBA(int r, int g, int b, int a);
+UIColor *UIColorCreateRGBA(int r, int g, int b, int a);

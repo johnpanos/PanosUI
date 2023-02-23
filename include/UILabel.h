@@ -1,21 +1,17 @@
 #pragma once
-#include "UIView.h"
 
-typedef struct _UILabel
-{
-	struct _UIView base;
-	const char *contents;
-	UIFloat fontSize;
-	UIColor fontColor;
-} *UILabel;
+#include "UIColor.h"
+#include "UIGeometry.h"
 
-UILabel UILabelCreate(UIRect frame);
+typedef struct _UILabel UILabel;
 
-void UILabelSetContents(UILabel label, const char *contents);
-void UILabelSetFontSize(UILabel label, UIFloat fontSize);
-void UILabelSetFontColor(UILabel label, UIColor fontColor);
-void UILabelSizeToFit(UILabel label);
+UILabel *UILabelCreate(UIRect frame);
 
-const char *UILabelGetContents(UILabel label);
-UIFloat UILabelGetFontSize(UILabel label);
-UIColor UILabelGetFontColor(UILabel label);
+void UILabelSetContents(UILabel *label, const char *contents);
+void UILabelSetFontSize(UILabel *label, UIFloat fontSize);
+void UILabelSetFontColor(UILabel *label, UIColor fontColor);
+void UILabelSizeToFit(UILabel *label);
+
+const char *UILabelGetContents(UILabel *label);
+UIFloat UILabelGetFontSize(UILabel *label);
+UIColor UILabelGetFontColor(UILabel *label);

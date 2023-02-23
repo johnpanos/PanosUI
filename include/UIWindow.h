@@ -3,7 +3,7 @@
 #include "UIGeometry.h"
 #include "UILayer.h"
 #include "UIView.h"
-#include <stdint.h>
+#include "UIWindowController.h"
 
 enum UIWindowType
 {
@@ -51,7 +51,7 @@ void UIWindowShow(UIWindow *window);
  * @param window
  * @param controller
  */
-void UIWindowSetController(UIWindow *window, UIWindowController controller);
+void UIWindowSetController(UIWindow *window, UIWindowController *controller);
 /**
  * @brief Sets the window title
  *
@@ -60,7 +60,7 @@ void UIWindowSetController(UIWindow *window, UIWindowController controller);
  */
 void UIWindowSetTitle(UIWindow *window, const char *title);
 
-UIView UIWindowGetMainView(UIWindow *window);
+UIView *UIWindowGetMainView(UIWindow *window);
 
 /**
  * @brief Sends an event that will be passed down the event responder chain

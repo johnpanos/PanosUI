@@ -54,7 +54,7 @@ UIWindowController UIWindowControllerCreate()
 	return windowController;
 }
 
-void UIWindowControllerDestroy(UIWindowController windowController)
+void UIWindowControllerDestroy(UIWindowController *windowController)
 {
 	windowController->_window = NULL;
 	free(windowController);

@@ -24,7 +24,7 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 {
 	printf("XDG TOPLEVEL\n");
 
-	UIWindow *window = (UIWindow)data;
+	UIWindow *window = (UIWindow *)data;
 	UIRect configuredSize = UIRectCreate(0, 0, (UIFloat)width, (UIFloat)height);
 
 	printf("frame: x(%f) y(%f) w(%f) h(%f)\n", window->frame.origin.x, window->frame.origin.y, window->frame.size.width,

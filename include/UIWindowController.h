@@ -12,7 +12,7 @@ typedef struct _UIWindowController
 	void (*windowDidLoad)(void *self, UIWindow *window);
 
 	UIWindow *_window;
-} *UIWindowController;
+} UIWindowController;
 
-UIWindowController UIWindowControllerCreate();
-void UIWindowControllerDestroy(UIWindowController windowController);
+UIWindowController *UIWindowControllerCreate();
+void UIWindowControllerDestroy(UIWindowController *windowController);
