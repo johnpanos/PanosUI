@@ -1,6 +1,7 @@
 #include "UILabel.h"
 #include "UIGraphicsContext.h"
 #include "include/UIColor.h"
+#include "include/UIGeometry.h"
 
 void _UILabelDoNothing(UIView *view)
 {
@@ -9,15 +10,16 @@ void _UILabelDoNothing(UIView *view)
 
 UIColor *BLACK;
 
-void UILabelDrawLayer(void *self, UILayer *layer, UIGraphicsContext *ctx) {
-	UILabel *label = (UILabel*) self;
+void UILabelDrawLayer(void *self, UILayer *layer, UIGraphicsContext *ctx)
+{
+	UILabel *label = (UILabel *)self;
 	UIGraphicsSetFillColor(ctx, BLACK);
-	UIGraphicsContextAddText(ctx, layer->frame.origin, label->contents, NULL, label->fontSize, 0);
+	UIGraphicsContextAddText(ctx, UIPointCreate(0, 0), label->contents, "Inter", label->fontSize, 0);
 }
 
 UILabel *UILabelCreate(UIRect frame)
 {
-	BLACK = UIColorCreateRGBA(0, 0, 0, 255);
+	BLACK = UIColorCreateRGBA(0, 0, 0, 255 * 0.60);
 	UILabel *label = calloc(1, sizeof(struct _UILabel));
 	label->base.layer = UILayerCreate(frame, frame);
 

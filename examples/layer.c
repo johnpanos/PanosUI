@@ -42,10 +42,10 @@ void windowDidLoad(void *self, UIWindow *window)
 	// end = 64.0f;
 	// UILayerAddAnimation(UIViewGetLayer(view2), radiusAnim);
 
-	UILabel *label = UILabelCreate(UIRectCreate(0, 0, 200, 200));
-	UILabelSetContents(label, "balls");
-	UILabelSetFontSize(label, 24);
-	UIViewSetBackgroundColor((UIView *)label, UIColorCreateRGBA(255, 255, 255, 0));
+	UILabel *label = UILabelCreate(UIRectCreate(14, 56, 200, 200));
+	UILabelSetContents(label, "QUICK ACCESS");
+	UILabelSetFontSize(label, 12);
+	UIViewSetBackgroundColor((UIView *)label, UIColorCreateRGBA(0, 0, 0, 0));
 	UIViewAddSubview(view, (UIView *)label);
 
 	printf("w: %f\n", UIViewGetFrame((UIView *)label).size.width);

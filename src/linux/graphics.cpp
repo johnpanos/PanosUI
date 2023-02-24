@@ -1,3 +1,5 @@
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkTypeface.h"
 #define SK_GL 1
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -175,10 +177,12 @@ extern "C"
 	void UIGraphicsContextAddText(UIGraphicsContext *ctx, UIPoint pos, const char *str, const char *font, int fontSize,
 								  int weight)
 	{
-		SkFontStyle font_style(SkFontStyle::kMedium_Weight, SkFontStyle::kNormal_Width,
-							   SkFontStyle::Slant::kUpright_Slant);
-		SkFont skFont = SkFont(SkTypeface::MakeFromName("Noto Sans", font_style), fontSize);
+		sk_sp<SkTypeface> typeface = SkTypeface::MakeFromName(font, SkFontStyle::Bold());
+		SkFont skFont = SkFont(typeface, fontSize);
+		skFont.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+		skFont.setSubpixel(true);
+		// skFont.measureText(str, strlen(str), SkTextEncoding::kUTF8, &text_bounds);
 		auto blob = SkTextBlob::MakeFromString(str, skFont);
-		ctx->canvas->drawTextBlob(blob.get(), pos.x, pos.y, ctx->paint);
+		ctx->canvas->drawTextBlob(blob.get(), pos.x, pos.y + fontSize, ctx->paint);
 	}
 }

@@ -104,7 +104,8 @@ void UIWindowSetTitle(UIWindow *window, const char *title)
 	}
 }
 
-UIView *UIWindowGetMainView(UIWindow *window) {
+UIView *UIWindowGetMainView(UIWindow *window)
+{
 	return window->mainView;
 }
 
@@ -197,8 +198,8 @@ void UIWindowUpdate(UIWindow *window)
 			UIGraphicsContextClipToRect(window->graphicsContext, window->contentFrame, 8.0f);
 
 			// Draw background
-			UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(255, 255, 255, 255));
-			UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
+			// UIGraphicsSetFillColor(window->graphicsContext, window->mainView->backgroundColor);
+			// UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
 
 			UIGraphicsContextSave(window->graphicsContext);
 			{
