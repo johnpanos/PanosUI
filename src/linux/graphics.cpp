@@ -7,10 +7,12 @@
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTextBlob.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/gl/GrGLAssembleInterface.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/egl/GrGLMakeEGLInterface.h"
+
 #include <iostream>
 
 #include <assert.h>
@@ -168,5 +170,15 @@ extern "C"
 	void UIGraphicsContextSetTransform(UIGraphicsContext *context, UIFloat x, UIFloat y)
 	{
 		context->canvas->translate(x, y);
+	}
+
+	void UIGraphicsContextAddText(UIGraphicsContext *ctx, UIPoint pos, const char *str, const char *font, int fontSize,
+								  int weight)
+	{
+		SkFontStyle font_style(SkFontStyle::kMedium_Weight, SkFontStyle::kNormal_Width,
+							   SkFontStyle::Slant::kUpright_Slant);
+		SkFont skFont = SkFont(SkTypeface::MakeFromName("Noto Sans", font_style), fontSize);
+		auto blob = SkTextBlob::MakeFromString(str, skFont);
+		ctx->canvas->drawTextBlob(blob.get(), pos.x, pos.y, ctx->paint);
 	}
 }

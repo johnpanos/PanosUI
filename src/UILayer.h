@@ -6,13 +6,17 @@
 #include "UIAnimation.h"
 #include "UIColor.h"
 #include "UIGraphicsContext.h"
+#include "include/UILayerDelegate.h"
 
 // MARK: Struct Defs
 typedef struct _UIPlatformLayer UIPlatformLayer;
+typedef struct _UILayerDelegate UILayerDelegate;
 typedef struct _UILayer UILayer;
 typedef struct _UILayer
 {
 	Array animations;
+
+	UILayerDelegate delegate;
 
 	UILayer *parent;
 	Array sublayers;
