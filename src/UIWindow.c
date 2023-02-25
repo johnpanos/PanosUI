@@ -1,4 +1,6 @@
 #include "UIWindow.h"
+#include "include/UIColor.h"
+#include "include/UIView.h"
 #include "include/UIWindowController.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -190,8 +192,8 @@ void UIWindowUpdate(UIWindow *window)
 		UIGraphicsContextSave(window->graphicsContext);
 		{
 			UIGraphicsSetFillColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 61));
-			UIGraphicsContextSetShadow(window->graphicsContext, UIPointCreate(0, 0), 8.0f);
-			UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
+			UIGraphicsContextSetShadow(window->graphicsContext, UIPointCreate(0, 2), 8.0f);
+			UIGraphicsContextAddRect(window->graphicsContext, UIRectOutset(window->contentFrame, 2.0f, 2.0f), 8.0f);
 			UIGraphicsContextRestore(window->graphicsContext);
 
 			// Clip all children to inside
@@ -213,9 +215,9 @@ void UIWindowUpdate(UIWindow *window)
 			}
 			UIGraphicsContextRestore(window->graphicsContext);
 
-			UIGraphicsSetStrokeColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 255));
-			UIGraphicsSetStrokeWidth(window->graphicsContext, 4.0f);
-			UIGraphicsContextAddRect(window->graphicsContext, UIRectOutset(window->contentFrame, 2.0f, 2.0f), 8.0f);
+			UIGraphicsSetStrokeColor(window->graphicsContext, UIColorCreateRGBA(0, 0, 0, 172));
+			UIGraphicsSetStrokeWidth(window->graphicsContext, 0.5f);
+			UIGraphicsContextAddRect(window->graphicsContext, window->contentFrame, 8.0f);
 		}
 		UIGraphicsContextRestore(window->graphicsContext);
 

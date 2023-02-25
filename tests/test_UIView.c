@@ -1,40 +1,43 @@
-#include <assert.h>
+#include "PanosUI.h"
+#include "UIGeometry.h"
 #include "UIView.h"
+#include <assert.h>
+
+void testCreation()
+{
+}
 
 int main()
 {
-    return 0;
-    // UIRect rect = {
-    //     .x = 0,
-    //     .y = 0,
-    //     .width = 100,
-    //     .height = 100};
+	UIRect rect = UIRectCreate(0, 0, 250, 250);
 
-    // UIView view1 = UIViewCreate(rect, rect);
-    // assert(view1 != NULL);
-    // assert(view1->frame.x == rect.x);
-    // assert(view1->frame.y == rect.y);
-    // assert(view1->frame.width == rect.width);
-    // assert(view1->frame.height == rect.height);
+	UIView *v1 = UIViewCreate(rect, rect);
+	UIRect v1Frame = UIViewGetFrame(v1);
+	assert(v1 != NULL);
+	assert(v1Frame.origin.x == rect.origin.x);
+	assert(v1Frame.origin.y == rect.origin.y);
+	assert(v1Frame.size.width == rect.size.width);
+	assert(v1Frame.size.height == rect.size.height);
 
-    // UIView view2 = UIViewCreate(rect, rect);
-    // assert(view2 != NULL);
-    // assert(view2->frame.x == rect.x);
-    // assert(view2->frame.y == rect.y);
-    // assert(view2->frame.width == rect.width);
-    // assert(view2->frame.height == rect.height);
+	UIView *v2 = UIViewCreate(rect, rect);
+	UIRect v2Frame = UIViewGetFrame(v2);
+	assert(v2 != NULL);
+	assert(v2Frame.origin.x == rect.origin.x);
+	assert(v2Frame.origin.y == rect.origin.y);
+	assert(v2Frame.size.width == rect.size.width);
+	assert(v2Frame.size.height == rect.size.height);
 
-    // UIViewAddSubview(view1, view2);
-    // assert(view2->parentView == view1);
+	UIViewAddSubview(v1, v2);
+	// assert(UIViewGetParentView(v2) == v1);
 
-    // UIView view3 = UIViewCreate(rect, rect);
-    // UIViewAddSubview(view1, view3);
+	UIView *v3 = UIViewCreate(rect, rect);
+	UIViewAddSubview(v1, v3);
 
-    // UIViewRemoveSubview(view1, view3);
-    // assert(view3->parentView == NULL);
+	UIViewRemoveSubview(v1, v3);
+	// assert(UIViewGetParentView(v3) == NULL);
 
-    // UIViewDestroy(view1);
-    // assert(view2->parentView == NULL);
+	UIViewDestroy(v1);
+	// assert(UIViewGetParentView(v2) == NULL);
 
-    return 0;
+	return 0;
 }

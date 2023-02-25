@@ -121,6 +121,19 @@
     "clangd.arguments": [
         "--compile-commands-dir=./builddir"
     ],
-    "lldb.library": "/usr/libexec/swift/5.7.3/lib/liblldb.so",
-    "debug.console.closeOnEnd": true
+    "lldb.displayFormat": "auto",
+    "lldb.dereferencePointers": true,
+    "lldb.launch.initCommands": [
+        "settings set target.x86-disassembly-flavor intel",
+        "command script import ${workspaceFolder}/.vscode/debugvis/view.py",
+        "script from view import *",
+    ],
+    "lldb.launch.preRunCommands": [
+        "settings set target.clang-module-search-paths './debug'",
+        "expr @import PanosUI"
+    ],
+    "lldb.verboseLogging": true,
+    "lldb.launch.expressions": "simple",
+    "lldb.showDisassembly": "auto",
+    "lldb.consoleMode": "commands"
 }

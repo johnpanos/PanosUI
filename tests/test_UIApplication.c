@@ -1,16 +1,15 @@
+#include "PanosUI.h"
 #include <stdlib.h>
-#include "UIApplication.h"
 
 void didFinishLaunching(UIApplication *application)
 {
-    exit(0);
+	exit(0);
 }
 
-static UIApplicationDelegate my_delegate = {
-    .didFinishLaunching = &didFinishLaunching};
+static UIApplicationDelegate my_delegate = {.didFinishLaunching = &didFinishLaunching};
 
 int main()
 {
-    UIApplicationMain(&my_delegate);
-    return 1;
+	UIApplicationMain(&my_delegate);
+	return 1;
 }

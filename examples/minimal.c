@@ -1,6 +1,8 @@
 #include "PanosUI.h"
 #include "UIView.h"
 #include "UIWindow.h"
+#include "include/UIColor.h"
+#include "include/UIView.h"
 #include <stdio.h>
 
 UIView *WindowActionButtonCreate(UIFloat x, UIColor *bg)
@@ -18,6 +20,8 @@ UIView *WindowActionsViewCreate()
 {
 	UIRect rootFrame = UIRectCreate(14.0f, 16.0f, 58, 14);
 	UIView *root = UIViewCreate(rootFrame, rootFrame);
+
+	UIViewSetBackgroundColor(root, UIColorCreateRGBA(255, 255, 255, 0));
 
 	UIViewAddSubview(root, WindowActionButtonCreate(0.0f, UIColorCreateRGBA(107, 122, 255, 255)));
 	UIViewAddSubview(root, WindowActionButtonCreate(22.0f, UIColorCreateRGBA(149, 160, 178, 204)));
