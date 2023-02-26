@@ -1,4 +1,6 @@
 #include "UIView.h"
+#include "include/UIGeometry.h"
+#include "include/UIView.h"
 #include "shared/Array.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +14,7 @@ void _UIViewDoNothing(UIView *view)
 UIView *UIViewCreate(UIRect frame, UIRect bounds)
 {
 	UIView *view = calloc(1, sizeof(struct _UIView));
+	view->parentView = NULL;
 	view->layer = UILayerCreate(frame, frame);
 	view->backgroundColor = UIColorCreateRGBA(255, 255, 255, 255);
 	view->borderColor = UIColorCreateRGBA(255, 255, 255, 0);
@@ -70,14 +73,42 @@ void UIViewSetNeedsDisplay(UIView *view)
 	} while (current != NULL);
 }
 
+// UIPoint _UIViewConvertPoint(UIView *from, UIView *to,)
+
 UIPoint UIViewConvertPoint(UIView *from, UIView *to, UIPoint point)
 {
+	// TODO: Add same window check
 	UIPoint p = point;
+	UIView *parent = UIViewGetParentView(to);
 
-	p.x += UIRectGetMinX(from->frame) - UIRectGetMinX(to->frame);
-	p.y += UIRectGetMinY(from->frame) - UIRectGetMinY(to->frame);
+	if (parent == NULL)
+	{
+		return UIPointCreate(0, 0);
+	}
 
-	return p;
+	UIPoint toOffset = to->frame.origin;
+
+	p.x -= toOffset.x;
+	p.y -= toOffset.y;
+
+	// p.x += UIRectGetMinX(parent->frame) - UIRectGetMinX(to->frame);
+	// p.y += UIRectGetMinY(parent->frame) - UIRectGetMinY(to->frame);
+
+	if (from == parent)
+	{
+		p.x += parent->frame.origin.x;
+		p.y += parent->frame.origin.y;
+		return p;
+	}
+	else if (parent != from)
+	{
+		// UIPoint delta = UIViewConvertPoint(from, parent, p);
+		// p.x += delta.x;
+		// p.y += delta.y;
+		return UIViewConvertPoint(from, parent, p);
+	}
+
+	return UIPointCreate(0, 0);
 }
 
 UIView *UIViewHitTest(UIView *view, UIPoint point)
@@ -121,6 +152,17 @@ UIRect UIViewGetBounds(UIView *view)
 {
 	return view->bounds;
 }
+
+UIView *UIViewGetParentView(UIView *view)
+{
+	return view->parentView;
+}
+
+void UIViewSetParentView(UIView *view, UIView *parent)
+{
+	view->parentView = parent;
+}
+
 UIColor *UIViewGetBackgroundColor(UIView *view)
 {
 	return view->backgroundColor;

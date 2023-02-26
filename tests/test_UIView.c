@@ -2,9 +2,46 @@
 #include "UIGeometry.h"
 #include "UIView.h"
 #include <assert.h>
+#include <stdio.h>
 
-void TestConvertPoint() {
-	
+void TestConvertPointMultiple()
+{
+	UIRect rv1 = UIRectCreate(10, 10, 100, 100);
+	UIView *v1 = UIViewCreate(rv1, rv1);
+
+	UIRect rv2 = UIRectCreate(10, 10, 100, 100);
+	UIView *v2 = UIViewCreate(rv2, rv2);
+
+	UIRect rv3 = UIRectCreate(50, 50, 100, 100);
+	UIView *v3 = UIViewCreate(rv3, rv3);
+
+	UIViewAddSubview(v1, v2);
+	UIViewAddSubview(v2, v3);
+
+	UIPoint converted = UIViewConvertPoint(v1, v3, UIPointCreate(60, 60));
+
+	printf("%f %f\n", converted.x, converted.y);
+
+	assert(converted.x == 0.0);
+	assert(converted.y == 0.0);
+}
+
+void TestConvertPoint()
+{
+	UIRect rv1 = UIRectCreate(50, 50, 128, 128);
+	UIView *v1 = UIViewCreate(rv1, rv1);
+	UIRect rv2 = UIRectCreate(200, 200, 128, 128);
+	UIView *v2 = UIViewCreate(rv2, rv2);
+
+	UIViewAddSubview(v1, v2);
+
+	UIPoint toConvert = UIPointCreate(10, 10);
+	UIPoint converted = UIViewConvertPoint(v1, v2, toConvert);
+
+	printf("%f %f\n", converted.x, converted.y);
+
+	assert(converted.x == -140.0);
+	assert(converted.y == -140.0);
 }
 
 int main()
@@ -38,6 +75,9 @@ int main()
 
 	UIViewDestroy(v1);
 	// assert(UIViewGetParentView(v2) == NULL);
+
+	TestConvertPoint();
+	TestConvertPointMultiple();
 
 	return 0;
 }

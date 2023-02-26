@@ -3,6 +3,16 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "PanosUI: Debug Current Test",
+            "cwd": "${workspaceFolder}/builddir/tests",
+            "program": "${workspaceFolder}/builddir/tests/${fileBasenameNoExtension}",
+            "preLaunchTask": "PanosUI: Build Debug",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Run layer (debug)",
             "program": "${workspaceFolder}/builddir/layer",
             "args": [],
@@ -83,9 +93,27 @@
                 "LD_LIBRARY_PATH": "${workspaceFolder:PanosUI}/builddir"
             },
             "args": [
-                "python.py",
+                "python.py"
             ],
             "cwd": "${workspaceFolder:PanosUI}/python"
         },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug swift-example (swift)",
+            "program": "${workspaceFolder:PanosUI}/swift/.build/debug/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/swift",
+            "preLaunchTask": "swift: Build Debug swift-example (swift)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release swift-example (swift)",
+            "program": "${workspaceFolder:PanosUI}/swift/.build/release/swift-example",
+            "args": [],
+            "cwd": "${workspaceFolder:PanosUI}/swift",
+            "preLaunchTask": "swift: Build Release swift-example (swift)"
+        }
     ]
 }
