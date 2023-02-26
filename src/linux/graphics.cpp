@@ -1,3 +1,5 @@
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkTypeface.h"
 #define SK_GL 1
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -7,10 +9,12 @@
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTextBlob.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/gl/GrGLAssembleInterface.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/egl/GrGLMakeEGLInterface.h"
+
 #include <iostream>
 
 #include <assert.h>
@@ -168,5 +172,17 @@ extern "C"
 	void UIGraphicsContextSetTransform(UIGraphicsContext *context, UIFloat x, UIFloat y)
 	{
 		context->canvas->translate(x, y);
+	}
+
+	void UIGraphicsContextAddText(UIGraphicsContext *ctx, UIPoint pos, const char *str, const char *font, int fontSize,
+								  int weight)
+	{
+		sk_sp<SkTypeface> typeface = SkTypeface::MakeFromName(font, SkFontStyle::Bold());
+		SkFont skFont = SkFont(typeface, fontSize);
+		skFont.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+		skFont.setSubpixel(true);
+		// skFont.measureText(str, strlen(str), SkTextEncoding::kUTF8, &text_bounds);
+		auto blob = SkTextBlob::MakeFromString(str, skFont);
+		ctx->canvas->drawTextBlob(blob.get(), pos.x, pos.y + fontSize, ctx->paint);
 	}
 }

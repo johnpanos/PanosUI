@@ -90,7 +90,7 @@ install_headers([
     'include/UILabel.h'
 ])
 
-executable('panos-client', 'examples/minimal.c', include_directories : ['include'], link_with : panosuilib)
+executable('panos-client', 'examples/minimal.c', include_directories : ['src'], link_with : panosuilib)
 executable('layer', 'examples/layer.c', include_directories : ['include'], link_with : panosuilib)
 executable('cpp-example', 'examples/cpp.cpp', include_directories : ['include', 'cpp'], link_with : panosuilib)
 
