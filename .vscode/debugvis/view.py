@@ -70,4 +70,4 @@ def draw_views(v):
     # iterArray(subviews)
     document = '<html><body style="position: relative; margin: 16px">' + drawView(view) + '</body></html>'
     #print(document)
-    debugger.display_html(document, position=2)
+    debugger.display_html(document, position=2, title='PanosUI Preview ({}{})'.format(view.GetDisplayTypeName(), view.GetName()))

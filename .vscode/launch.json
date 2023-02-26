@@ -3,7 +3,7 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug layer (debug)",
+            "name": "Run layer (debug)",
             "program": "${workspaceFolder}/builddir/layer",
             "args": [],
             "cwd": "${workspaceFolder}/builddir",
@@ -14,7 +14,7 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug minimal (debug)",
+            "name": "Run minimal (debug)",
             "program": "${workspaceFolder}/builddir/panos-client",
             "args": [],
             "cwd": "${workspaceFolder}/builddir",
@@ -25,7 +25,7 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug cpp-example (debug)",
+            "name": "Run cpp-example (debug)",
             "program": "${workspaceFolder}/builddir/cpp-example",
             "args": [],
             "cwd": "${workspaceFolder}/builddir",
@@ -36,7 +36,7 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug layer (release)",
+            "name": "Run layer (release)",
             "program": "${workspaceFolder}/buildrelease/layer",
             "args": [],
             "cwd": "${workspaceFolder}/buildrelease",
@@ -47,7 +47,7 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug swift-example",
+            "name": "Run swift-example (debug)",
             "program": "${workspaceFolder:PanosUI}/swift/.build/debug/swift-example",
             "env": {
                 "LD_LIBRARY_PATH": "${workspaceFolder:PanosUI}/builddir"
@@ -63,7 +63,7 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Release swift-example",
+            "name": "Run swift-example (release)",
             "program": "${workspaceFolder:PanosUI}/swift/.build/release/swift-example",
             "env": {
                 "LD_LIBRARY_PATH": "${workspaceFolder:PanosUI}/builddir"
@@ -77,20 +77,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug swift-example (swift)",
-            "program": "${workspaceFolder:PanosUI}/swift/.build/debug/swift-example",
-            "args": [],
-            "cwd": "${workspaceFolder:PanosUI}/swift",
-            "preLaunchTask": "swift: Build Debug swift-example (swift)"
+            "name": "Run Python Example (debug)",
+            "program": "python3",
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder:PanosUI}/builddir"
+            },
+            "args": [
+                "python.py",
+            ],
+            "cwd": "${workspaceFolder:PanosUI}/python"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Release swift-example (swift)",
-            "program": "${workspaceFolder:PanosUI}/swift/.build/release/swift-example",
-            "args": [],
-            "cwd": "${workspaceFolder:PanosUI}/swift",
-            "preLaunchTask": "swift: Build Release swift-example (swift)"
-        }
     ]
 }

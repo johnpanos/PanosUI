@@ -1,4 +1,5 @@
-build-clang
-builddir
-docs/_build
 .DS_Store
+builddir
+buildrelease
+docs/_build
+**/__pycache__
