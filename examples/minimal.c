@@ -21,7 +21,7 @@ UIView *WindowActionsViewCreate()
 	UIRect rootFrame = UIRectCreate(14.0f, 16.0f, 58, 14);
 	UIView *root = UIViewCreate(rootFrame, rootFrame);
 
-	UIViewSetBackgroundColor(root, UIColorCreateRGBA(255, 0, 0, 255));
+	UIViewSetBackgroundColor(root, UIColorCreateRGBA(255, 0, 0, 0));
 
 	UIViewAddSubview(root, WindowActionButtonCreate(0.0f, UIColorCreateRGBA(107, 122, 255, 255)));
 	UIViewAddSubview(root, WindowActionButtonCreate(22.0f, UIColorCreateRGBA(149, 160, 178, 204)));

@@ -3,8 +3,8 @@
 #include "UIView.h"
 #include <assert.h>
 
-void testCreation()
-{
+void TestConvertPoint() {
+	
 }
 
 int main()

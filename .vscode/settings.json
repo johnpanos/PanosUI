@@ -114,7 +114,8 @@
     "mesonbuild.configureOnOpen": true,
     "mesonbuild.setupOptions": [
         "--native-file",
-        "linux-x64-clang.ini"
+        "linux-x64-clang.ini",
+        "-Db_coverage=true"
     ],
     "C_Cpp.intelliSenseEngine": "disabled",
     "C_Cpp.codeAnalysis.clangTidy.enabled": true,
@@ -135,5 +136,6 @@
     "lldb.verboseLogging": true,
     "lldb.launch.expressions": "simple",
     "lldb.showDisassembly": "auto",
-    "lldb.consoleMode": "commands"
+    "lldb.consoleMode": "commands",
+    "coverage-gutters.coverageFileNames": [ "coverage.info" ]
 }

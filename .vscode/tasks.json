@@ -58,6 +58,29 @@
 				"PanosUI: Build Debug"
 			],
 			"problemMatcher": []
+		},
+		{
+			"label": "PanosUI: Generate code coverage",
+			"type": "shell",
+			"group": "none",
+			"command": "ninja",
+			"args": [
+				"-C",
+				"builddir",
+				"coverage"
+			],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"panel": "new",
+				"showReuseMessage": false,
+				"clear": false
+			},
+			"dependsOn": [
+				"PanosUI: Build Debug",
+				"Meson: Run Unit Tests"
+			],
+			"problemMatcher": []
 		}
 	]
 }
