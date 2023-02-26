@@ -77,8 +77,7 @@
 				"clear": false
 			},
 			"dependsOn": [
-				"PanosUI: Build Debug",
-				"Meson: Run Unit Tests"
+				"PanosUI: Build Debug"
 			],
 			"problemMatcher": []
 		}
