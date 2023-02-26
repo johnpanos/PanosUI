@@ -2,6 +2,7 @@
 #include "include/UIGeometry.h"
 #include "include/UIView.h"
 #include "shared/Array.h"
+#include <UIEventResponder.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -96,8 +97,8 @@ UIPoint UIViewConvertPoint(UIView *from, UIView *to, UIPoint point)
 
 	if (from == parent)
 	{
-		p.x += parent->frame.origin.x;
-		p.y += parent->frame.origin.y;
+		// p.x += parent->frame.origin.x;
+		// p.y += parent->frame.origin.y;
 		return p;
 	}
 	else if (parent != from)
@@ -113,7 +114,6 @@ UIPoint UIViewConvertPoint(UIView *from, UIView *to, UIPoint point)
 
 UIView *UIViewHitTest(UIView *view, UIPoint point)
 {
-	printf("\nHit test: x(%f) y(%f)\n", point.x, point.y);
 	if (!view)
 		return NULL;
 	if (!UIPointInRect(point, view->bounds))
@@ -123,9 +123,7 @@ UIView *UIViewHitTest(UIView *view, UIPoint point)
 	{
 		UIView *subview = ArrayGetValueAtIndex(view->subviews, i);
 		UIPoint convertedPoint = UIViewConvertPoint(view, subview, point);
-		printf("Converted point: x(%f) y(%f)\n", convertedPoint.x, convertedPoint.y);
 		UIView *hitView = UIViewHitTest(subview, convertedPoint);
-		printf("hitView: %p\n", hitView);
 		if (hitView != NULL)
 			return hitView;
 	}
@@ -141,6 +139,15 @@ UILayer *UIViewGetLayer(UIView *view)
 void UIViewSetLayer(UIView *view, UILayer *layer)
 {
 	view->layer = layer;
+}
+
+UIEventResponder *UIViewGetResponder(UIView *view)
+{
+	return view->responder;
+}
+void UIViewSetResponder(UIView *view, UIEventResponder *responder)
+{
+	view->responder = responder;
 }
 
 // MARK: Getters

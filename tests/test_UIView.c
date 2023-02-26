@@ -4,9 +4,30 @@
 #include <assert.h>
 #include <stdio.h>
 
+void TestHitTest()
+{
+	UIRect rv1 = UIRectCreate(0, 0, 100, 100);
+	UIView *v1 = UIViewCreate(rv1, rv1);
+
+	UIRect rv2 = UIRectCreate(10, 10, 100, 100);
+	UIView *v2 = UIViewCreate(rv2, rv2);
+
+	UIRect rv3 = UIRectCreate(50, 50, 100, 100);
+	UIView *v3 = UIViewCreate(rv3, rv3);
+
+	UIViewAddSubview(v1, v2);
+	UIViewAddSubview(v2, v3);
+
+	// Should land in v3
+	UIPoint pointToHitTest = UIPointCreate(70, 70);
+	UIView *hitView = UIViewHitTest(v1, pointToHitTest);
+
+	assert(hitView == v3);
+}
+
 void TestConvertPointMultiple()
 {
-	UIRect rv1 = UIRectCreate(10, 10, 100, 100);
+	UIRect rv1 = UIRectCreate(0, 0, 100, 100);
 	UIView *v1 = UIViewCreate(rv1, rv1);
 
 	UIRect rv2 = UIRectCreate(10, 10, 100, 100);
@@ -24,6 +45,10 @@ void TestConvertPointMultiple()
 
 	assert(converted.x == 0.0);
 	assert(converted.y == 0.0);
+
+	UIViewDestroy(v1);
+	UIViewDestroy(v2);
+	UIViewDestroy(v3);
 }
 
 void TestConvertPoint()
@@ -42,6 +67,9 @@ void TestConvertPoint()
 
 	assert(converted.x == -140.0);
 	assert(converted.y == -140.0);
+
+	UIViewDestroy(v1);
+	UIViewDestroy(v2);
 }
 
 int main()
@@ -78,6 +106,8 @@ int main()
 
 	TestConvertPoint();
 	TestConvertPointMultiple();
+
+	TestHitTest();
 
 	return 0;
 }

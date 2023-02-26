@@ -255,8 +255,9 @@ void UIWindowSendEvent(UIWindow *window, UIEvent event)
 	case UIEventTypeMouseDown:
 		if (event._eventData.mouseButton.button == UIEventMouseButtonTypeLeft)
 		{
-			printf("hitview frame : x(%f) y(%f) w(%f) h(%f)\n", hitView->frame.origin.x, hitView->frame.origin.y,
-				   hitView->frame.size.width, hitView->frame.size.height);
+			printf("hitview frame @ (%f, %f) : x(%f) y(%f) w(%f) h(%f)\n", hitPoint.x, hitPoint.y,
+				   hitView->frame.origin.x, hitView->frame.origin.y, hitView->frame.size.width,
+				   hitView->frame.size.height);
 			hitView->responder->leftMouseDown(hitView->responder, event);
 		}
 		else if (event._eventData.mouseButton.button == UIEventMouseButtonTypeRight)

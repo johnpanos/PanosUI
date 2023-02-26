@@ -2,6 +2,7 @@
 #include "UIView.h"
 #include "UIWindow.h"
 #include "include/UIColor.h"
+#include "include/UIEventResponder.h"
 #include "include/UIView.h"
 #include <stdio.h>
 
@@ -16,6 +17,11 @@ UIView *WindowActionButtonCreate(UIFloat x, UIColor *bg)
 	return button;
 }
 
+void OnMinimize(UIEventResponder *self, UIEvent event)
+{
+	printf("Minimize!\n");
+}
+
 UIView *WindowActionsViewCreate()
 {
 	UIRect rootFrame = UIRectCreate(14.0f, 16.0f, 58, 14);
@@ -24,7 +30,9 @@ UIView *WindowActionsViewCreate()
 	UIViewSetBackgroundColor(root, UIColorCreateRGBA(255, 0, 0, 0));
 
 	UIViewAddSubview(root, WindowActionButtonCreate(0.0f, UIColorCreateRGBA(107, 122, 255, 255)));
-	UIViewAddSubview(root, WindowActionButtonCreate(22.0f, UIColorCreateRGBA(149, 160, 178, 204)));
+	UIView *minimize = WindowActionButtonCreate(22.0f, UIColorCreateRGBA(149, 160, 178, 204));
+	UIViewGetResponder(minimize)->leftMouseDown = &OnMinimize;
+	UIViewAddSubview(root, minimize);
 	UIViewAddSubview(root, WindowActionButtonCreate(44.0f, UIColorCreateRGBA(149, 160, 178, 204)));
 
 	return root;
