@@ -3,6 +3,8 @@
 #include "UIWindow.h"
 #include "include/UIColor.h"
 #include "include/UIEventResponder.h"
+#include "include/UIGeometry.h"
+#include "include/UISwitch.h"
 #include "include/UIView.h"
 #include <stdio.h>
 
@@ -48,11 +50,11 @@ void onViewClick(UIEventResponder *self, UIEvent event)
 	start = 0.0f;
 	end = 200.0f;
 
-	UILayerSetAnchorPoint(UIViewGetLayer(VIEW), UIPointCreate(0.0f, 0.5f));
+	// UILayerSetAnchorPoint(UIViewGetLayer(VIEW), UIPointCreate(0.25f, 0.5f));
 
 	UIAnimation radiusAnim;
 	radiusAnim.finished = 0;
-	radiusAnim.forKey = kUILayerKeyPositionX;
+	// radiusAnim.forKey = kUILayerKeyPositionX;
 	radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseInOutCubic;
 	radiusAnim.startValue = &start;
 	radiusAnim.endValue = &end;
@@ -60,17 +62,17 @@ void onViewClick(UIEventResponder *self, UIEvent event)
 	radiusAnim.endTime = UIAnimationGetCurrentTime() + 2500;
 	radiusAnim._valueSize = sizeof(UIFloat);
 	radiusAnim.duration = 2500;
+	// UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
+
+	start = UIViewGetFrame(VIEW).size.width;
+	end = 25.0f;
+	radiusAnim.forKey = kUILayerKeyBoundsWidth;
 	UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
 
-	// start = VIEW->frame.size.width;
-	// end = newRect.size.width;
-	// radiusAnim.forKey = kUILayerKeyBoundsWidth;
-	// UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
-
-	// start = VIEW->frame.size.height;
-	// end = newRect.size.height;
-	// radiusAnim.forKey = kUILayerKeyBoundsHeight;
-	// UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
+	start = UIViewGetFrame(VIEW).size.height;
+	end = 25.0f;
+	radiusAnim.forKey = kUILayerKeyBoundsHeight;
+	UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
 }
 
 void windowDidLoad(void *self, UIWindow *window)
@@ -98,7 +100,7 @@ void windowDidLoad(void *self, UIWindow *window)
 	VIEW = testView;
 
 	// UIViewSetResponder(testView, UIEventResponder *responder)
-	// testView->responder->leftMouseDown = &onViewClick;
+	testView->responder->leftMouseDown = &onViewClick;
 
 	UIViewSetBackgroundColor(testView, UIColorCreateRGBA(255, 255, 255, 255));
 	UIViewSetCornerRadius(testView, 0.0f);
@@ -117,6 +119,9 @@ void windowDidLoad(void *self, UIWindow *window)
 	UILabelSetFontSize(label, 12);
 	UIViewSetBackgroundColor((UIView *)label, UIColorCreateRGBA(0, 0, 0, 0));
 	UIViewAddSubview(windowView, (UIView *)label);
+
+	UISwitch *s = UISwitchCreate(UIRectCreate(14, 100, 0, 0));
+	UIViewAddSubview(windowView, s);
 }
 
 void didFinishLaunching(UIApplication *application)

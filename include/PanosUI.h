@@ -11,3 +11,4 @@
 
 // Controls
 #include "UILabel.h"
+#include "UISwitch.h"

@@ -15,6 +15,7 @@ src = [
     'src/UIRect.c',
     'src/UIPoint.c',
     'src/UILabel.c',
+    'src/UISwitch.c',
     'src/shared/Array.c'
 ]
 
