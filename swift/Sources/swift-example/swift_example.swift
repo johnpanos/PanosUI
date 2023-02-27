@@ -33,7 +33,7 @@ struct MyDelegate: UIApplicationDelegate {
     }
 
     mutating func didFinishLaunching() {
-        self.window = UIWindow(frame: UIRect(x: 0, y: 0, w: 750, h: 600))
+        self.window = UIWindow(frame: UIRect(x: 0, y: 0, w: 250, h: 250))
     }
 }
 

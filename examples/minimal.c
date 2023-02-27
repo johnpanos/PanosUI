@@ -50,11 +50,8 @@ void onViewClick(UIEventResponder *self, UIEvent event)
 	start = 0.0f;
 	end = 200.0f;
 
-	// UILayerSetAnchorPoint(UIViewGetLayer(VIEW), UIPointCreate(0.25f, 0.5f));
-
 	UIAnimation radiusAnim;
 	radiusAnim.finished = 0;
-	// radiusAnim.forKey = kUILayerKeyPositionX;
 	radiusAnim.timingFunction = &UIAnimationTimingFunctionEaseInOutCubic;
 	radiusAnim.startValue = &start;
 	radiusAnim.endValue = &end;
@@ -62,15 +59,14 @@ void onViewClick(UIEventResponder *self, UIEvent event)
 	radiusAnim.endTime = UIAnimationGetCurrentTime() + 2500;
 	radiusAnim._valueSize = sizeof(UIFloat);
 	radiusAnim.duration = 2500;
-	// UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
 
 	start = UIViewGetFrame(VIEW).size.width;
-	end = 25.0f;
+	end = 64.0f;
 	radiusAnim.forKey = kUILayerKeyBoundsWidth;
 	UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
 
 	start = UIViewGetFrame(VIEW).size.height;
-	end = 25.0f;
+	end = 48.0f;
 	radiusAnim.forKey = kUILayerKeyBoundsHeight;
 	UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
 }
@@ -83,23 +79,11 @@ void windowDidLoad(void *self, UIWindow *window)
 
 	UIViewSetBackgroundColor(windowView, UIColorCreateRGBA(255, 255, 255, 204));
 
-	// UIRect rect1 = UIRectCreate(50, 50, 128, 128);
-	// UIView view1 = UIViewCreate(rect1, rect1);
-
-	// UIRect rect2 = UIRectCreate(200, 200, 128, 128);
-	// UIView view2 = UIViewCreate(rect2, rect2);
-
-	// UIPoint tap = UIPointCreate(10, 10);
-	// UIPoint convertedTap = UIViewConvertPoint(view1, view2, tap);
-
-	// printf("Converted tap: x(%f) y(%f)\n", convertedTap.x, convertedTap.y);
-
 	UIRect myRect =
 		UIRectCreate(224, 0, UIViewGetFrame(windowView).size.width - 224, UIViewGetFrame(windowView).size.height);
 	UIView *testView = UIViewCreate(myRect, myRect);
 	VIEW = testView;
 
-	// UIViewSetResponder(testView, UIEventResponder *responder)
 	testView->responder->leftMouseDown = &onViewClick;
 
 	UIViewSetBackgroundColor(testView, UIColorCreateRGBA(255, 255, 255, 255));
@@ -120,8 +104,8 @@ void windowDidLoad(void *self, UIWindow *window)
 	UIViewSetBackgroundColor((UIView *)label, UIColorCreateRGBA(0, 0, 0, 0));
 	UIViewAddSubview(windowView, (UIView *)label);
 
-	UISwitch *s = UISwitchCreate(UIRectCreate(14, 100, 0, 0));
-	UIViewAddSubview(windowView, s);
+	UISwitch *s = UISwitchCreate(UIRectCreate(12, 12, 0, 0));
+	UIViewAddSubview(testView, s);
 }
 
 void didFinishLaunching(UIApplication *application)
