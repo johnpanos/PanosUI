@@ -21,7 +21,9 @@ UIView *WindowActionButtonCreate(UIFloat x, UIColor *bg)
 
 void OnMinimize(UIEventResponder *self, UIEvent event)
 {
-	printf("Minimize!\n");
+	UIView *view = (UIView *)self->_self;
+	printf("Minimized button clicked!\n");
+	printf("Extra printf function because why not.\n");
 }
 
 UIView *WindowActionsViewCreate()

@@ -1,9 +1,11 @@
 .. _tutorial_step1:
 
-Making a window
-===============
+Understanding the main loop
+===========================
 
-To make a window, 
+The application loop wraps around the platform's event loop converts them to PanosUI UIEvents.
+
+To start the event loop you will need an application delegate. A UIApplicationDelegate contains a callback that the UIApplication singleton instance will call when the process is ready for you to create GUI elements.
 
 .. code-block:: c
    :linenos:
@@ -13,9 +15,12 @@ To make a window,
         printf("Hello World!\n");
     }
     
-    static UIApplicationDelegate my_delegate = {.didFinishLaunching = &didFinishLaunching};
+    /* The user defined delegate which specifies that we should call the above function
+     * when the app has finished launching */
+    static UIApplicationDelegate my_delegate = {.didFinishLaunching = &did_finish_launching};
 
     int main()
     {
+        // Runs the main event loop with the above delegate
         UIApplicationMain(&my_delegate);
     }

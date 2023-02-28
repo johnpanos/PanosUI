@@ -125,9 +125,9 @@
     "lldb.displayFormat": "auto",
     "lldb.dereferencePointers": true,
     "lldb.launch.initCommands": [
-        "settings set target.x86-disassembly-flavor intel",
-        "command script import ${workspaceFolder}/.vscode/debugvis/view.py",
-        "script from view import *",
+        // "settings set target.x86-disassembly-flavor intel",
+        // "command script import ${workspaceFolder}/.vscode/debugvis/view.py",
+        // "script from view import *",
     ],
     "lldb.launch.preRunCommands": [
         "settings set target.clang-module-search-paths './debug'",
@@ -137,5 +137,7 @@
     "lldb.launch.expressions": "simple",
     "lldb.showDisassembly": "auto",
     "lldb.consoleMode": "commands",
-    "coverage-gutters.coverageFileNames": [ "coverage.info" ]
+    "coverage-gutters.coverageFileNames": [
+        "coverage.info"
+    ]
 }

@@ -1,7 +1,7 @@
 .. _tutorial:
 
-Making your first PanosUI application
-=====================================
+Tutorial
+========
 
 .. toctree::
     :maxdepth: 2

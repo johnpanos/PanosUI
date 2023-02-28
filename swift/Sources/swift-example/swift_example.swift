@@ -28,7 +28,7 @@ struct MyDelegate: UIApplicationDelegate {
         didSet {
             window.controller = windowController
             window.show()
-            window.title = "Swift Window"
+            window.title = "Swift Window Example"
         }
     }
 

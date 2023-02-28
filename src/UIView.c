@@ -22,6 +22,7 @@ UIView *UIViewCreate(UIRect frame, UIRect bounds)
 	view->shadowColor = UIColorCreateRGBA(255, 255, 255, 0);
 
 	view->responder = UIEventResponderCreate();
+	view->responder->_self = view;
 	UIViewSetFrame(view, frame);
 	UIRect boundsCopy = bounds;
 	boundsCopy.origin.x = 0;
