@@ -62,7 +62,10 @@ UIWindow *UIWindowCreate(UIRect frame)
 	window->frame = UIRectOutset(frame, INSET_AMOUNT, INSET_AMOUNT);
 	window->frame.origin.x = 0;
 	window->frame.origin.y = 0;
-	window->contentFrame = UIRectInset(window->frame, INSET_AMOUNT, INSET_AMOUNT);
+	window->contentFrame = frame;
+	window->contentFrame.origin.x = 0;
+	window->contentFrame.origin.y = 0;
+
 	window->controller = UIWindowControllerGetDefault();
 
 	window->mainView = UIViewCreate(frame, frame);

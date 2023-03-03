@@ -128,6 +128,7 @@
         // "settings set target.x86-disassembly-flavor intel",
         // "command script import ${workspaceFolder}/.vscode/debugvis/view.py",
         // "script from view import *",
+        "settings set target.process.follow-fork-mode child"
     ],
     "lldb.launch.preRunCommands": [
         "settings set target.clang-module-search-paths './debug'",

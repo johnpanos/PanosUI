@@ -73,10 +73,12 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 		window->frame = requestedSize;
 		printf("before window did resize\n");
 
-		if (sizeChanged)
+		if (!sizeChanged)
 		{
-			window->controller->windowDidResize(window->controller->_self, window);
+			return;
 		}
+
+		window->controller->windowDidResize(window->controller->_self, window);
 
 		if (window->graphicsContext != NULL)
 		{

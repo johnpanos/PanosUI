@@ -46,6 +46,9 @@ void UIWindowDestroy(UIWindow *window);
  * @param window The window
  */
 void UIWindowShow(UIWindow *window);
+
+void UIWindowSetContentFrame(UIWindow *window, UIRect contentRect);
+
 /**
  * @brief
  *
@@ -53,6 +56,7 @@ void UIWindowShow(UIWindow *window);
  * @param controller
  */
 void UIWindowSetController(UIWindow *window, UIWindowController *controller);
+
 /**
  * @brief Sets the window title
  *

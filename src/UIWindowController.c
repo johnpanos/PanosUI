@@ -11,6 +11,7 @@ void doNothing()
 UIRect defaultWindowWillResize(void *self, UIWindow *window, UIRect to)
 {
 	printf("Window will resize: w(%f) h(%f)\n", to.size.width, to.size.height);
+
 	if (to.size.width == 0 && to.size.height == 0)
 	{
 		return window->frame;

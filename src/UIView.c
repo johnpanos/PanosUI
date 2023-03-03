@@ -1,8 +1,4 @@
-#include "UIView.h"
-#include "include/UIGeometry.h"
-#include "include/UIView.h"
-#include "shared/Array.h"
-#include <UIEventResponder.h>
+#include "PanosUI.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -216,6 +212,10 @@ void UIViewSetFrame(UIView *view, UIRect frame)
 
 	UILayerSetBounds(view->layer, layerBounds);
 	UILayerSetPosition(view->layer, layerFrame.origin);
+}
+void UIViewSetLayoutSubviews(UIView *view, void (*layoutSubviews)(UIView *view))
+{
+	view->layoutSubviews = layoutSubviews;
 }
 void UIViewSetBounds(UIView *view, UIRect bounds)
 {

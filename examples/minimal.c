@@ -73,17 +73,27 @@ void onViewClick(UIEventResponder *self, UIEvent event)
 	UILayerAddAnimation(UIViewGetLayer(VIEW), radiusAnim);
 }
 
+UIView *testView;
+void MainViewLayoutSubviews(UIView *main)
+{
+	UIRect myRect = UIRectCreate(224, 0, UIViewGetFrame(main).size.width - 224, UIViewGetFrame(main).size.height);
+	UIViewSetFrame(testView, myRect);
+	main->needsLayout = 0;
+}
+
 void windowDidLoad(void *self, UIWindow *window)
 {
 	printf("THE WINDOW LOADED!\n");
 
 	UIView *windowView = UIWindowGetMainView(window);
+	UIViewSetLayoutSubviews(windowView, &MainViewLayoutSubviews);
 
 	UIViewSetBackgroundColor(windowView, UIColorCreateRGBA(255, 255, 255, 204));
 
 	UIRect myRect =
 		UIRectCreate(224, 0, UIViewGetFrame(windowView).size.width - 224, UIViewGetFrame(windowView).size.height);
-	UIView *testView = UIViewCreate(myRect, myRect);
+
+	testView = UIViewCreate(myRect, myRect);
 	VIEW = testView;
 
 	testView->responder->leftMouseDown = &onViewClick;
