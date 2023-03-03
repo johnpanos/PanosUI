@@ -87,8 +87,6 @@ static void xdg_toplevel_configure_handler(void *data, struct xdg_toplevel *xdg_
 
 		window->graphicsContext =
 			UIGraphicsContextCreate(platformWindow->eglSurface, window->frame.size.width, window->frame.size.height);
-		window->mainView->needsDisplay = 1;
-		window->mainView->needsLayout = 1;
 
 		UIRect contentRect = window->contentFrame;
 		// printf("frame: x(%f) y(%f) w(%f) h(%f)\n", window->frame.origin.x, window->frame.origin.y,

@@ -31,6 +31,9 @@ void defaultWindowDidResize(void *self, UIWindow *window)
 
 	UIRect mainViewRect = {.origin = UIPointCreate(0, 0), .size = window->contentFrame.size};
 	window->mainView->frame = mainViewRect;
+
+	window->mainView->needsDisplay = 1;
+	window->mainView->needsLayout = 1;
 }
 
 struct _UIWindowController UIWindowControllerDefault = {.windowWillLoad = &doNothing,

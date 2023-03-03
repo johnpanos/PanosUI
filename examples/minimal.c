@@ -79,6 +79,7 @@ void MainViewLayoutSubviews(UIView *main)
 	UIRect myRect = UIRectCreate(224, 0, UIViewGetFrame(main).size.width - 224, UIViewGetFrame(main).size.height);
 	UIViewSetFrame(testView, myRect);
 	main->needsLayout = 0;
+	main->needsDisplay = 1;
 }
 
 void windowDidLoad(void *self, UIWindow *window)

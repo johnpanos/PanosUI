@@ -1,3 +1,4 @@
+#include "include/UIView.h"
 #include "PanosUI.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -210,8 +211,11 @@ void UIViewSetFrame(UIView *view, UIRect frame)
 
 	layerBounds.size = frame.size;
 
-	UILayerSetBounds(view->layer, layerBounds);
 	UILayerSetPosition(view->layer, layerFrame.origin);
+	UILayerSetBounds(view->layer, layerBounds);
+
+	view->needsDisplay = 1;
+	view->needsLayout = 1;
 }
 void UIViewSetLayoutSubviews(UIView *view, void (*layoutSubviews)(UIView *view))
 {
